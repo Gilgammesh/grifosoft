@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+ ========================
+ @author carlos santander
+ ========================
+-->
+<mapper namespace="Ventas">
+    
+    <resultMap id="VentasMap" type="Ventas">
+        
+        <result property="clieId" column="clie_id" /> 
+        <result property="clieDocumento" column="clie_documento" />        
+        <result property="clieNombres" column="clie_nombres" />         
+        <result property="clieDireccion" column="clie_direccion" />
+        <result property="clieTelefono" column="clie_telefono" />
+        <result property="clieCorreo" column="clie_correo" />                
+        <result property="clieEstado" column="clie_estado" />
+        <result property="ticlId" column="ticl_id" />   
+        <result property="ticlNombre" column="ticl_nombre" />
+        <result property="ticlEstado" column="ticl_estado" />
+        <result property="tiveId" column="tive_id" />
+        <result property="tiveNombre" column="tive_nombre" />
+        <result property="tiveEstado" column="tive_estado" /> 
+        <result property="prodId" column="prod_id" />        
+        <result property="prodNombre" column="prod_nombre" />        
+        <result property="prodDescripcion" column="prod_descripcion" />        
+        <result property="prodEstado" column="prod_estado" />         
+        <result property="prcaId" column="prca_id" />
+        <result property="prcaNombre" column="prca_nombre" />
+        <result property="prcaEstado" column="prca_estado" />                
+        <result property="unmeId" column="unme_id" />
+        <result property="unmeNombre" column="unme_nombre" />
+        <result property="unmeSimbolo" column="unme_simbolo" />
+        <result property="unmeEstado" column="unme_estado" />
+        <result property="prveId" column="prve_id" />
+        <result property="prvePrecioUnitario" column="prve_precio_unitario" />
+        <result property="prvePrecioAlterno1" column="prve_precio_alterno1" />
+        <result property="prvePrecioAlterno2" column="prve_precio_alterno2" />
+        <result property="prveDescuentoPrecio" column="prve_descuento_precio" />
+        <result property="prveDescuentoPrecioPorcentaje" column="prve_descuento_precio_porcentaje" />   
+        <result property="prveFechaHoraPrecio" column="prve_fecha_hora_precio" />
+        <result property="prveActivo" column="prve_activo" />
+        <result property="matrId" column="matr_id" />
+        <result property="matrFilas" column="matr_filas" />
+        <result property="matrColumnas" column="matr_columnas" />
+        <result property="matrEstado" column="matr_estado" />         
+        <result property="surtId" column="surt_id" />
+        <result property="surtNombre" column="surt_nombre" />
+        <result property="surtFila" column="surt_fila" />
+        <result property="surtColumna" column="surt_columna" /> 
+        <result property="surtEstado" column="surt_estado" />         
+        <result property="surtActivo" column="surt_activo" />  
+        <result property="sudeId" column="sude_id" />
+        <result property="sudeEstado" column="sude_estado" />
+        <result property="sudeLecturaApertura" column="sude_lectura_apertura" />
+        <result property="sudeFechaLectura" column="sude_fecha_lectura" /> 
+        <result property="sudeLecturaEstado" column="sude_lectura_estado" />         
+        <result property="sudeActivo" column="sude_activo" /> 
+        <result property="ladoId" column="lado_id" />
+        <result property="ladoNombre" column="lado_nombre" />         
+        <result property="ladoEstado" column="lado_estado" />
+        <result property="mangId" column="mang_id" />
+        <result property="mangNombre" column="mang_nombre" />
+        <result property="mangEstado" column="mang_estado" />         
+        <result property="tudiId" column="tudi_id" />       
+        <result property="tudiFechaInicio" column="tudi_fecha_inicio" />         
+        <result property="tudiInicio" column="tudi_inicio" />
+        <result property="cltuIdInicio" column="cltu_id_inicio" />
+        <result property="tudiFechaCierre" column="tudi_fecha_cierre" />
+        <result property="tudiCierre" column="tudi_cierre" />
+        <result property="cltuIdCierre" column="cltu_id_cierre" />
+        <result property="turnId" column="turn_id" />
+        <result property="turnNombre" column="turn_nombre" />
+        <result property="turnDescripcion" column="turn_descripcion" />
+        <result property="turnInicio" column="turn_inicio" />
+        <result property="turnFin" column="turn_fin" />
+        <result property="turnEstado" column="turn_estado" />
+        <result property="trabId" column="trab_id" />         
+        <result property="trabDni" column="trab_dni" />
+        <result property="trabNombres" column="trab_nombres" />
+        <result property="trabApellidoPaterno" column="trab_apellido_paterno" />                
+        <result property="trabApellidoMaterno" column="trab_apellido_materno" />
+        <result property="trabCelular" column="trab_celular" />
+        <result property="trabDireccion" column="trab_direccion" />
+        <result property="trabEstado" column="trab_estado" /> 
+        <result property="reveId" column="reve_id" />
+        <result property="reveFechaHora" column="reve_fecha_hora" />
+        <result property="reveDocumento" column="reve_documento" />
+        <result property="reveNombres" column="reve_nombres" />
+        <result property="reveDireccion" column="reve_direccion" />
+        <result property="reveChofer" column="reve_chofer" />
+        <result property="revePlaca" column="reve_placa" />
+        <result property="reveKilometraje" column="reve_kilometraje" />
+        <result property="reveIgv" column="reve_igv" />
+        <result property="reveEstado" column="reve_estado" />         
+        <result property="reveNroComprobante" column="reve_nro_comprobante" />
+        <result property="reveEnvioOse" column="reve_envio_ose" />
+        <result property="reveEnvioError" column="reve_envio_error" />        
+        <result property="tiemId" column="tiem_id" />
+        <result property="tiemNombre" column="tiem_nombre" />
+        <result property="tiemEstado" column="tiem_estado" /> 
+        <result property="tiemOse" column="tiem_ose" /> 
+        <result property="revdId" column="revd_id" />
+        <result property="revdSurtidor" column="revd_surtidor" />
+        <result property="revdLado" column="revd_lado" />
+        <result property="revdProducto" column="revd_producto" />
+        <result property="revdPrecioUnitario" column="revd_precio_unitario" />
+        <result property="revdDescuento" column="revd_descuento" />
+        <result property="revdDescuentoPrecio" column="revd_descuento_precio" />
+        <result property="revdUnidadMedida" column="revd_unidad_medida" />
+        <result property="revdUnidadMedidaSimbolo" column="revd_unidad_medida_simbolo" />
+        <result property="revdCantidad" column="revd_cantidad" />
+        <result property="revdMonto" column="revd_monto" /> 
+        <result property="revdOpGravada" column="revd_op_gravada" />
+        <result property="revdOpInafecta" column="revd_op_inafecta" />
+        <result property="revdOpExonerada" column="revd_op_exonerada" />
+        <result property="revdOpGratuita" column="revd_op_gratuita" />
+        <result property="revdUnidadMedidaOse" column="revd_unidad_medida_ose" />
+        <result property="lediId" column="ledi_id" />
+        <result property="lediLecturaInicial" column="ledi_lectura_inicial" />
+        <result property="lediLecturaFinal" column="ledi_lectura_final" />
+        <result property="lediPrecioUnitario" column="ledi_precio_unitario" />
+        <result property="coemId" column="coem_id" />        
+        <result property="coemSigla" column="coem_sigla" />
+        <result property="coemSede" column="coem_sede" />
+        <result property="coemCorrelativo" column="coem_correlativo" />
+        <result property="coemLongitud" column="coem_longitud" />
+        <result property="tidoId" column="tido_id" />         
+        <result property="tidoNombre" column="tido_nombre" />         
+        <result property="tidoDescripcion" column="tido_descripcion" /> 
+        <result property="tidoCaracteres" column="tido_caracteres" />
+        <result property="tidoOse" column="tido_ose" />         
+        <result property="ticoSunat" column="tico_sunat" />    
+        <result property="tigvId" column="tigv_id" />         
+        <result property="prodCodigoSunat" column="prod_codigo_sunat" /> 
+        <result property="indiId" column="indi_id" />
+        <result property="indiFechaHora" column="indi_fecha_hora" />         
+        <result property="indiDescripcion" column="indi_descripcion" />    
+        <result property="indiMonto" column="indi_monto" />         
+        <result property="tiinId" column="tiin_id" />   
+        <result property="tiinNombre" column="tiin_nombre" />  
+        <result property="tiinEstado" column="tiin_estado" /> 
+        <result property="gadiId" column="gadi_id" />
+        <result property="gadiFechaHora" column="gadi_fecha_hora" />         
+        <result property="gadiDescripcion" column="gadi_descripcion" />    
+        <result property="gadiMonto" column="gadi_monto" />         
+        <result property="tigaId" column="tiga_id" />   
+        <result property="tigaNombre" column="tiga_nombre" />  
+        <result property="tigaEstado" column="tiga_estado" />  
+        <result property="leprLecturaFisica" column="lepr_lectura_fisica" />  
+        <result property="leprLecturaCm3" column="lepr_lectura_cm3" /> 
+        <result property="tusuMonto" column="tusu_monto" />  
+        <result property="tusuEntregado" column="tusu_entregado" />         
+        <result property="detaId" column="deta_id" />  
+        <result property="detaDevolucion" column="deta_devolucion" />        
+        <result property="venta" column="venta" /> 
+        <result property="devolucion" column="devolucion" /> 
+        <result property="galonesVendidos" column="galones_vendidos" />
+        <result property="entregado" column="entregado" /> 
+        <result property="gasto" column="gasto" /> 
+        <result property="ingreso" column="ingreso" /> 
+        <result property="servId" column="serv_id" />          
+        <result property="cotuId" column="cotu_id" />
+        <result property="cotuFechaHora" column="cotu_fecha_hora" />         
+        <result property="cotuDescripcion" column="cotu_descripcion" />    
+        <result property="cotuGalones" column="cotu_galones" />      
+        <result property="cotuMonto" column="cotu_monto" />
+        <result property="camaId" column="cama_id" />    
+        <result property="camaNombre" column="cama_nombre" />      
+        <result property="camaEstado" column="cama_estado" />        
+        <result property="sulaId" column="sula_id" />      
+        <result property="sulaEstado" column="sula_estado" />   
+        <result property="sulaActivo" column="sula_activo" />  
+        
+    </resultMap> 
+  
+    <select id="getClientes" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.clie_id, a.ticl_id, a.clie_documento, a.clie_nombres, a.clie_direccion, 
+        a.clie_telefono, a.clie_correo, a.clie_estado, a.tido_id, b.ticl_nombre, b.ticl_estado,
+        c.tido_nombre, c.tido_descripcion, c.tido_caracteres, c.tido_ose
+        FROM ventas.clientes as a 
+        INNER JOIN ventas.tipos_cliente as b ON (a.ticl_id = b.ticl_id) 
+        INNER JOIN ventas.tipos_documento as c ON (a.tido_id = c.tido_id) ${c}
+    </select> 
+    
+    <insert id="insertClientes" parameterType="Ventas" >
+        <selectKey keyProperty="clieId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.clientes_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.clientes(
+        clie_id, ticl_id, clie_documento, clie_nombres, clie_direccion, clie_telefono, 
+        clie_correo, clie_estado, tido_id)
+        VALUES (#{clieId}, #{ticlId}, #{clieDocumento}, #{clieNombres}, #{clieDireccion}, 
+        #{clieTelefono}, #{clieCorreo}, #{clieEstado}, #{tidoId});
+    </insert>   
+              
+    <update id="updateClientes" parameterType="Ventas"> 
+        UPDATE ventas.clientes
+        SET ticl_id=#{ticlId}, clie_documento=#{clieDocumento}, 
+        clie_nombres=#{clieNombres}, clie_direccion=#{clieDireccion}, 
+        clie_telefono=#{clieTelefono}, clie_correo=#{clieCorreo},
+        tido_id=#{tidoId}
+        WHERE clie_id=#{clieId};
+    </update>
+    
+    <update id="deleteClientes" parameterType="Ventas"> 
+        UPDATE ventas.clientes
+        SET clie_estado=#{clieEstado}
+        WHERE clie_id=#{clieId};
+    </update>
+    
+    <select id="getTiposCliente" parameterType="HashMap" resultMap="VentasMap">
+        SELECT ticl_id, ticl_nombre, ticl_estado
+        FROM ventas.tipos_cliente ${c}
+    </select> 
+    
+    <select id="getTiposVenta" parameterType="HashMap" resultMap="VentasMap">
+        SELECT tive_id, tive_nombre, tive_estado
+        FROM ventas.tipos_venta ${c}       
+    </select> 
+    
+    <select id="getPreciosVentaProductosReg" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.prve_id, a.prod_id, a.tive_id, a.prve_precio_unitario, a.prve_precio_alterno1, 
+        a.prve_precio_alterno2, a.prve_descuento_precio, a.prve_descuento_precio_porcentaje, 
+        a.prve_fecha_hora_precio, a.prve_activo, b.prod_nombre, b.prod_descripcion, b.prca_id, 
+        c.prca_nombre, b.unme_id, d.unme_nombre, d.unme_simbolo
+        FROM ventas.precios_venta as a
+        INNER JOIN ventas.productos as b ON (a.prod_id = b.prod_id)
+        INNER JOIN ventas.productos_categorias as c ON (b.prca_id = c.prca_id)
+        INNER JOIN ventas.unidades_medida as d ON (b.unme_id = d.unme_id) ${c}  
+    </select> 
+    
+    <select id="getPreciosVentaProductos" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.prod_id, a.prod_nombre, a.prod_descripcion, a.prca_id, a.unme_id, a.prod_estado,
+        b.prca_nombre, b.prca_estado, c.unme_nombre, c.unme_simbolo, c.unme_estado, d.prve_id,
+        d.tive_id, d.prve_precio_unitario, d.prve_precio_alterno1, d.prve_precio_alterno2, 
+        d.prve_descuento_precio, d.prve_descuento_precio_porcentaje, d.prve_fecha_hora_precio, 
+        d.prve_activo
+        FROM ventas.productos as a
+        INNER JOIN ventas.productos_categorias as b ON (a.prca_id = b.prca_id)
+        INNER JOIN ventas.unidades_medida as c ON (a.unme_id = c.unme_id)
+        LEFT JOIN ventas.precios_venta as d ON (a.prod_id = d.prod_id ${c}) ${d}       
+    </select> 
+    
+    <insert id="insertPrecioVentaProducto" parameterType="Ventas" >
+        <selectKey keyProperty="prveId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.precios_venta_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.precios_venta(
+        prve_id, prod_id, tive_id, prve_precio_unitario, prve_precio_alterno1, 
+        prve_precio_alterno2, prve_descuento_precio, prve_descuento_precio_porcentaje, 
+        prve_fecha_hora_precio, prve_activo)
+        VALUES (#{prveId}, #{prodId}, #{tiveId}, #{prvePrecioUnitario}, #{prvePrecioAlterno1}, 
+        #{prvePrecioAlterno2}, #{prveDescuentoPrecio}, #{prveDescuentoPrecioPorcentaje}, 
+        #{prveFechaHoraPrecio}, #{prveActivo});
+    </insert>
+    
+    <update id="updatePrecioVentaProductoEstados" parameterType="Ventas"> 
+        UPDATE ventas.precios_venta
+        SET prve_activo=#{prveActivo}
+        WHERE prod_id=#{prodId} AND tive_id=#{tiveId};
+    </update>
+    
+    <select id="getMatriz" parameterType="HashMap" resultMap="VentasMap">
+        SELECT matr_id, matr_filas, matr_columnas, matr_estado
+        FROM ventas.matrices ${c}       
+    </select> 
+    
+    <update id="updateMatrizEstado" parameterType="Ventas"> 
+        UPDATE ventas.matrices
+        SET matr_estado=#{matrEstado}
+        WHERE matr_id=#{matrId};
+    </update>
+           
+    <update id="updateMatrizEstados" parameterType="Ventas"> 
+        UPDATE ventas.matrices
+        SET matr_estado=#{matrEstado};
+    </update>
+    
+    <select id="getSurtidores" parameterType="HashMap" resultMap="VentasMap">
+        SELECT surt_id, surt_nombre, matr_id, surt_fila, surt_columna, surt_estado, surt_activo
+        FROM ventas.surtidores ${c}
+    </select> 
+    
+    <insert id="insertSurtidores" parameterType="Ventas" >  
+        <selectKey keyProperty="surtId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.surtidores_id_seq') 
+        </selectKey>   
+        INSERT INTO ventas.surtidores(
+        surt_id, surt_nombre, matr_id, surt_fila, surt_columna, surt_estado, surt_activo)
+        VALUES (#{surtId}, #{surtNombre}, #{matrId}, #{surtFila}, #{surtColumna}, #{surtEstado}, #{surtActivo});
+    </insert>
+    
+    <update id="updateSurtidores" parameterType="Ventas"> 
+        UPDATE ventas.surtidores
+        SET surt_nombre=#{surtNombre}, surt_activo=#{surtActivo}
+        WHERE surt_id=#{surtId};
+    </update>
+           
+    <update id="deleteSurtidores" parameterType="Ventas"> 
+        UPDATE ventas.surtidores
+        SET surt_estado=false;
+    </update>
+    
+    <select id="getSurtidoresDetalle" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.sude_id, a.surt_id, b.surt_nombre, a.lado_id, c.lado_nombre, a.mang_id, d.mang_nombre, 
+        a.prod_id, e.prod_nombre, e.prod_descripcion, a.sude_estado, a.sude_lectura_apertura, 
+        a.sude_fecha_lectura, a.sude_lectura_estado, a.sude_activo
+        FROM ventas.surtidores_detalle as a
+        INNER JOIN ventas.surtidores as b ON (a.surt_id = b.surt_id) 
+        INNER JOIN ventas.lados as c ON (a.lado_id = c.lado_id) 
+        INNER JOIN ventas.mangueras as d ON (a.mang_id = d.mang_id) 
+        INNER JOIN ventas.productos as e ON (a.prod_id = e.prod_id) 
+        INNER JOIN ventas.surtidores_lados as f ON (a.surt_id = f.surt_id AND a.lado_id = f.lado_id) 
+        ${c}
+    </select>
+    
+    <select id="getSurtidoresDetalleLectura" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.sude_id, 
+        (CASE WHEN b.ledi_lectura_final IS NULL THEN a.sude_lectura_apertura ELSE b.ledi_lectura_final END) as ledi_lectura_final
+        FROM ventas.surtidores_detalle as a
+        LEFT JOIN ventas.lectura_diaria as b ON (a.sude_id = b.sude_id AND b.tudi_id = (${c})) ${d}
+    </select>
+    
+    <insert id="insertSurtidoresDetalle" parameterType="Ventas" >  
+        <selectKey keyProperty="sudeId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.surtidores_detalle_id_seq') 
+        </selectKey>   
+        INSERT INTO ventas.surtidores_detalle(
+        sude_id, surt_id, lado_id, mang_id, prod_id, sude_estado, sude_lectura_apertura, 
+        sude_fecha_lectura, sude_lectura_estado, sude_activo)
+        VALUES (#{sudeId}, #{surtId}, #{ladoId}, #{mangId}, #{prodId}, #{sudeEstado}, 
+        #{sudeLecturaApertura}, #{sudeFechaLectura}, #{sudeLecturaEstado}, #{sudeActivo});
+    </insert>
+    
+    <update id="updateSurtidoresDetalle" parameterType="Ventas"> 
+        UPDATE ventas.surtidores_detalle 
+        SET sude_activo=#{sudeActivo}
+        WHERE surt_id=#{surtId} AND lado_id=#{ladoId} AND mang_id=#{mangId} AND prod_id=#{prodId};
+    </update>
+    
+    <update id="updateSurtidoresDetalleGlob" parameterType="Ventas"> 
+        UPDATE ventas.surtidores_detalle 
+        SET sude_activo=#{sudeActivo}
+        WHERE surt_id=#{surtId} AND lado_id=#{ladoId};
+    </update>
+    
+    <update id="updateSurtidoresDetalleClean" parameterType="Ventas"> 
+        UPDATE ventas.surtidores_detalle 
+        SET sude_estado=#{sudeEstado}
+        WHERE surt_id=#{surtId} AND lado_id=#{ladoId};
+    </update>
+    
+    <update id="deleteSurtidoresDetalle" parameterType="Ventas"> 
+        UPDATE ventas.surtidores_detalle 
+        SET sude_estado=false;
+    </update>
+    
+    <update id="updateSurtidoresDetalleApertura" parameterType="Ventas"> 
+        UPDATE ventas.surtidores_detalle
+        SET sude_lectura_apertura=#{sudeLecturaApertura}, 
+        sude_fecha_lectura=#{sudeFechaLectura}, sude_lectura_estado=#{sudeLecturaEstado}
+        WHERE sude_id=#{sudeId};
+    </update>
+    
+    <select id="getTurnoDiario" parameterType="HashMap" resultMap="VentasMap">
+        SELECT tudi_id, turn_id, tudi_fecha_inicio, tudi_inicio, cltu_id_inicio, 
+        tudi_fecha_cierre, tudi_cierre, cltu_id_cierre
+        FROM ventas.turno_diario ${c}
+    </select> 
+    
+    <insert id="insertTurnoDiario" parameterType="Ventas" >
+        <selectKey keyProperty="tudiId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.turno_diario_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.turno_diario(
+        tudi_id, turn_id, tudi_fecha_inicio, tudi_inicio, cltu_id_inicio, 
+        tudi_fecha_cierre, tudi_cierre, cltu_id_cierre)
+        VALUES (#{tudiId}, #{turnId}, #{tudiFechaInicio}, #{tudiInicio}, #{cltuIdInicio}, 
+        #{tudiFechaCierre}, #{tudiCierre}, #{cltuIdCierre});
+    </insert>
+    
+    <update id="updateTurnoDiarioCierre" parameterType="Ventas"> 
+        UPDATE ventas.turno_diario
+        SET tudi_inicio=#{tudiInicio}, tudi_fecha_cierre=#{tudiFechaCierre}, 
+        tudi_cierre=#{tudiCierre}, cltu_id_cierre=#{cltuIdCierre}
+        WHERE tudi_id=#{tudiId};
+    </update>
+    
+    <select id="getTurnoTrabajadores" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tudi_id, a.trab_id, b.trab_nombres, b.trab_apellido_paterno, b.trab_apellido_materno
+        FROM ventas.turno_trabajadores as a
+        INNER JOIN ventas.trabajadores as b ON (a.trab_id = b.trab_id) ${c}
+    </select> 
+    
+    <insert id="insertTurnoTrabajadores" parameterType="Ventas" >
+        INSERT INTO ventas.turno_trabajadores(
+        tudi_id, trab_id)
+        VALUES (#{tudiId}, #{trabId});
+    </insert>
+    
+    <select id="getTurnoSurtidores" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tudi_id, a.surt_id, b.surt_nombre
+        FROM ventas.turno_surtidores as a
+        INNER JOIN ventas.surtidores as b ON (a.surt_id = b.surt_id) ${c}
+    </select> 
+    
+    <insert id="insertTurnoSurtidores" parameterType="Ventas" >
+        INSERT INTO ventas.turno_surtidores(
+        tudi_id, surt_id, tusu_monto, tusu_entregado, trab_id)
+        VALUES (#{tudiId}, #{surtId}, #{tusuMonto}, #{tusuEntregado}, #{trabId});
+    </insert>
+    
+    <update id="updateTurnoSurtidores" parameterType="Ventas"> 
+        UPDATE ventas.turno_surtidores
+        SET tusu_monto=#{tusuMonto}, tusu_entregado=#{tusuEntregado}, trab_id=#{trabId}
+        WHERE tudi_id=#{tudiId} AND surt_id=#{surtId};
+    </update>
+    
+    <select id="getTurnoHora" parameterType="HashMap" resultMap="VentasMap">
+        SELECT turn_id, turn_nombre, turn_descripcion, turn_inicio, turn_fin, turn_estado
+        FROM ventas.turnos ${c}
+        UNION
+        SELECT turn_id, turn_nombre, turn_descripcion, turn_inicio, turn_fin, turn_estado
+        FROM ventas.turnos ${d}
+    </select> 
+    
+    <select id="getTrabajadoresTurno" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tudi_id, a.trab_id, b.trab_dni, b.trab_nombres, b.trab_apellido_paterno, 
+        b.trab_apellido_materno, b.trab_celular, b.trab_direccion, b.trab_estado
+        FROM ventas.turno_trabajadores as a
+        INNER JOIN ventas.trabajadores as b ON (a.trab_id = b.trab_id) ${c}
+    </select>
+    
+    <select id="getSurtidoresTurno" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tudi_id, a.surt_id, b.surt_nombre
+        FROM ventas.turno_surtidores as a
+        INNER JOIN ventas.surtidores as b ON (a.surt_id = b.surt_id) ${c}
+    </select>
+    
+    <select id="getLadosSurtidor" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.surt_id, a.lado_id,  b.lado_nombre
+        FROM ventas.surtidores_detalle as a
+        INNER JOIN ventas.lados as b ON (a.lado_id = b.lado_id) ${c}
+    </select>
+    
+    <select id="getProductosLadoSurtidor" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.surt_id, a.lado_id, a.mang_id, a.prod_id, b.prod_nombre
+        FROM ventas.surtidores_detalle as a
+        INNER JOIN ventas.productos as b ON (a.prod_id = b.prod_id) ${c}
+    </select>
+    
+    <select id="getRegistroVenta" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.reve_id, a.reve_fecha_hora, a.reve_documento, a.reve_nombres, a.reve_direccion, 
+        a.reve_chofer, a.reve_placa, a.reve_kilometraje, a.reve_igv, a.reve_estado, a.tudi_id, 
+        a.trab_id, a.tiem_id, b.tiem_nombre, b.tiem_ose, e.tico_sunat, a.tive_id, a.ticl_id, c.ticl_nombre, 
+        a.tido_id, d.tido_nombre, d.tido_descripcion, d.tido_ose, d.tido_caracteres, a.reve_nro_comprobante,
+        a.coem_longitud, a.reve_envio_ose, a.reve_envio_error
+        FROM ventas.registro_ventas as a 
+        LEFT JOIN ventas.tipos_emision as b ON (a.tiem_id = b.tiem_id)
+        LEFT JOIN ventas.tipos_cliente as c ON (a.ticl_id = c.ticl_id)
+        LEFT JOIN ventas.tipos_documento as d ON (a.tido_id = d.tido_id)
+        LEFT JOIN facturacion.tipo_comprobante as e ON (b.tiem_ose = e.tico_id) ${c}
+    </select>
+    
+    <insert id="insertRegistroVenta" parameterType="Ventas" >
+        <selectKey keyProperty="reveId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.registro_ventas_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.registro_ventas(
+        reve_id, reve_fecha_hora, reve_documento, reve_nombres, reve_direccion, 
+        reve_chofer, reve_placa, reve_kilometraje, reve_igv, reve_estado, 
+        tudi_id, trab_id, tiem_id, tive_id, ticl_id, reve_nro_comprobante, 
+        tido_id, coem_longitud, reve_envio_ose, reve_envio_error)
+        VALUES (#{reveId}, #{reveFechaHora}, #{reveDocumento}, #{reveNombres}, 
+        #{reveDireccion}, #{reveChofer}, #{revePlaca}, #{reveKilometraje}, 
+        #{reveIgv}, #{reveEstado}, #{tudiId}, #{trabId}, #{tiemId}, #{tiveId}, 
+        #{ticlId}, #{reveNroComprobante}, #{tidoId}, #{coemLongitud}, 
+        #{reveEnvioOse}, #{reveEnvioError});
+    </insert>
+    
+    <update id="updateRegistroVenta" parameterType="Ventas"> 
+        UPDATE ventas.registro_ventas
+        SET reve_fecha_hora=#{reveFechaHora}, reve_documento=#{reveDocumento}, 
+        reve_nombres=#{reveNombres}, reve_direccion=#{reveDireccion}, reve_chofer=#{reveChofer}, 
+        reve_placa=#{revePlaca}, reve_kilometraje=#{reveKilometraje}, reve_igv=#{reveIgv}, 
+        reve_estado=#{reveEstado}, tudi_id=#{tudiId}, trab_id=#{trabId}, tiem_id=#{tiemId}, 
+        tive_id=#{tiveId}, ticl_id=#{ticlId}, reve_nro_comprobante=#{reveNroComprobante}, 
+        tido_id=#{tidoId}, coem_longitud=#{coemLongitud}
+        WHERE reve_id=#{reveId};
+    </update>
+    
+    <update id="updateRegistroVentaEstado" parameterType="Ventas"> 
+        UPDATE ventas.registro_ventas
+        SET reve_fecha_hora=#{reveFechaHora}, reve_estado=#{reveEstado}
+        WHERE reve_id=#{reveId};
+    </update>
+    
+    <update id="updateRegistroVentaEstadoEnvioOSE" parameterType="Ventas"> 
+        UPDATE ventas.registro_ventas
+        SET reve_envio_ose=#{reveEnvioOse}, reve_envio_error=#{reveEnvioError} 
+        WHERE reve_id=#{reveId};
+    </update>
+    
+    <select id="getRegistroVentaDetalle" parameterType="HashMap" resultMap="VentasMap">
+        SELECT revd_id, revd_surtidor, revd_lado, revd_producto, revd_precio_unitario, 
+        revd_descuento_precio, revd_unidad_medida, revd_unidad_medida_simbolo, revd_cantidad, 
+        revd_monto, reve_id, revd_op_gravada, revd_op_inafecta, revd_op_exonerada, 
+        revd_op_gratuita, revd_unidad_medida_ose, tigv_id, prod_codigo_sunat, prod_id, serv_id
+        FROM ventas.registro_ventas_detalle ${c}
+    </select>
+    
+    <insert id="insertRegistroVentaDetalle" parameterType="Ventas" >
+        <selectKey keyProperty="revdId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.registro_ventas_detalle_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.registro_ventas_detalle(
+        revd_id, revd_surtidor, revd_lado, revd_producto, revd_precio_unitario, 
+        revd_descuento_precio, revd_unidad_medida, revd_unidad_medida_simbolo, 
+        revd_cantidad, revd_monto, reve_id, revd_op_gravada, revd_op_inafecta, 
+        revd_op_exonerada, revd_op_gratuita, revd_unidad_medida_ose, 
+        tigv_id, prod_codigo_sunat, prod_id, serv_id)
+        VALUES (#{revdId}, #{revdSurtidor}, #{revdLado}, #{revdProducto}, 
+        #{revdPrecioUnitario}, #{revdDescuentoPrecio}, #{revdUnidadMedida}, 
+        #{revdUnidadMedidaSimbolo}, #{revdCantidad}, #{revdMonto}, #{reveId},
+        #{revdOpGravada}, #{revdOpInafecta}, #{revdOpExonerada}, #{revdOpGratuita}, 
+        #{revdUnidadMedidaOse}, #{tigvId}, #{prodCodigoSunat}, #{prodId}, #{servId});
+    </insert>
+    
+    <delete id="deleteRegistroVentaDetalle" parameterType="Ventas"> 
+        DELETE FROM ventas.registro_ventas_detalle
+        WHERE revd_id=#{revdId};
+    </delete>
+        
+    <delete id="emptyRegistroVentaDetalle" parameterType="Ventas"> 
+        DELETE FROM ventas.registro_ventas_detalle
+        WHERE reve_id=#{reveId};
+    </delete>
+    
+    <select id="getLados" parameterType="HashMap" resultMap="VentasMap">
+        SELECT lado_id, lado_nombre, lado_estado
+        FROM ventas.lados ${c}
+    </select>
+    
+    <select id="getSurtidoresLados" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.sula_id, a.surt_id, a.lado_id, a.sula_estado, a.sula_activo,         
+        b.lado_id, b.lado_nombre, b.lado_estado, c.surt_nombre
+        FROM ventas.surtidores_lados as a 
+        INNER JOIN ventas.lados as b ON (a.lado_id = b.lado_id)
+        INNER JOIN ventas.surtidores as c ON (a.surt_id = c.surt_id)
+        ${c}
+    </select>
+    
+    <insert id="insertSurtidoresLados" parameterType="Ventas" >
+        <selectKey keyProperty="sulaId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.surtidores_lados_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.surtidores_lados(
+        sula_id, surt_id, lado_id, sula_estado, sula_activo)
+        VALUES (#{sulaId}, #{surtId}, #{ladoId}, #{sulaEstado}, #{sulaActivo});
+    </insert>
+    
+    <update id="updateSurtidoresLados" parameterType="Ventas"> 
+        UPDATE ventas.surtidores_lados
+        SET sula_activo=#{sulaActivo}
+        WHERE surt_id=#{surtId} AND lado_id=#{ladoId};
+    </update>
+    
+    <update id="deleteSurtidoresLados" parameterType="Ventas"> 
+        UPDATE ventas.surtidores_lados
+        SET sula_estado=false;
+    </update>
+    
+    <select id="getLecturaDiaria" parameterType="HashMap" resultMap="VentasMap">
+        SELECT ledi_id, tudi_id, sude_id, ledi_lectura_inicial, ledi_lectura_final
+        FROM ventas.lectura_diaria ${c}
+    </select>
+    
+    <select id="getLecturaDiariaFinal" parameterType="HashMap" resultMap="VentasMap">
+        SELECT l.ledi_id, l.tudi_id, l.sude_id, l.ledi_lectura_inicial, l.ledi_lectura_final,
+        a.surt_id, b.surt_nombre, a.lado_id, c.lado_nombre, a.mang_id, d.mang_nombre, 
+        a.prod_id, e.prod_nombre, e.prod_descripcion, 
+        (SELECT prve_precio_unitario as prve_precio_unitario FROM ventas.precios_venta WHERE prod_id = a.prod_id AND 
+        (prve_fecha_hora_precio::date between '01/01/1000'::date AND now()::date) ORDER BY prve_id DESC LIMIT 1) 
+        FROM ventas.lectura_diaria as l
+        INNER JOIN ventas.surtidores_detalle as a ON (l.sude_id = a.sude_id)
+        INNER JOIN ventas.surtidores as b ON (a.surt_id = b.surt_id) 
+        INNER JOIN ventas.lados as c ON (a.lado_id = c.lado_id)
+        INNER JOIN ventas.mangueras as d ON (a.mang_id = d.mang_id) 
+        INNER JOIN ventas.productos as e ON (a.prod_id = e.prod_id) 
+        INNER JOIN ventas.turno_surtidores as f ON (l.tudi_id = f.tudi_id AND a.surt_id = f.surt_id) ${c}
+    </select>
+    
+    <insert id="insertLecturaDiaria" parameterType="Ventas" >
+        <selectKey keyProperty="lediId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.lectura_diaria_id_seq')
+        </selectKey>
+        INSERT INTO ventas.lectura_diaria(
+        ledi_id, tudi_id, sude_id, ledi_lectura_inicial, ledi_lectura_final, ledi_precio_unitario)
+        VALUES (#{lediId}, #{tudiId}, #{sudeId}, #{lediLecturaInicial}, #{lediLecturaFinal}, #{lediPrecioUnitario});
+    </insert>
+    
+    <update id="updateLecturaDiariaAll" parameterType="Ventas"> 
+        UPDATE ventas.lectura_diaria
+        SET ledi_lectura_final = ledi_lectura_inicial
+        WHERE tudi_id=#{tudiId};
+    </update>
+    
+    <update id="updateLecturaDiaria" parameterType="Ventas"> 
+        UPDATE ventas.lectura_diaria
+        SET ledi_lectura_final=#{lediLecturaFinal}, ledi_precio_unitario=#{lediPrecioUnitario}
+        WHERE ledi_id=#{lediId};
+    </update>
+    
+    <select id="getCorrelativosEmision" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tiem_id, a.tiem_nombre, a.tiem_estado, a.tiem_ose, b.coem_sigla, b.coem_sede, b.coem_correlativo
+        FROM ventas.tipos_emision as a
+        LEFT JOIN ventas.correlativos_emision as b ON (a.tiem_id = b.tiem_id) ${c}       
+    </select> 
+    
+    <select id="getCorrelativoEmision" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.coem_id, a.tiem_id, b.tiem_nombre, a.coem_sigla, a.coem_sede, a.coem_correlativo, a.coem_longitud
+        FROM ventas.correlativos_emision as a 
+        INNER JOIN ventas.tipos_emision as b ON (a.tiem_id = b.tiem_id) ${c}       
+    </select> 
+    
+    <insert id="insertCorrelativoEmision" parameterType="Ventas" >
+        <selectKey keyProperty="coemId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.correlativos_emision_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.correlativos_emision(
+        coem_id, tiem_id, coem_sigla, coem_sede, coem_correlativo, coem_longitud)
+        VALUES (#{coemId}, #{tiemId}, #{coemSigla}, #{coemSede}, 
+        #{coemCorrelativo}, #{coemLongitud});
+    </insert>
+    
+    <update id="updateCorrelativoEmision" parameterType="Ventas"> 
+        UPDATE ventas.correlativos_emision
+        SET coem_sigla=#{coemSigla}, coem_sede=#{coemSede}, 
+        coem_correlativo=#{coemCorrelativo}, coem_longitud=#{coemLongitud}
+        WHERE tiem_id=#{tiemId};
+    </update>
+    
+    <update id="updateCorrelativoEmisionNumero" parameterType="Ventas"> 
+        UPDATE ventas.correlativos_emision
+        SET coem_correlativo=#{coemCorrelativo}
+        WHERE tiem_id=#{tiemId};
+    </update>
+    
+    <select id="getTiposEmision" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tiem_id, a.tiem_nombre, a.tiem_estado, a.tiem_ose, b.tico_sunat
+        FROM ventas.tipos_emision as a
+        INNER JOIN facturacion.tipo_comprobante as b ON (a.tiem_ose = b.tico_id) ${c}       
+    </select> 
+    
+    <select id="getTiposDocumento" parameterType="HashMap" resultMap="VentasMap">
+        SELECT tido_id, tido_nombre, tido_descripcion, tido_caracteres, tido_ose
+        FROM ventas.tipos_documento ${c}       
+    </select> 
+
+    <select id="getRegistroVentasDetalleMontos" parameterType="HashMap" resultMap="VentasMap">
+        SELECT reve_id, 
+        SUM(revd_descuento_precio * revd_cantidad) as revd_descuento, SUM(revd_monto) as revd_monto, 
+        SUM(revd_op_gravada) as revd_op_gravada, SUM(revd_op_inafecta) as revd_op_inafecta, 
+        SUM(revd_op_exonerada) as revd_op_exonerada, SUM(revd_op_gratuita) as revd_op_gratuita
+        FROM ventas.registro_ventas_detalle ${c}
+    </select>   
+    
+    <select id="getIngresoDiario" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.indi_id, a.indi_fecha_hora, a.tiin_id, a.indi_descripcion, 
+        a.indi_monto, b.tiin_nombre, b.tiin_estado
+        FROM ventas.ingreso_diario as a
+        INNER JOIN ventas.tipos_ingreso as b ON (a.tiin_id = b.tiin_id) ${c}
+    </select> 
+    
+    <insert id="insertIngresoDiario" parameterType="Ventas" >
+        <selectKey keyProperty="indiId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.ingreso_diario_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.ingreso_diario(
+        indi_id, indi_fecha_hora, tiin_id, indi_descripcion, indi_monto)
+        VALUES (#{indiId}, #{indiFechaHora}, #{tiinId}, #{indiDescripcion}, #{indiMonto});
+    </insert>
+    
+    <delete id="deleteIngresoDiario" parameterType="Ventas"> 
+        DELETE FROM ventas.ingreso_diario
+        WHERE indi_id=#{indiId};
+    </delete>
+    
+    <insert id="insertIngresoTurno" parameterType="Ventas" >
+        INSERT INTO ventas.ingreso_turno(
+        indi_id, tudi_id, surt_id)
+        VALUES (#{indiId}, #{tudiId}, #{surtId});
+    </insert>
+    
+    <delete id="deleteIngresoTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.ingreso_turno
+        WHERE indi_id=#{indiId};
+    </delete>
+    
+    <select id="getGastoDiario" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.gadi_id, a.gadi_fecha_hora, a.tiga_id, a.gadi_descripcion, 
+        a.gadi_monto, b.tiga_nombre, b.tiga_estado
+        FROM ventas.gasto_diario as a
+        INNER JOIN ventas.tipos_gasto as b ON (a.tiga_id = b.tiga_id) ${c}
+    </select> 
+    
+    <insert id="insertGastoDiario" parameterType="Ventas" >
+        <selectKey keyProperty="gadiId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.gasto_diario_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.gasto_diario(
+        gadi_id, gadi_fecha_hora, tiga_id, gadi_descripcion, gadi_monto)
+        VALUES (#{gadiId}, #{gadiFechaHora}, #{tigaId}, #{gadiDescripcion}, #{gadiMonto});
+    </insert>
+    
+    <delete id="deleteGastoDiario" parameterType="Ventas"> 
+        DELETE FROM ventas.gasto_diario
+        WHERE gadi_id=#{gadiId};
+    </delete>
+    
+    <insert id="insertGastoTurno" parameterType="Ventas" >
+        INSERT INTO ventas.gasto_turno(
+        gadi_id, tudi_id, surt_id)
+        VALUES (#{gadiId}, #{tudiId}, #{surtId});
+    </insert>
+    
+    <delete id="deleteGastoTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.gasto_turno
+        WHERE gadi_id=#{gadiId};
+    </delete>
+    
+    <select id="getLecturaProducto" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.prod_id, b.prod_nombre, b.prod_descripcion, c.lepr_lectura_fisica, c.lepr_lectura_cm3
+        FROM (SELECT prod_id FROM ventas.surtidores_detalle
+        WHERE sude_estado = true GROUP BY prod_id) as a
+        INNER JOIN ventas.productos as b ON (a.prod_id = b.prod_id)
+        LEFT JOIN ventas.lectura_producto as c ON (a.prod_id = c.prod_id ${c})
+        ORDER BY b.prod_descripcion ASC
+    </select> 
+    
+    <insert id="insertLecturaProducto" parameterType="Ventas" >
+        INSERT INTO ventas.lectura_producto(
+        tudi_id, prod_id, lepr_lectura_fisica, lepr_lectura_cm3)
+        VALUES (#{tudiId}, #{prodId}, #{leprLecturaFisica}, #{leprLecturaCm3})
+        ON CONFLICT ON CONSTRAINT id_lectura_producto_pk
+        DO UPDATE SET
+        lepr_lectura_fisica=#{leprLecturaFisica}, lepr_lectura_cm3=#{leprLecturaCm3};
+    </insert>
+    
+    <select id="getLecturaLiquidacion" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.prod_id, b.prod_nombre, b.prod_descripcion
+        FROM (SELECT prod_id FROM ventas.surtidores_detalle
+        WHERE sude_estado = true GROUP BY prod_id) as a
+        INNER JOIN ventas.productos as b ON (a.prod_id = b.prod_id) ${c}
+    </select> 
+    
+    <select id="getDevolucionTanque" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.deta_id, a.tudi_id, a.surt_id, a.prod_id, a.deta_devolucion,
+        b.surt_nombre, c.prod_nombre, c.prod_descripcion, d.prve_precio_unitario
+        FROM ventas.devolucion_tanque as a
+        INNER JOIN ventas.surtidores as b ON (a.surt_id = b.surt_id)
+        INNER JOIN ventas.productos as c ON (a.prod_id = c.prod_id)
+        INNER JOIN ventas.precios_venta as d ON (a.prod_id = d.prod_id AND d.prve_activo = true) ${c}
+    </select> 
+    
+    <insert id="insertDevolucionTanque" parameterType="Ventas" >
+        <selectKey keyProperty="detaId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.devolucion_tanque_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.devolucion_tanque(
+        deta_id, tudi_id, surt_id, prod_id, deta_devolucion)
+        VALUES (#{detaId}, #{tudiId}, #{surtId}, #{prodId}, #{detaDevolucion});
+    </insert>
+    
+    <delete id="deleteDevolucionTanque" parameterType="Ventas"> 
+        DELETE FROM ventas.devolucion_tanque
+        WHERE deta_id=#{detaId};
+    </delete>
+    
+    <select id="getLiquidacionGastos" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.gadi_id, a.tudi_id, a.surt_id, b.surt_nombre, c.gadi_fecha_hora,
+        c.tiga_id, c.gadi_descripcion, c.gadi_monto, d.tiga_nombre
+        FROM ventas.gasto_turno as a
+        INNER JOIN ventas.surtidores as b ON (a.surt_id = b.surt_id)
+        INNER JOIN ventas.gasto_diario as c ON (a.gadi_id = c.gadi_id)
+        INNER JOIN ventas.tipos_gasto as d ON (c.tiga_id = d.tiga_id) ${c}
+    </select> 
+    
+    <select id="getLiquidacionIngresos" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.indi_id, a.tudi_id, a.surt_id, b.surt_nombre, c.indi_fecha_hora,
+        c.tiin_id, c.indi_descripcion, c.indi_monto, d.tiin_nombre
+        FROM ventas.ingreso_turno as a
+        INNER JOIN ventas.surtidores as b ON (a.surt_id = b.surt_id)
+        INNER JOIN ventas.ingreso_diario as c ON (a.indi_id = c.indi_id)
+        INNER JOIN ventas.tipos_ingreso as d ON (c.tiin_id = d.tiin_id) ${c}
+    </select> 
+    
+    <update id="updateLiquidacionMontoEntregado" parameterType="Ventas"> 
+        UPDATE ventas.turno_surtidores
+        SET tusu_entregado=#{tusuEntregado}
+        WHERE tudi_id=#{tudiId} AND surt_id=#{surtId};
+    </update>
+    
+    <select id="getLiquidacionTurno" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tudi_id, a.surt_id, b.surt_nombre, a.trab_id, c.trab_nombres, c.trab_apellido_paterno, 
+        c.trab_apellido_materno, a.tusu_monto, a.tusu_entregado, d.devolucion, e.gadi_monto, f.indi_monto
+        FROM ventas.turno_surtidores as a
+        INNER JOIN ventas.surtidores as b ON (a.surt_id = b.surt_id)
+        LEFT JOIN ventas.trabajadores as c ON (a.trab_id = c.trab_id)
+        LEFT JOIN (SELECT a.tudi_id, a.surt_id, SUM(a.deta_devolucion * b.prve_precio_unitario) as devolucion
+        FROM ventas.devolucion_tanque as a 
+        INNER JOIN ventas.precios_venta as b ON (a.prod_id = b.prod_id AND b.prve_activo = true)
+        GROUP BY a.tudi_id, a.surt_id) as d ON (a.tudi_id = d.tudi_id AND a.surt_id = d.surt_id)
+        LEFT JOIN (SELECT a.tudi_id, a.surt_id, SUM(b.gadi_monto) as gadi_monto
+        FROM ventas.gasto_turno as a INNER JOIN ventas.gasto_diario as b ON (a.gadi_id = b.gadi_id)
+        GROUP BY a.tudi_id, a.surt_id) as e ON (a.tudi_id = e.tudi_id AND a.surt_id = e.surt_id)
+        LEFT JOIN (SELECT a.tudi_id, a.surt_id, SUM(b.indi_monto) as indi_monto
+        FROM ventas.ingreso_turno as a INNER JOIN ventas.ingreso_diario as b ON (a.indi_id = b.indi_id)
+        GROUP BY a.tudi_id, a.surt_id) as f ON (a.tudi_id = f.tudi_id AND a.surt_id = f.surt_id) ${c}
+    </select> 
+    
+    <update id="updateLiquidacionTrabajadorSurt" parameterType="Ventas"> 
+        UPDATE ventas.turno_surtidores
+        SET trab_id=#{trabId}
+        WHERE tudi_id=#{tudiId} AND surt_id=#{surtId};
+    </update>
+    
+    <select id="getLiquidacionVentaSurt" parameterType="HashMap" resultMap="VentasMap">
+        SELECT b.surt_id, SUM( (a.ledi_lectura_final - ledi_lectura_inicial) * ledi_precio_unitario ) as venta
+        FROM ventas.lectura_diaria as a
+        INNER JOIN ventas.surtidores_detalle as b ON (a.sude_id = b.sude_id AND b.sude_estado = true)
+        ${c}
+    </select> 
+    
+    <update id="updateLiquidacionVentaSurt" parameterType="Ventas"> 
+        UPDATE ventas.turno_surtidores
+        SET tusu_monto=#{tusuMonto}
+        WHERE tudi_id=#{tudiId} AND surt_id=#{surtId};
+    </update>
+    
+    <select id="getNombreTurnoDiario" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tudi_id, a.turn_id, a.tudi_fecha_inicio, b.turn_nombre
+        FROM ventas.turno_diario as a
+        INNER JOIN ventas.turnos as b ON (a.turn_id = b.turn_id) ${c}
+    </select> 
+    
+    <delete id="removerLecturaDiariaTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.lectura_diaria
+        WHERE tudi_id=#{tudiId};
+    </delete>
+    
+    <delete id="removerLecturaProductoTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.lectura_producto
+        WHERE tudi_id=#{tudiId};
+    </delete>
+    
+    <delete id="removerSurtidoresTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.turno_surtidores
+        WHERE tudi_id=#{tudiId};
+    </delete>
+    
+    <delete id="removerTrabajadoresTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.turno_trabajadores
+        WHERE tudi_id=#{tudiId};
+    </delete>
+    
+    <delete id="removerDevolucionTanqueTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.devolucion_tanque
+        WHERE tudi_id=#{tudiId};
+    </delete>
+    
+    <select id="selectGastoTurno" parameterType="HashMap" resultMap="VentasMap">
+        SELECT gadi_id, tudi_id, surt_id
+        FROM ventas.gasto_turno ${c}
+    </select> 
+    
+    <delete id="removerGastoTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.gasto_turno
+        WHERE tudi_id=#{tudiId};
+    </delete>
+    
+    <delete id="removerGastoDiarioTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.gasto_diario
+        WHERE gadi_id=#{gadiId};
+    </delete>
+    
+    <select id="selectIngresoTurno" parameterType="HashMap" resultMap="VentasMap">
+        SELECT indi_id, tudi_id, surt_id
+        FROM ventas.ingreso_turno ${c}
+    </select> 
+    
+    <delete id="removerIngresoTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.ingreso_turno
+        WHERE tudi_id=#{tudiId};
+    </delete>
+    
+    <delete id="removerIngresoDiarioTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.ingreso_diario
+        WHERE indi_id=#{indiId};
+    </delete>
+    
+    <delete id="removerDiarioTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.turno_diario
+        WHERE tudi_id=#{tudiId};
+    </delete>
+    
+    <select id="getReporteControlLiquidacion" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tudi_id, a.turn_id, f.turn_nombre, a.galones_vendidos, a.venta,
+        b.entregado, c.devolucion, d.gasto, e.ingreso        
+        FROM (SELECT a.tudi_id, b.turn_id, 
+        SUM( (a.ledi_lectura_final - a.ledi_lectura_inicial) ) as galones_vendidos,
+        SUM( (a.ledi_lectura_final - a.ledi_lectura_inicial) * a.ledi_precio_unitario ) as venta 
+        FROM ventas.lectura_diaria as a
+        INNER JOIN ventas.turno_diario as b ON (a.tudi_id = b.tudi_id)
+        WHERE b.tudi_fecha_inicio::date = ${c} GROUP BY a.tudi_id, b.turn_id) as a
+        LEFT JOIN (SELECT tudi_id, SUM(tusu_entregado) as entregado
+        FROM ventas.turno_surtidores 
+        GROUP BY tudi_id) as b ON (a.tudi_id = b.tudi_id) 
+        LEFT JOIN (SELECT a.tudi_id, SUM(a.devolucion) as devolucion
+        FROM 
+        (SELECT a.tudi_id, a.prod_id, ((deta_devolucion) *
+        (SELECT prve_precio_unitario FROM ventas.precios_venta WHERE prod_id = a.prod_id AND 
+        (prve_fecha_hora_precio::date between '01/01/1000'::date AND ${c}) ORDER BY prve_id DESC LIMIT 1)) as devolucion
+        FROM ventas.devolucion_tanque as a) as a
+        GROUP BY a.tudi_id) as c ON (a.tudi_id = c.tudi_id)
+        LEFT JOIN (SELECT a.tudi_id, SUM(b.gadi_monto) as gasto
+        FROM ventas.gasto_turno as a 
+        INNER JOIN ventas.gasto_diario as b ON (a.gadi_id = b.gadi_id)
+        GROUP BY a.tudi_id) as d ON (a.tudi_id = d.tudi_id)
+        LEFT JOIN (SELECT a.tudi_id, SUM(b.indi_monto) as ingreso
+        FROM ventas.ingreso_turno as a 
+        INNER JOIN ventas.ingreso_diario as b ON (a.indi_id = b.indi_id)
+        GROUP BY a.tudi_id) as e ON (a.tudi_id = e.tudi_id)
+        INNER JOIN ventas.turnos as f ON (a.turn_id = f.turn_id)
+        ORDER BY a.tudi_id ASC
+    </select> 
+    
+    <select id="selectIngresoFecha" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tudi_id, a.turn_id, b.turn_nombre, d.tiin_id, e.tiin_nombre, d.indi_descripcion, d.indi_monto
+        FROM ventas.turno_diario as a
+        INNER JOIN ventas.turnos as b ON (a.turn_id = b.turn_id)
+        INNER JOIN ventas.ingreso_turno as c ON (a.tudi_id = c.tudi_id)
+        INNER JOIN ventas.ingreso_diario as d ON (c.indi_id = d.indi_id)
+        INNER JOIN ventas.tipos_ingreso as e ON (d.tiin_id = e.tiin_id)
+        WHERE a.tudi_fecha_inicio::date = ${c}
+        ORDER BY d.indi_fecha_hora ASC 
+    </select>
+    
+    <select id="selectGastoFecha" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.tudi_id, a.turn_id, b.turn_nombre, d.tiga_id, e.tiga_nombre, d.gadi_descripcion, d.gadi_monto
+        FROM ventas.turno_diario as a
+        INNER JOIN ventas.turnos as b ON (a.turn_id = b.turn_id)
+        INNER JOIN ventas.gasto_turno as c ON (a.tudi_id = c.tudi_id)
+        INNER JOIN ventas.gasto_diario as d ON (c.gadi_id = d.gadi_id)
+        INNER JOIN ventas.tipos_gasto as e ON (d.tiga_id = e.tiga_id)
+        WHERE a.tudi_fecha_inicio::date = ${c}
+        ORDER BY d.gadi_fecha_hora ASC
+    </select>  
+    
+    <select id="getCompraDiaria" parameterType="HashMap" resultMap="VentasMap">
+        SELECT a.cotu_id, a.cotu_fecha_hora, a.cotu_descripcion, a.cotu_galones, a.cotu_monto, 
+        a.tudi_id, a.gadi_id, a.prod_id, b.prod_nombre, prod_descripcion 
+        FROM ventas.compras_turno as a
+        INNER JOIN ventas.productos as b ON (a.prod_id = b.prod_id) ${c}
+    </select> 
+    
+    <insert id="insertCompraDiaria" parameterType="Ventas" >
+        <selectKey keyProperty="cotuId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.compras_turno_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.compras_turno(
+        cotu_id, cotu_fecha_hora, cotu_descripcion, cotu_galones, cotu_monto, tudi_id, gadi_id, prod_id)
+        VALUES (#{cotuId}, #{cotuFechaHora}, #{cotuDescripcion}, #{cotuGalones}, 
+        #{cotuMonto}, #{tudiId}, #{gadiId}, #{prodId});
+    </insert>
+    
+    <delete id="deleteCompraDiaria" parameterType="Ventas"> 
+        DELETE FROM ventas.compras_turno
+        WHERE cotu_id=#{cotuId};
+    </delete>
+    
+    <delete id="deleteCompraDiariaGasto" parameterType="Ventas"> 
+        DELETE FROM ventas.compras_turno
+        WHERE gadi_id=#{gadiId};
+    </delete>
+    
+    <delete id="deleteCompraDiariaTurno" parameterType="Ventas"> 
+        DELETE FROM ventas.compras_turno
+        WHERE tudi_id=#{tudiId};
+    </delete>
+    
+    <select id="selectCalleMatriz" parameterType="HashMap" resultMap="VentasMap">
+        SELECT cama_id, cama_nombre, cama_estado
+        FROM ventas.calle_matriz ${c}
+    </select>  
+    
+    <insert id="insertCalleMatriz" parameterType="Ventas" >
+        <selectKey keyProperty="camaId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.calle_matriz_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.calle_matriz(
+        cama_id, cama_nombre, cama_estado)
+        VALUES (#{camaId}, #{camaNombre}, #{camaEstado});
+    </insert>
+    
+    <update id="updateCalleMatrizEstado" parameterType="Ventas"> 
+        UPDATE ventas.calle_matriz
+        SET cama_estado=#{camaEstado};
+    </update>
+    
+</mapper>

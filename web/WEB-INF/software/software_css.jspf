@@ -1,0 +1,21 @@
+<%--
+ ========================
+ @author carlos santander
+ ========================
+--%>
+
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/bootstrap/css/bootstrap-timepicker.min.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/css/style.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/css/font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/css/et-line-font/et-line-font.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/css/themify-icons/themify-icons.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/css/simple-lineicon/simple-line-icons.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/css/flag/css/flag-icon.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/plugins/alertify/css/alertify.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/plugins/alertify/css/themes/default.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/plugins/datatables/css/dataTables.bootstrap.min.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/plugins/pdfmake/jszip.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/plugins/gijgo/css/gijgo.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/plugins/dropify/dropify.min.css" />
+<link rel="stylesheet" href="<% out.print(request.getContextPath());%>/templates/plugins/bootstrap-toggle/bootstrap-toggle.css" />

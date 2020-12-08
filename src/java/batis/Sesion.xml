@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+ ========================
+ @author carlos santander
+ ========================
+-->
+<mapper namespace="Sesion">
+    
+    <resultMap id="SesionMap" type="Sesion">
+                 
+        <result property="inicioNavega" column="sesi_inicio_navega" />                     
+        <result property="sesiId" column="sesi_id" />  
+        <result property="usuaId" column="usua_id" />  
+        <result property="finNavega" column="sesi_fin_navega" />  
+        <result property="inicioLogin" column="sesi_inicio_login" />
+        <result property="finLogin" column="sesi_fin_login" />    
+        <result property="sesiNavega" column="sesi_navega" />  
+        <result property="sesiLogin" column="sesi_login" />             
+        <result property="menuId" column="menu_id" /> 
+        <result property="menuCodigo" column="menu_codigo" /> 
+        <result property="menuNombre" column="menu_nombre" />  
+        <result property="menuDescripcion" column="menu_descripcion" /> 
+        <result property="menuIcono" column="menu_icono" />
+        <result property="subMenuId" column="sub_menu_id" /> 
+        <result property="subMenuCodigo" column="sub_menu_codigo" /> 
+        <result property="subMenuNombre" column="sub_menu_nombre" /> 
+        <result property="subMenuDescripcion" column="sub_menu_descripcion" />
+        <result property="subMenuIcono" column="sub_menu_icono" />    
+                     
+    </resultMap> 
+    
+    <select id="getListaDatos" parameterType="HashMap" resultMap="SesionMap">      
+        SELECT sesi_inicio_navega, sesi_id, usua_id, sesi_fin_navega, sesi_inicio_login, 
+        sesi_fin_login, sesi_navega, sesi_login, menu_id, sub_menu_id
+        FROM administrador.sesion ${c}    
+    </select>
+    
+    <select id="getDatos" parameterType="HashMap" resultMap="SesionMap">
+        SELECT a.sesi_inicio_navega, a.sesi_id, a.usua_id, a.sesi_fin_navega, a.sesi_inicio_login, 
+        a.sesi_fin_login, a.sesi_navega, a.sesi_login, a.menu_id, b.menu_codigo, b.menu_nombre, 
+        b.menu_descripcion, b.menu_icono, a.sub_menu_id, c.sub_menu_codigo, c.sub_menu_nombre, 
+        c.sub_menu_descripcion, c.sub_menu_icono
+        FROM administrador.sesion as a        
+        INNER JOIN administrador.menu as b ON (a.menu_id = b.menu_id)
+        INNER JOIN administrador.sub_menu as c ON (a.sub_menu_id = c.sub_menu_id) ${c} 
+    </select> 
+    
+    <select id="getMenuId" parameterType="HashMap" resultMap="SesionMap">
+        SELECT menu_id, menu_codigo, menu_nombre, menu_descripcion, menu_icono
+        FROM administrador.menu ${c}       
+    </select>
+    
+    <insert id="insert" parameterType="Sesion" >
+        INSERT INTO administrador.sesion(
+        sesi_inicio_navega, sesi_id, usua_id, sesi_fin_navega, sesi_inicio_login, 
+        sesi_fin_login, sesi_navega, sesi_login, menu_id, sub_menu_id)
+        VALUES (#{inicioNavega}, #{sesiId}, #{usuaId}, #{finNavega}, #{inicioLogin}, 
+        #{finLogin}, #{sesiNavega}, #{sesiLogin}, #{menuId}, #{subMenuId});
+    </insert>  
+              
+    <update id="updateFinNavega" parameterType="Sesion"> 
+        UPDATE administrador.sesion
+        SET sesi_fin_navega=#{finNavega}, sesi_navega=#{sesiNavega}
+        WHERE sesi_id=#{sesiId};
+    </update>  
+    
+    <update id="updateInicioLogin" parameterType="Sesion"> 
+        UPDATE administrador.sesion
+        SET sesi_inicio_login=#{inicioLogin}, sesi_login=#{sesiLogin}, usua_id=#{usuaId}
+        WHERE sesi_id=#{sesiId};
+    </update>  
+    
+    <update id="updateMenu" parameterType="Sesion"> 
+        UPDATE administrador.sesion
+        SET menu_id=#{menuId}
+        WHERE sesi_id=#{sesiId};
+    </update>
+    
+    <update id="updateSubMenu" parameterType="Sesion"> 
+        UPDATE administrador.sesion
+        SET sub_menu_id=#{subMenuId}
+        WHERE sesi_id=#{sesiId};
+    </update>
+    
+    <update id="updateFinLogin" parameterType="Sesion"> 
+        UPDATE administrador.sesion
+        SET sesi_fin_login=#{finLogin}, sesi_login=#{sesiLogin}
+        WHERE sesi_id=#{sesiId};
+    </update> 
+    
+    <update id="updateExpireLogin" parameterType="Sesion"> 
+        UPDATE administrador.sesion
+        SET sesi_fin_login=#{finLogin}, sesi_fin_navega=#{finNavega}, 
+        sesi_navega=#{sesiNavega}, sesi_login=#{sesiLogin}
+        WHERE sesi_id=#{sesiId};
+    </update>
+    
+    <delete id="deleteUsuarioSesion" parameterType="Sesion"> 
+        DELETE FROM administrador.sesion
+        WHERE usua_id=#{usuaId};
+    </delete>
+   
+</mapper>

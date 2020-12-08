@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+ ========================
+ @author carlos santander
+ ========================
+-->
+<mapper namespace="Almacen">
+    
+    <resultMap id="AlmacenMap" type="Almacen">
+        
+        <result property="provId" column="prov_id" /> 
+        <result property="provDocumento" column="prov_documento" />        
+        <result property="provNombres" column="prov_nombres" /> 
+        <result property="provDireccion" column="prov_direccion" />        
+        <result property="provContacto" column="prov_contacto" />        
+        <result property="provTelefonos" column="prov_telefonos" />                
+        <result property="provCorreo" column="prov_correo" />
+        <result property="provEstado" column="prov_estado" />        
+        <result property="prplId" column="prpl_id" /> 
+        <result property="prplNombre" column="prpl_nombre" />        
+        <result property="prplDireccion" column="prpl_direccion" /> 
+        <result property="prplTelefonos" column="prpl_telefonos" />        
+        <result property="prplCorreo" column="prpl_correo" /> 
+        <result property="prplEstado" column="prpl_estado" />
+        <result property="facoId" column="faco_id" />        
+        <result property="facoFechaRegistro" column="faco_fecha_registro" /> 
+        <result property="facoFechaFactura" column="faco_fecha_factura" /> 
+        <result property="facoFactura" column="faco_factura" />       
+        <result property="facoComentarios" column="faco_comentarios" />        
+        <result property="facdId" column="facd_id" />        
+        <result property="facdCantidad" column="facd_cantidad" /> 
+        <result property="facdMonto" column="facd_monto" />
+        <result property="prodId" column="prod_id" />
+        <result property="prodNombre" column="prod_nombre" />
+        <result property="prodDescripcion" column="prod_descripcion" />                
+        <result property="galonesIniciales" column="galones_iniciales" />
+        <result property="galonesInicialesFacturacion" column="galones_iniciales_facturacion" />
+        <result property="galonesInicialesLiquidacion" column="galones_iniciales_liquidacion" />        
+        <result property="galonesComprados" column="galones_comprados" />
+        <result property="galonesCompradosFact" column="galones_comprados_fact" />
+        <result property="galonesFacturados" column="galones_facturados" />
+        <result property="galonesCompradosFactAnt" column="galones_comprados_fact_ant" />
+        <result property="galonesCompradosAnt" column="galones_comprados_ant" />
+        <result property="lecturaMaquina" column="lectura_maquina" />
+        <result property="devolucionTanque" column="devolucion_tanque" />
+        <result property="lecturaFisica" column="lectura_fisica" />
+        <result property="stinId" column="stin_id" />
+        <result property="stinCantidad" column="stin_cantidad" />
+        <result property="stinFechaHora" column="stin_fecha_hora" />
+        <result property="stinActivo" column="stin_activo" /> 
+        <result property="stinLiquidacion" column="stin_liquidacion" /> 
+        <result property="stock" column="stock" />    
+        <result property="stcoId" column="stco_id" />
+        <result property="stcoFechaHora" column="stco_fecha_hora" />
+        <result property="stcoRemitente" column="stco_remitente" />
+        <result property="stcoDestinatario" column="stco_destinatario" />
+        <result property="stcoAsunto" column="stco_asunto" />
+        <result property="stcoMensaje" column="stco_mensaje" />  
+        <result property="stliId" column="stli_id" />
+        <result property="stliGalones" column="stli_galones" />
+        <result property="stliFechaHora" column="stli_fecha_hora" />
+        <result property="stliActivo" column="stli_activo" />                  
+        <result property="precioVenta" column="precio_venta" />
+        <result property="compras" column="compras" />
+        <result property="ingresos" column="ingresos" />                  
+        <result property="gastos" column="gastos" /> 
+        <result property="leprLecturaFisica" column="lepr_lectura_fisica" />  
+        <result property="leprLecturaCm3" column="lepr_lectura_cm3" />   
+        <result property="galonesVendidos" column="galones_vendidos" />
+        <result property="galonesDevueltos" column="galones_devueltos" />
+        <result property="reveId" column="reve_id" />
+        <result property="reveFechaHora" column="reve_fecha_hora" />
+        <result property="reveDocumento" column="reve_documento" />
+        <result property="reveNombres" column="reve_nombres" />
+        <result property="reveDireccion" column="reve_direccion" />
+        <result property="reveChofer" column="reve_chofer" />
+        <result property="revePlaca" column="reve_placa" />
+        <result property="reveKilometraje" column="reve_kilometraje" />
+        <result property="reveIgv" column="reve_igv" />
+        <result property="reveEstado" column="reve_estado" />         
+        <result property="reveNroComprobante" column="reve_nro_comprobante" />
+        <result property="reveEnvioOse" column="reve_envio_ose" />
+        <result property="reveEnvioError" column="reve_envio_error" />   
+        <result property="tiemId" column="tiem_id" />
+        <result property="tiemNombre" column="tiem_nombre" />
+        <result property="tiemEstado" column="tiem_estado" /> 
+        <result property="tiemOse" column="tiem_ose" />  
+        <result property="revdId" column="revd_id" />
+        <result property="revdSurtidor" column="revd_surtidor" />
+        <result property="revdLado" column="revd_lado" />
+        <result property="revdProducto" column="revd_producto" />
+        <result property="revdPrecioUnitario" column="revd_precio_unitario" />
+        <result property="revdDescuento" column="revd_descuento" />
+        <result property="revdDescuentoPrecio" column="revd_descuento_precio" />
+        <result property="revdUnidadMedida" column="revd_unidad_medida" />
+        <result property="revdUnidadMedidaSimbolo" column="revd_unidad_medida_simbolo" />
+        <result property="revdCantidad" column="revd_cantidad" />
+        <result property="revdMonto" column="revd_monto" /> 
+        <result property="revdOpGravada" column="revd_op_gravada" />
+        <result property="revdOpInafecta" column="revd_op_inafecta" />
+        <result property="revdOpExonerada" column="revd_op_exonerada" />
+        <result property="revdOpGratuita" column="revd_op_gratuita" />
+        <result property="revdUnidadMedidaOse" column="revd_unidad_medida_ose" />  
+                        
+    </resultMap> 
+  
+    <select id="getProveedores" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT prov_id, prov_documento, prov_nombres, prov_direccion, prov_contacto, 
+        prov_telefonos, prov_correo, prov_estado
+        FROM ventas.proveedores ${c}
+    </select> 
+    
+    <insert id="insertProveedores" parameterType="Almacen" >
+        <selectKey keyProperty="provId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.proveedores_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.proveedores(
+        prov_id, prov_documento, prov_nombres, prov_direccion, prov_contacto, 
+        prov_telefonos, prov_correo, prov_estado)
+        VALUES (#{provId}, #{provDocumento}, #{provNombres}, #{provDireccion}, #{provContacto}, 
+        #{provTelefonos}, #{provCorreo}, #{provEstado});
+    </insert>   
+              
+    <update id="updateProveedores" parameterType="Almacen"> 
+        UPDATE ventas.proveedores
+        SET prov_documento=#{provDocumento}, prov_nombres=#{provNombres}, prov_direccion=#{provDireccion},
+        prov_contacto=#{provContacto}, prov_telefonos=#{provTelefonos}, prov_correo=#{provCorreo}
+        WHERE prov_id=#{provId};
+    </update>
+    
+    <update id="deleteProveedores" parameterType="Almacen"> 
+        UPDATE ventas.proveedores
+        SET prov_estado=#{provEstado}
+        WHERE prov_id=#{provId};
+    </update>
+    
+    <select id="getProveedoresPlantas" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT prpl_id, prpl_nombre, prpl_direccion, prpl_telefonos, prpl_correo, 
+        prpl_estado, prov_id
+        FROM ventas.proveedores_plantas ${c}
+    </select> 
+    
+    <insert id="insertProveedoresPlantas" parameterType="Almacen" >
+        <selectKey keyProperty="prplId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.proveedores_plantas_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.proveedores_plantas(
+        prpl_id, prpl_nombre, prpl_direccion, prpl_telefonos, prpl_correo, 
+        prpl_estado, prov_id)
+        VALUES (#{prplId}, #{prplNombre}, #{prplDireccion}, #{prplTelefonos}, 
+        #{prplCorreo}, #{prplEstado}, #{provId});
+    </insert>   
+    
+    <update id="deleteProveedoresPlantas" parameterType="Almacen"> 
+        UPDATE ventas.proveedores_plantas
+        SET prpl_estado=#{prplEstado}
+        WHERE prpl_id=#{prplId};
+    </update>
+    
+    <select id="getFacturasCompra" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT a.faco_id, a.faco_fecha_factura, a.faco_factura, 
+        a.prov_id, c.prov_nombres, a.prpl_id, d.prpl_nombre,
+        SUM(ad.facd_cantidad) as facd_cantidad, SUM(ad.facd_monto) as facd_monto
+        FROM ventas.facturas_compra as a
+        INNER JOIN ventas.facturas_compra_detalle as ad ON (a.faco_id = ad.faco_id)
+        INNER JOIN ventas.productos as b ON (ad.prod_id = b.prod_id)
+        INNER JOIN ventas.proveedores as c ON (a.prov_id = c.prov_id)
+        INNER JOIN ventas.proveedores_plantas as d ON (a.prpl_id = d.prpl_id) ${c}
+    </select> 
+      
+    <insert id="insertFacturasCompra" parameterType="Almacen" >
+        <selectKey keyProperty="facoId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.facturas_compra_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.facturas_compra(
+        faco_id, faco_fecha_registro, faco_fecha_factura, faco_factura, 
+        faco_comentarios, prov_id, prpl_id)
+        VALUES (#{facoId}, #{facoFechaRegistro}, #{facoFechaFactura}, #{facoFactura}, 
+        #{facoComentarios}, #{provId}, #{prplId});
+    </insert> 
+    
+    <delete id="deleteFacturasCompra" parameterType="Almacen"> 
+        DELETE FROM ventas.facturas_compra
+        WHERE faco_id=#{facoId};
+    </delete>
+    
+    <select id="getFacturasCompraDetalle" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT a.facd_id, a.faco_id, a.facd_cantidad, a.facd_monto, a.prod_id,
+        b.prod_nombre, b.prod_descripcion
+        FROM ventas.facturas_compra_detalle as a
+        INNER JOIN ventas.productos as b ON (a.prod_id = b.prod_id) ${c}
+    </select> 
+    
+    <insert id="insertFacturasCompraDetalle" parameterType="Almacen" >
+        <selectKey keyProperty="facdId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.facturas_compra_detalle_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.facturas_compra_detalle(
+        facd_id, faco_id, facd_cantidad, facd_monto, prod_id)
+        VALUES (#{facdId}, #{facoId}, #{facdCantidad}, #{facdMonto}, #{prodId});
+    </insert> 
+    
+    <delete id="deleteFacturasCompraDetalle" parameterType="Almacen"> 
+        DELETE FROM ventas.facturas_compra_detalle
+        WHERE faco_id=#{facoId};
+    </delete>
+    
+    <select id="getStockProductosFact" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT a.prod_id, a.prod_nombre, a.prod_descripcion, 
+        b.stin_cantidad as galones_iniciales_facturacion, c.galones_comprados_fact, d.galones_facturados
+        FROM ventas.productos as a
+        LEFT JOIN ventas.stock_inicial as b ON (a.prod_id = b.prod_id AND b.stin_activo = true)
+        LEFT JOIN (SELECT prod_id, SUM(facd_cantidad) as galones_comprados_fact
+        FROM ventas.facturas_compra_detalle GROUP BY prod_id) as c ON (a.prod_id = c.prod_id)        
+        LEFT JOIN (SELECT a.prod_id, SUM(a.revd_cantidad) as galones_facturados
+        FROM ventas.registro_ventas_detalle as a
+        INNER JOIN ventas.registro_ventas as b ON (a.reve_id = b.reve_id) 
+        WHERE b.reve_estado = 'emitido' GROUP BY a.prod_id) as d ON (a.prod_id = d.prod_id) ${c}       
+    </select> 
+    
+    <select id="getStockProductosLiquid" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT a.prod_id, a.prod_nombre, a.prod_descripcion, b.stin_liquidacion as galones_iniciales_liquidacion, 
+        c.galones_comprados_fact, h.galones_comprados, e.lectura_maquina, f.devolucion_tanque, g.lectura_fisica        
+        FROM ventas.productos as a        
+        LEFT JOIN ventas.stock_inicial as b ON (a.prod_id = b.prod_id AND b.stin_activo = true)        
+        LEFT JOIN (SELECT a.prod_id, SUM(a.facd_cantidad) as galones_comprados_fact
+        FROM ventas.facturas_compra_detalle as a
+        INNER JOIN ventas.facturas_compra as b ON (a.faco_id = b.faco_id)
+        WHERE b.faco_fecha_registro::date between ${d} AND now()::date 
+        GROUP BY prod_id) as c ON (a.prod_id = c.prod_id)                        
+        LEFT JOIN (SELECT b.prod_id, SUM(a.ledi_lectura_final - a.ledi_lectura_inicial) as lectura_maquina
+        FROM ventas.lectura_diaria as a
+        INNER JOIN ventas.surtidores_detalle as b ON (a.sude_id = b.sude_id)
+        INNER JOIN ventas.turno_diario as c ON (a.tudi_id = c.tudi_id AND c.tudi_cierre = true)
+        GROUP BY b.prod_id) as e ON (a.prod_id = e.prod_id)        
+        LEFT JOIN ( SELECT a.prod_id, SUM(a.deta_devolucion) as devolucion_tanque
+        FROM ventas.devolucion_tanque as a
+        INNER JOIN ventas.turno_diario as b ON (a.tudi_id = b.tudi_id AND b.tudi_cierre = true)
+        GROUP BY a.prod_id) as f ON (a.prod_id = f.prod_id)
+        LEFT JOIN (SELECT prod_id, SUM(lepr_lectura_fisica) as lectura_fisica
+        FROM ventas.lectura_producto 
+        WHERE tudi_id = (SELECT tudi_id FROM ventas.turno_diario WHERE tudi_cierre = true ORDER BY tudi_id DESC LIMIT 1) 
+        GROUP BY prod_id) as g ON (a.prod_id = g.prod_id)
+        LEFT JOIN (SELECT prod_id, SUM(cotu_galones) as galones_comprados
+        FROM ventas.compras_turno GROUP BY prod_id) as h ON (a.prod_id = h.prod_id) ${c} 
+    </select> 
+    
+    <select id="getStockAlertProducts" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT a.prod_id, a.prod_nombre, a.prod_descripcion, 
+        (b.stin_cantidad + c.galones_comprados - d.galones_facturados) as stock 
+        FROM ventas.productos as a
+        LEFT JOIN ventas.stock_inicial as b ON (a.prod_id = b.prod_id AND b.stin_activo = true)
+        LEFT JOIN (SELECT prod_id, SUM(facd_cantidad) as galones_comprados
+        FROM ventas.facturas_compra_detalle GROUP BY prod_id) as c ON (a.prod_id = c.prod_id)
+        LEFT JOIN (SELECT a.prod_id, SUM(a.revd_cantidad) as galones_facturados
+        FROM ventas.registro_ventas_detalle as a
+        INNER JOIN ventas.registro_ventas as b ON (a.reve_id = b.reve_id) ${c}) 
+        as d ON (a.prod_id = d.prod_id) ${d}       
+    </select> 
+    
+    <select id="getStockInicial" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT stin_id, prod_id, stin_cantidad, stin_fecha_hora, stin_activo, stin_liquidacion
+        FROM ventas.stock_inicial ${c}
+    </select>
+    
+    <insert id="insertStockInicial" parameterType="Almacen" >
+        <selectKey keyProperty="stinId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.stock_inicial_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.stock_inicial(
+        stin_id, prod_id, stin_cantidad, stin_fecha_hora, stin_activo, stin_liquidacion)
+        VALUES (#{stinId}, #{prodId}, #{stinCantidad}, #{stinFechaHora}, #{stinActivo}, #{stinLiquidacion});
+    </insert>
+    
+    <update id="updateStockInicialFact" parameterType="Almacen"> 
+        UPDATE ventas.stock_inicial
+        SET stin_fecha_hora=#{stinFechaHora}, stin_cantidad=#{stinCantidad}
+        WHERE prod_id=#{prodId};
+    </update>
+    
+    <update id="updateStockInicialLiquid" parameterType="Almacen"> 
+        UPDATE ventas.stock_inicial
+        SET stin_fecha_hora=#{stinFechaHora}, stin_liquidacion=#{stinLiquidacion}
+        WHERE prod_id=#{prodId};
+    </update>
+    
+    <update id="updateStockInicialEstados" parameterType="Almacen"> 
+        UPDATE ventas.stock_inicial
+        SET stin_activo=#{stinActivo}
+        WHERE prod_id=#{prodId};
+    </update>
+    
+    <select id="getStockCorreo" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT stco_id, stco_fecha_hora, prod_id, stco_remitente, stco_destinatario, 
+        stco_asunto, stco_mensaje
+        FROM ventas.stock_correo ${c}
+    </select>
+    
+    <insert id="insertStockCorreo" parameterType="Almacen" >
+        <selectKey keyProperty="stcoId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.stock_correo_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.stock_correo(
+        stco_id, stco_fecha_hora, prod_id, stco_remitente, 
+        stco_destinatario, stco_asunto, stco_mensaje)
+        VALUES (#{stcoId}, #{stcoFechaHora}, #{prodId}, #{stcoRemitente}, 
+        #{stcoDestinatario}, #{stcoAsunto}, #{stcoMensaje});
+    </insert>
+    
+    <select id="getStockLimite" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT stli_id, stli_galones, stli_fecha_hora, stli_activo
+        FROM ventas.stock_limite ${c}       
+    </select>
+        
+    <insert id="insertStockLimite" parameterType="Almacen" >
+        <selectKey keyProperty="stliId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.stock_limite_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.stock_limite(
+        stli_id, stli_galones, stli_fecha_hora, stli_activo)
+        VALUES (#{stliId}, #{stliGalones}, #{stliFechaHora}, #{stliActivo});
+    </insert>
+    
+    <update id="updateStockLimite" parameterType="Almacen"> 
+        UPDATE ventas.stock_limite
+        SET stli_activo=#{stliActivo};
+    </update> 
+    
+    <select id="getControlDiarioVentas" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT a.prod_id, a.prod_nombre, a.prod_descripcion, b.lectura_maquina, c.devolucion_tanque, d.lectura_fisica, 
+        (SELECT prve_precio_unitario as precio_venta FROM ventas.precios_venta WHERE prod_id = a.prod_id AND 
+        (prve_fecha_hora_precio::date between '01/01/1000'::date AND '${c}'::date) ORDER BY prve_id DESC LIMIT 1)
+        FROM ventas.productos as a
+        LEFT JOIN (SELECT b.prod_id, SUM(a.ledi_lectura_final - a.ledi_lectura_inicial) as lectura_maquina
+        FROM ventas.lectura_diaria as a
+        INNER JOIN ventas.surtidores_detalle as b ON (a.sude_id = b.sude_id)
+        INNER JOIN ventas.turno_diario as c ON (a.tudi_id = c.tudi_id)
+        WHERE c.tudi_fecha_inicio::date = '${c}'::date AND c.tudi_cierre = true 
+        GROUP BY b.prod_id) as b ON (a.prod_id = b.prod_id)
+        LEFT JOIN (SELECT a.prod_id, SUM(a.deta_devolucion) as devolucion_tanque
+        FROM ventas.devolucion_tanque as a
+        INNER JOIN ventas.turno_diario as b ON (a.tudi_id = b.tudi_id)
+        WHERE b.tudi_fecha_inicio::date = '${c}'::date AND b.tudi_cierre = true 
+        GROUP BY a.prod_id) as c ON (a.prod_id = c.prod_id)
+        LEFT JOIN (SELECT prod_id, SUM(lepr_lectura_fisica) as lectura_fisica
+        FROM ventas.lectura_producto 
+        WHERE tudi_id = (SELECT tudi_id FROM ventas.turno_diario 
+        WHERE tudi_fecha_inicio::date = '${c}'::date AND tudi_cierre = true 
+        ORDER BY tudi_id DESC LIMIT 1) GROUP BY prod_id) as d ON (a.prod_id = d.prod_id) ${d}       
+    </select> 
+    
+    <select id="getTotalCompras" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT ${c} FROM ventas.facturas_compra as a
+        INNER JOIN ventas.facturas_compra_detalle as b ON (a.faco_id = b.faco_id) ${d}
+    </select>
+    
+    <select id="getTotalIngresos" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT ${c} FROM ventas.ingreso_diario ${d}
+    </select>
+    
+    <select id="getTotalGastos" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT ${c} FROM ventas.gasto_diario ${d}
+    </select>
+    
+    <select id="getReporteCombustible" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT a.prod_id, a.prod_nombre, a.prod_descripcion, b.lectura_maquina, c.devolucion_tanque, d.lectura_fisica, 
+        (SELECT prve_precio_unitario as precio_venta FROM ventas.precios_venta WHERE prod_id = a.prod_id AND 
+        (prve_fecha_hora_precio::date between '01/01/1000'::date AND '${c}'::date) ORDER BY prve_id DESC LIMIT 1),
+        e.facd_cantidad, e.facd_monto
+        FROM ventas.productos as a
+        LEFT JOIN (SELECT b.prod_id, SUM(a.ledi_lectura_final - a.ledi_lectura_inicial) as lectura_maquina
+        FROM ventas.lectura_diaria as a
+        INNER JOIN ventas.surtidores_detalle as b ON (a.sude_id = b.sude_id)
+        INNER JOIN ventas.turno_diario as c ON (a.tudi_id = c.tudi_id)
+        WHERE c.tudi_fecha_inicio::date = '${c}'::date AND c.tudi_cierre = true 
+        GROUP BY b.prod_id) as b ON (a.prod_id = b.prod_id)
+        LEFT JOIN (SELECT a.prod_id, SUM(a.deta_devolucion) as devolucion_tanque
+        FROM ventas.devolucion_tanque as a
+        INNER JOIN ventas.turno_diario as b ON (a.tudi_id = b.tudi_id)
+        WHERE b.tudi_fecha_inicio::date = '${c}'::date AND b.tudi_cierre = true 
+        GROUP BY a.prod_id) as c ON (a.prod_id = c.prod_id)
+        LEFT JOIN (SELECT prod_id, SUM(lepr_lectura_fisica) as lectura_fisica
+        FROM ventas.lectura_producto 
+        WHERE tudi_id = (SELECT tudi_id FROM ventas.turno_diario 
+        WHERE tudi_fecha_inicio::date = '${c}'::date AND tudi_cierre = true 
+        ORDER BY tudi_id DESC LIMIT 1) GROUP BY prod_id) as d ON (a.prod_id = d.prod_id)         
+        LEFT JOIN (SELECT b.prod_id, SUM(b.facd_cantidad) as facd_cantidad, SUM(b.facd_monto) as facd_monto
+        FROM ventas.facturas_compra as a
+        INNER JOIN ventas.facturas_compra_detalle as b ON (a.faco_id = b.faco_id)
+        WHERE a.faco_fecha_registro::date = '${c}'::date GROUP BY b.prod_id) as e ON (a.prod_id = e.prod_id) ${d}       
+    </select>
+    
+    <select id="getStockLiquidacion" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT a.prod_id, f.prod_nombre, f.prod_descripcion, b.stin_liquidacion as galones_iniciales,
+        c.galones_comprados_fact_ant, d.lectura_maquina, e.devolucion_tanque, g.lepr_lectura_fisica, 
+        g.lepr_lectura_cm3, h.galones_vendidos, i.galones_devueltos, 
+        j.galones_comprados_ant, k.galones_comprados_fact, l.galones_comprados
+        FROM (SELECT prod_id FROM ventas.surtidores_detalle
+        WHERE sude_estado = true GROUP BY prod_id) as a
+        LEFT JOIN ventas.stock_inicial as b ON (a.prod_id = b.prod_id AND b.stin_activo = true)        
+        LEFT JOIN (SELECT a.prod_id, SUM(a.facd_cantidad) as galones_comprados_fact_ant
+        FROM ventas.facturas_compra_detalle as a         
+        INNER JOIN ventas.facturas_compra as b ON (a.faco_id = b.faco_id)
+        WHERE b.faco_fecha_registro::date &gt;= ${e} AND b.faco_fecha_registro::date &lt; ${d}
+        GROUP BY a.prod_id) as c ON (a.prod_id = c.prod_id)
+        LEFT JOIN (SELECT b.prod_id, SUM(a.ledi_lectura_final - a.ledi_lectura_inicial) as lectura_maquina
+        FROM ventas.lectura_diaria as a
+        INNER JOIN ventas.surtidores_detalle as b ON (a.sude_id = b.sude_id)
+        INNER JOIN ventas.turno_diario as c ON (a.tudi_id = c.tudi_id AND c.tudi_cierre = true)
+        WHERE a.tudi_id &lt; ${c}
+        GROUP BY b.prod_id) as d ON (a.prod_id = d.prod_id)
+        LEFT JOIN (SELECT a.prod_id, SUM(a.deta_devolucion) as devolucion_tanque
+        FROM ventas.devolucion_tanque as a
+        INNER JOIN ventas.turno_diario as b ON (a.tudi_id = b.tudi_id AND b.tudi_cierre = true)
+        WHERE a.tudi_id &lt; ${c}
+        GROUP BY a.prod_id) as e ON (a.prod_id = e.prod_id)
+        INNER JOIN ventas.productos as f ON (a.prod_id = f.prod_id AND f.prod_estado = 'A')
+        LEFT JOIN ventas.lectura_producto as g ON (a.prod_id = g.prod_id AND g.tudi_id = ${c})
+        LEFT JOIN (SELECT a.prod_id, SUM(l.ledi_lectura_final - l.ledi_lectura_inicial) as galones_vendidos
+        FROM ventas.lectura_diaria as l
+        INNER JOIN ventas.surtidores_detalle as a ON (l.sude_id = a.sude_id)
+        INNER JOIN ventas.productos as b ON (a.prod_id = b.prod_id) 
+        INNER JOIN ventas.turno_surtidores as c ON (l.tudi_id = c.tudi_id AND a.surt_id = c.surt_id)
+        WHERE l.tudi_id = ${c} GROUP BY a.prod_id) as h ON (a.prod_id = h.prod_id)
+        LEFT JOIN (SELECT prod_id, tudi_id, SUM(deta_devolucion) as galones_devueltos      
+        FROM ventas.devolucion_tanque
+        GROUP BY prod_id, tudi_id) as i ON (a.prod_id = i.prod_id AND i.tudi_id = ${c})        
+        LEFT JOIN (SELECT prod_id, SUM(cotu_galones) as galones_comprados_ant
+        FROM ventas.compras_turno WHERE tudi_id &lt; ${c} 
+        GROUP BY prod_id) as j ON (a.prod_id = j.prod_id)
+        LEFT JOIN (SELECT a.prod_id, SUM(a.facd_cantidad) as galones_comprados_fact
+        FROM ventas.facturas_compra_detalle as a 
+        INNER JOIN ventas.facturas_compra as b ON (a.faco_id = b.faco_id)
+        WHERE b.faco_fecha_registro::date = ${d}
+        GROUP BY a.prod_id) as k ON (a.prod_id = k.prod_id)
+        LEFT JOIN (SELECT prod_id, SUM(cotu_galones) as galones_comprados
+        FROM ventas.compras_turno WHERE tudi_id = ${c} 
+        GROUP BY prod_id) as l ON (a.prod_id = l.prod_id)
+        ORDER BY a.prod_id ASC 
+    </select> 
+    
+    <select id="getStockLiquidacionFecha" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT a.prod_id, f.prod_nombre, f.prod_descripcion, b.stin_liquidacion as galones_iniciales,
+        c.galones_comprados_fact_ant, d.lectura_maquina, e.devolucion_tanque, g.galones_comprados_fact,
+        h.galones_vendidos, i.galones_devueltos, j.galones_comprados_ant, k.galones_comprados        
+        FROM (SELECT prod_id FROM ventas.surtidores_detalle
+        WHERE sude_estado = true GROUP BY prod_id) as a        
+        LEFT JOIN ventas.stock_inicial as b ON (a.prod_id = b.prod_id AND b.stin_activo = true)        
+        LEFT JOIN (SELECT a.prod_id, SUM(a.facd_cantidad) as galones_comprados_fact_ant
+        FROM ventas.facturas_compra_detalle as a 
+        INNER JOIN ventas.facturas_compra as b ON (a.faco_id = b.faco_id)
+        WHERE b.faco_fecha_registro::date &gt;= ${d} AND  b.faco_fecha_registro::date &lt; ${c}        
+        GROUP BY a.prod_id) as c ON (a.prod_id = c.prod_id)
+        LEFT JOIN (SELECT b.prod_id, SUM(a.ledi_lectura_final - a.ledi_lectura_inicial) as lectura_maquina
+        FROM ventas.lectura_diaria as a
+        INNER JOIN ventas.surtidores_detalle as b ON (a.sude_id = b.sude_id)
+        INNER JOIN ventas.turno_diario as c ON (a.tudi_id = c.tudi_id AND c.tudi_cierre = true)
+        WHERE c.tudi_fecha_inicio::date &lt; ${c}
+        GROUP BY b.prod_id) as d ON (a.prod_id = d.prod_id)        
+        LEFT JOIN (SELECT a.prod_id, SUM(a.deta_devolucion) as devolucion_tanque
+        FROM ventas.devolucion_tanque as a
+        INNER JOIN ventas.turno_diario as b ON (a.tudi_id = b.tudi_id AND b.tudi_cierre = true)
+        WHERE b.tudi_fecha_inicio::date &lt; ${c}
+        GROUP BY a.prod_id) as e ON (a.prod_id = e.prod_id)        
+        INNER JOIN ventas.productos as f ON (a.prod_id = f.prod_id AND f.prod_estado = 'A')
+        LEFT JOIN (SELECT a.prod_id, SUM(a.facd_cantidad) as galones_comprados_fact
+        FROM ventas.facturas_compra_detalle as a 
+        INNER JOIN ventas.facturas_compra as b ON (a.faco_id = b.faco_id)
+        WHERE b.faco_fecha_registro::date = ${c}
+        GROUP BY a.prod_id) as g ON (a.prod_id = g.prod_id)                
+        LEFT JOIN (SELECT a.prod_id, SUM(l.ledi_lectura_final - l.ledi_lectura_inicial) as galones_vendidos
+        FROM ventas.lectura_diaria as l
+        INNER JOIN ventas.surtidores_detalle as a ON (l.sude_id = a.sude_id)
+        INNER JOIN ventas.productos as b ON (a.prod_id = b.prod_id) 
+        INNER JOIN ventas.turno_surtidores as c ON (l.tudi_id = c.tudi_id AND a.surt_id = c.surt_id)
+        INNER JOIN ventas.turno_diario as d ON (l.tudi_id = d.tudi_id AND d.tudi_cierre = true)
+        WHERE d.tudi_fecha_inicio::date = ${c} GROUP BY a.prod_id) as h ON (a.prod_id = h.prod_id)        
+        LEFT JOIN (SELECT a.prod_id, SUM(a.deta_devolucion) as galones_devueltos
+        FROM ventas.devolucion_tanque as a
+        INNER JOIN ventas.turno_diario as b ON (a.tudi_id = b.tudi_id AND b.tudi_cierre = true)
+        WHERE b.tudi_fecha_inicio::date = ${c}
+        GROUP BY a.prod_id) as i ON (a.prod_id = i.prod_id)  
+        LEFT JOIN (SELECT a.prod_id, SUM(a.cotu_galones) as galones_comprados_ant
+        FROM ventas.compras_turno as a
+        INNER JOIN ventas.turno_diario as b ON (a.tudi_id = b.tudi_id AND b.tudi_cierre = true)
+        WHERE b.tudi_fecha_inicio::date &lt; ${c}
+        GROUP BY a.prod_id) as j ON (a.prod_id = j.prod_id) 
+        LEFT JOIN (SELECT a.prod_id, SUM(a.cotu_galones) as galones_comprados
+        FROM ventas.compras_turno as a
+        INNER JOIN ventas.turno_diario as b ON (a.tudi_id = b.tudi_id AND b.tudi_cierre = true)
+        WHERE b.tudi_fecha_inicio::date = ${c}
+        GROUP BY a.prod_id) as k ON (a.prod_id = k.prod_id)
+        ORDER BY a.prod_id ASC 
+    </select>
+    
+    <select id="getListFacturasProd" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT b.faco_fecha_factura, b.faco_factura, c.prov_nombres, d.prpl_nombre, e.prod_nombre, e.prod_descripcion, a.facd_cantidad, a.facd_monto
+        FROM ventas.facturas_compra_detalle as a
+        INNER JOIN ventas.facturas_compra as b ON (a.faco_id = b.faco_id)
+        INNER JOIN ventas.proveedores as c ON (b.prov_id = c.prov_id)
+        INNER JOIN ventas.proveedores_plantas as d ON (b.prov_id = d.prov_id AND b.prpl_id = d.prpl_id)
+        INNER JOIN ventas.productos as e ON (a.prod_id = e.prod_id AND e.prod_estado = 'A' AND e.prod_grifo = true) ${c} 
+    </select>
+    
+    <select id="getListComprobantesEmi" parameterType="HashMap" resultMap="AlmacenMap">
+        SELECT b.reve_fecha_hora, c.tiem_nombre, b.reve_nro_comprobante, b.reve_nombres, b.reve_documento, 
+        d.prod_nombre, d.prod_descripcion, a.revd_cantidad, a.revd_monto
+        FROM ventas.registro_ventas_detalle as a
+        INNER JOIN ventas.registro_ventas as b ON (a.reve_id = b.reve_id AND b.reve_estado = 'emitido')
+        INNER JOIN ventas.tipos_emision as c ON (b.tiem_id = c.tiem_id)
+        INNER JOIN ventas.productos as d ON (a.prod_id = d.prod_id AND d.prod_estado = 'A' AND d.prod_grifo = true) ${c} 
+    </select>
+    
+</mapper>

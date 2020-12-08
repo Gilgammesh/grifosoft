@@ -1,0 +1,113 @@
+<%--
+ ========================
+ @author carlos santander
+ ========================
+--%>
+
+<div class="wrapper boxed-wrapper">
+
+    <header class="main-header"> 
+
+        <a class="logo">             
+            <span class="logo-mini"><img src="./templates/img/logo-small.png" alt=""></span>             
+            <span class="logo-lg"><img src="./templates/img/logo.png" alt=""></span> 
+        </a> 
+
+        <nav class="navbar navbar-static-top"> 
+            <ul class="nav navbar-nav pull-left">
+                <li><a class="sidebar-toggle" data-toggle="push-menu" href="#"></a></li>
+            </ul>
+            <div class="nav navbar-nav pull-left img-responsive">
+                <li><label class="labelbar">SOFTWARE DE GESTIÓN</label></li>
+            </div>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">  
+                    <li class="dropdown user user-menu p-ph-res"> 
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+                            <img id="imgUserHead" class="user-image img-circle img-bordered-sm" alt="User Image"> 
+                            <span id="nameUserHead" class="hidden-xs"></span> 
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="user-header">
+                                <div class="pull-left user-img">
+                                    <img id="imgUserBody" class="img-responsive img-circle img-bordered-sm" alt="User">
+                                </div>
+                                <p id="nameUserBody" class="text-left"></p>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a id="aCambiaContra" href="javaScript:void(0);" data-toggle="modal" data-target="#modalCambiaContra">
+                                    <i class="icon-key"></i> Cambiar contraseña
+                                </a>
+                            </li>
+                            <li>
+                                <a id="aLogOut" href="javaScript:void(0);">
+                                    <i class="fa fa-power-off"></i> Cerrar sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <aside class="main-sidebar">         
+        <div class="sidebar"> 
+            <ul id="ulMenuBarra" class="sidebar-menu" data-widget="tree">                
+                <!-- llenado de menu -->
+            </ul>
+        </div>
+    </aside>
+
+
+    <div class="content-wrapper">      
+        <div id="divMenuContenido" class="content">
+            <!-- contenido del menu -->
+        </div>
+    </div>
+
+    <div id="modalCambiaContra" class="modal fade">
+        <div class="modal-dialog">
+            <form id="formCambiaContra" action="./Usuario?url=password" method="post">
+                <div class="modal-content border-light">
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title">
+                            <i class="fa fa-key"></i> 
+                            Cambiar Contraseña
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="aPass" class="col-form-label">Contraseña Actual :</label>
+                            <input id="aPass" type="password" name="actualPass" class="form-control"
+                                   placeholder="Ingrese contraseña actual" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nPass" class="col-form-label">Nueva Contraseña :</label>
+                            <input id="nPass" type="password" name="nuevoPass" class="form-control"
+                                   placeholder="Ingrese nueva contraseña" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="cPass" class="col-form-label">Confirmar Contraseña :</label>
+                            <input id="cPass" type="password" name="confirmPass" class="form-control"
+                                   placeholder="Confirme nueva contraseña" required/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnAdmEditUsuaSave" type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> Guardar
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            <i class="fa fa-ban"></i> Cerrar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

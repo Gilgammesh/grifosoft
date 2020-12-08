@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+ ========================
+ @author carlos santander
+ ========================
+-->
+<mapper namespace="Utilitarios">
+    
+    <resultMap id="UtilitariosMap" type="Utilitarios">        
+       
+        <result property="paruRuc" column="paru_ruc" />
+        <result property="paruNombres" column="paru_nombres" />
+        <result property="paruEstado" column="paru_estado" />
+        <result property="paruCondicion" column="paru_condicion" />
+        <result property="paruUbigeo" column="paru_ubigeo" />
+        <result property="paruTipoVia" column="paru_tipo_via" />
+        <result property="paruNombreVia" column="paru_nombre_via" />
+        <result property="paruCodigoZona" column="paru_codigo_zona" />
+        <result property="paruTipoZona" column="paru_tipo_zona" />
+        <result property="paruNumero" column="paru_numero" />
+        <result property="paruInterior" column="paru_interior" />
+        <result property="paruLote" column="paru_lote" />
+        <result property="paruDepartamento" column="paru_departamento" />
+        <result property="paruManzana" column="paru_manzana" />
+        <result property="paruKilometro" column="paru_kilometro" />        
+        <result property="departamento" column="departamento" />
+        <result property="provincia" column="provincia" />
+        <result property="distrito" column="distrito" />
+                
+    </resultMap> 
+      
+    <select id="getPadronRuc" parameterType="HashMap" resultMap="UtilitariosMap">
+        SELECT a.paru_ruc, a.paru_nombres, a.paru_estado, a.paru_condicion, a.paru_ubigeo, 
+        trim(b.nombre) as departamento, trim(c.nombre) as provincia, trim(d.nombre) as distrito,
+        a.paru_tipo_via, a.paru_nombre_via, a.paru_codigo_zona, a.paru_tipo_zona, a.paru_numero, 
+        a.paru_interior, a.paru_lote, a.paru_departamento, a.paru_manzana, a.paru_kilometro
+        FROM utilitarios.padron_ruc as a
+        LEFT JOIN utilitarios.departamento as b ON (substring(a.paru_ubigeo from 1 for 2) = b.departamento AND b.estado = 'A')
+        LEFT JOIN utilitarios.provincia as c ON (substring(a.paru_ubigeo from 1 for 2) = c.departamento AND 
+        substring(a.paru_ubigeo from 3 for 2) = c.provincia AND c.estado = 'A')
+        LEFT JOIN utilitarios.distrito as d ON (substring(a.paru_ubigeo from 1 for 2) = d.departamento AND 
+        substring(a.paru_ubigeo from 3 for 2) = d.provincia AND substring(a.paru_ubigeo from 5 for 2) = d.distrito AND d.estado = 'A') ${c}
+    </select>
+         
+</mapper>

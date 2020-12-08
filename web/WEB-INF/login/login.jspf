@@ -1,0 +1,35 @@
+<%--
+ ========================
+ @author carlos santander
+ ========================
+--%>
+
+<div class="login-box">
+    <div class="login-box-body">
+        </br>
+        <img src="./templates/img/logo-soft-64.png" class="img-center img-responsive" >
+        <h3 class="login-box-msg" style="color: #404040; font-weight: bold; margin-top: 10px; margin-bottom: 10px;">            
+            SOFTWARE DE GESTIÓN DE VENTAS PARA GRIFOS
+        </h3>
+        <h4 class="login-box-msg">Inicio de Sesión</h4>
+        </br>
+        <form id="formLogin" action="./Usuario?url=ingresar" method="post">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="ti-user"></i></div>
+                <input name="usuario" class="form-control" placeholder="Ingrese Usuario" type="text">
+            </div>
+            </br>
+            <div class="input-group">
+                <div class="input-group-addon"><i class="ti-lock"></i></div>
+                <input name="password" class="form-control" placeholder="Ingrese Contraseña" type="password">
+            </div>
+            </br>
+            <div>
+                <div class="col-xs-12 m-t-1">
+                    <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+                </div>         
+            </div>
+            </br>
+        </form>
+    </div>
+</div>

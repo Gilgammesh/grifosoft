@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+ ========================
+ @author carlos santander
+ ========================
+-->
+<mapper namespace="Usuario">
+    
+    <resultMap id="UsuarioMap" type="Usuario">
+        
+        <result property="usuaId" column="usua_id" />        
+        <result property="usuaUsuario" column="usua_usuario" />        
+        <result property="usuaClave" column="usua_clave" />
+        <result property="usuaNombres" column="usua_nombres" />        
+        <result property="usuaApellidoPaterno" column="usua_apellido_paterno" />        
+        <result property="usuaApellidoMaterno" column="usua_apellido_materno" />
+        <result property="usuaGenero" column="usua_genero" />  
+        <result property="usuaEstado" column="usua_estado" />
+        <result property="perfId" column="perf_id" />        
+        <result property="perfNombre" column="perf_nombre" /> 
+        <result property="perfDescripcion" column="perf_descripcion" />         
+        <result property="menuId" column="menu_id" /> 
+        <result property="menuCodigo" column="menu_codigo" /> 
+        <result property="menuNombre" column="menu_nombre" /> 
+        <result property="menuDescripcion" column="menu_descripcion" />
+        <result property="menuIcono" column="menu_icono" /> 
+        <result property="subMenuId" column="sub_menu_id" /> 
+        <result property="subMenuCodigo" column="sub_menu_codigo" /> 
+        <result property="subMenuNombre" column="sub_menu_nombre" /> 
+        <result property="subMenuDescripcion" column="sub_menu_descripcion" />
+        <result property="subMenuIcono" column="sub_menu_icono" /> 
+        <result property="permActivo" column="perm_activo" />        
+        <result property="cltuId" column="cltu_id" /> 
+        <result property="cltuClave" column="cltu_clave" />
+        <result property="cltuFechaHora" column="cltu_fecha_hora" /> 
+        <result property="cltuActivo" column="cltu_activo" />        
+        <result property="emprId" column="empr_id" /> 
+        <result property="emprRuc" column="empr_ruc" /> 
+        <result property="emprRazonSocial" column="empr_razon_social" /> 
+        <result property="emprDireccion" column="empr_direccion" />
+        <result property="emprTelefonos" column="empr_telefonos" /> 
+        <result property="emprCorreo" column="empr_correo" />        
+        <result property="emprPaginaWeb" column="empr_pagina_web" /> 
+        <result property="emprRepreNombres" column="empr_repre_nombres" />
+        <result property="emprRepreDni" column="empr_repre_dni" /> 
+        <result property="emprRepreCargo" column="empr_repre_cargo" />        
+        <result property="emprUrlLogo" column="empr_url_logo" />      
+        <result property="emprLogoTipo" column="empr_logo_tipo" />          
+        <result property="emprSede" column="empr_sede" />  
+        <result property="softId" column="soft_id" /> 
+        <result property="softNombre" column="soft_nombre" /> 
+        <result property="softRuta" column="soft_ruta" />   
+        
+    </resultMap> 
+    
+    <select id="getListaDatos" parameterType="HashMap" resultMap="UsuarioMap">      
+        SELECT usua_id, usua_usuario, usua_clave, usua_nombres, usua_apellido_paterno, 
+        usua_apellido_materno, usua_genero, usua_estado, perf_id
+        FROM administrador.usuario ${c}
+        ORDER BY usua_nombres, usua_apellido_paterno, usua_apellido_materno ASC           
+    </select>
+    
+    <select id="getListaUsuarios" parameterType="HashMap" resultMap="UsuarioMap">      
+        SELECT a.usua_id, a.usua_usuario, a.usua_clave, a.usua_nombres, a.usua_apellido_paterno, 
+        a.usua_apellido_materno, a.usua_genero, a.usua_estado, a.perf_id, 
+        b.perf_nombre, b.perf_descripcion
+        FROM administrador.usuario as a 
+        INNER JOIN administrador.perfil as b ON (a.perf_id = b.perf_id) ${c}
+        ORDER BY a.usua_nombres, a.usua_apellido_paterno, a.usua_apellido_materno ASC    
+    </select> 
+    
+    <select id="getListaPerfiles" parameterType="HashMap" resultMap="UsuarioMap">      
+        SELECT perf_id, perf_nombre, perf_descripcion
+        FROM administrador.perfil ${c}   
+    </select>
+    
+    <select id="getListaPermisos" parameterType="HashMap" resultMap="UsuarioMap">      
+        SELECT a.perf_id, a.menu_id, a.sub_menu_id, a.perm_activo, b.menu_codigo, b.menu_nombre, 
+        b.menu_descripcion, b.menu_icono, c.perf_nombre, d.sub_menu_codigo, d.sub_menu_nombre, 
+        d.sub_menu_descripcion, d.sub_menu_icono
+        FROM administrador.permiso as a
+        INNER JOIN administrador.menu as b ON (a.menu_id = b.menu_id)
+        INNER JOIN administrador.perfil as c ON (a.perf_id = c.perf_id)
+        INNER JOIN administrador.sub_menu as d ON (a.sub_menu_id = d.sub_menu_id) ${c} 
+    </select>        
+    
+    <select id="getDatos" parameterType="HashMap" resultMap="UsuarioMap">
+        SELECT usua_id, usua_usuario, usua_clave, usua_nombres, usua_apellido_paterno, 
+        usua_apellido_materno, usua_genero, usua_estado, perf_id
+        FROM administrador.usuario ${c}       
+    </select>
+    
+    <select id="getNroReg" parameterType="HashMap" resultType="Integer">
+        SELECT count(usua_id)::integer
+        FROM administrador.usuario ${c}            
+    </select>
+    
+    <insert id="insert" parameterType="Usuario" >
+        <selectKey keyProperty="usuaId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('administrador.usuario_id_seq') 
+        </selectKey>
+        INSERT INTO administrador.usuario(
+        usua_id, usua_usuario, usua_clave, usua_nombres, usua_apellido_paterno, 
+        usua_apellido_materno, usua_genero, usua_estado, perf_id)
+        VALUES (#{usuaId}, #{usuaUsuario}, #{usuaClave}, #{usuaNombres}, #{usuaApellidoPaterno}, 
+        #{usuaApellidoMaterno}, #{usuaGenero}, #{usuaEstado}, #{perfId});
+    </insert>   
+              
+    <update id="update" parameterType="Usuario"> 
+        UPDATE administrador.usuario
+        SET usua_usuario=#{usuaUsuario}, usua_clave=#{usuaClave}, usua_nombres=#{usuaNombres},
+        usua_apellido_paterno=#{usuaApellidoPaterno}, usua_apellido_materno=#{usuaApellidoMaterno},
+        usua_genero=#{usuaGenero}, usua_estado=#{usuaEstado}, perf_id=#{perfId}
+        WHERE usua_id=#{usuaId};
+    </update>
+    
+    <update id="updatePass" parameterType="Usuario"> 
+        UPDATE administrador.usuario
+        SET usua_clave=#{usuaClave}
+        WHERE usua_id=#{usuaId};
+    </update> 
+    
+    <delete id="deleteUsuario" parameterType="Usuario"> 
+        DELETE FROM administrador.usuario
+        WHERE usua_id=#{usuaId};
+    </delete>
+    
+    <insert id="insertPerfil" parameterType="Usuario" >
+        <selectKey keyProperty="perfId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('administrador.perfil_id_seq') 
+        </selectKey>
+        INSERT INTO administrador.perfil(
+        perf_id, perf_nombre, perf_descripcion)
+        VALUES (#{perfId}, #{perfNombre}, #{perfDescripcion});
+    </insert>   
+    
+    <update id="updatePerfil" parameterType="Usuario"> 
+        UPDATE administrador.perfil
+        SET perf_nombre=#{perfNombre}, perf_descripcion=#{perfDescripcion}
+        WHERE perf_id=#{perfId};
+    </update> 
+   
+    <delete id="deletePerfil" parameterType="Usuario"> 
+        DELETE FROM administrador.perfil
+        WHERE perf_id=#{perfId};
+    </delete>    
+    
+    <insert id="upsertPermisos" parameterType="Usuario" >
+        INSERT INTO administrador.permiso(
+        perf_id, menu_id, sub_menu_id, perm_activo)
+        VALUES (#{perfId}, #{menuId}, #{subMenuId}, #{permActivo})
+        ON CONFLICT ON CONSTRAINT id_permiso_pk 
+        DO UPDATE SET
+        perm_activo=#{permActivo};
+    </insert> 
+       
+    <delete id="deletePermisos" parameterType="Usuario"> 
+        DELETE FROM administrador.permiso
+        WHERE perf_id=#{perfId};
+    </delete> 
+    
+    <select id="getListMenu" parameterType="HashMap" resultMap="UsuarioMap">
+        SELECT menu_id, menu_codigo, menu_nombre, menu_descripcion, menu_icono
+        FROM administrador.menu ${c}       
+    </select> 
+    
+    <select id="getListSubMenu" parameterType="HashMap" resultMap="UsuarioMap">
+        SELECT sub_menu_id, sub_menu_codigo, sub_menu_nombre, sub_menu_descripcion, 
+        sub_menu_icono, menu_id
+        FROM administrador.sub_menu ${c}       
+    </select> 
+    
+    <select id="getClaveTurnos" parameterType="HashMap" resultMap="UsuarioMap">
+        SELECT cltu_id, cltu_clave, cltu_fecha_hora, cltu_activo
+        FROM ventas.claves_turnos ${c}       
+    </select>
+        
+    <insert id="insertClaveTurnos" parameterType="Usuario" >
+        <selectKey keyProperty="cltuId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.claves_turnos_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.claves_turnos(
+        cltu_id, cltu_clave, cltu_fecha_hora, cltu_activo)
+        VALUES (#{cltuId}, #{cltuClave}, #{cltuFechaHora}, #{cltuActivo});
+    </insert>
+    
+    <update id="updateClaveTurnos" parameterType="Usuario"> 
+        UPDATE ventas.claves_turnos
+        SET cltu_activo=#{cltuActivo};
+    </update> 
+    
+    <select id="getDatosEmpresa" parameterType="HashMap" resultMap="UsuarioMap">
+        SELECT empr_id, empr_ruc, empr_razon_social, empr_direccion, empr_telefonos, 
+        empr_correo, empr_pagina_web, empr_repre_nombres, empr_repre_dni, 
+        empr_repre_cargo, empr_url_logo, empr_logo_tipo, empr_sede
+        FROM administrador.empresa       
+    </select>
+    
+    <update id="updateDatosEmpresa" parameterType="Usuario" >
+        UPDATE administrador.empresa
+        SET empr_ruc=#{emprRuc}, empr_razon_social=#{emprRazonSocial}, 
+        empr_direccion=#{emprDireccion}, empr_telefonos=#{emprTelefonos}, 
+        empr_correo=#{emprCorreo}, empr_pagina_web=#{emprPaginaWeb}, 
+        empr_repre_nombres=#{emprRepreNombres}, empr_repre_dni=#{emprRepreDni}, 
+        empr_repre_cargo=#{emprRepreCargo}, empr_url_logo=#{emprUrlLogo},
+        empr_logo_tipo=#{emprLogoTipo}, empr_sede=#{emprSede}
+        WHERE empr_id=#{emprId};
+    </update> 
+    
+    <update id="updateDatosEmpresaN" parameterType="Usuario" >
+        UPDATE administrador.empresa
+        SET empr_ruc=#{emprRuc}, empr_razon_social=#{emprRazonSocial}, 
+        empr_direccion=#{emprDireccion}, empr_telefonos=#{emprTelefonos}, 
+        empr_correo=#{emprCorreo}, empr_pagina_web=#{emprPaginaWeb}, 
+        empr_repre_nombres=#{emprRepreNombres}, empr_repre_dni=#{emprRepreDni}, 
+        empr_repre_cargo=#{emprRepreCargo}, empr_sede=#{emprSede}
+        WHERE empr_id=#{emprId};
+    </update> 
+    
+    <select id="getDatosSoftware" parameterType="HashMap" resultMap="UsuarioMap">
+        SELECT soft_id, soft_nombre, soft_ruta
+        FROM administrador.software       
+    </select>
+   
+</mapper>

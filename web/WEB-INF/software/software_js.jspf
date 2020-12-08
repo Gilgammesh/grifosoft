@@ -1,0 +1,70 @@
+<%--
+ ========================
+ @author carlos santander
+ ========================
+--%>
+
+<script src="<% out.print(request.getContextPath());%>/templates/js/jquery.min.js"></script> 
+<script src="<% out.print(request.getContextPath());%>/templates/bootstrap/js/popper.min.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/bootstrap/js/bootstrap.min.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/bootstrap/js/bootstrap-timepicker.min.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tempapp.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/alertify/alertify.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/pdfmake/pdfmake.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/pdfmake/jszip.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/pdfmake/pdfmake.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/numberformatter/format.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/numberformatter/numberformatter.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/gijgo/js/gijgo.min.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/gijgo/js/messages/messages.es-es.min.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/dropify/dropify.min.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/plugins/bootstrap-toggle/bootstrap-toggle.js"></script>
+<!-- Script Pesonalizados --> 
+<script src="<% out.print(request.getContextPath());%>/templates/js/utilitarios.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/software.js"></script>
+<!-- Menu Inicio -->
+<script src="<% out.print(request.getContextPath());%>/templates/js/inicio/menu_inicio.js"></script>
+<!-- Menu Ventas -->
+<script src="<% out.print(request.getContextPath());%>/templates/js/ventas/sub_menu_ventas.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/ventas/sub_menu_liquidacion.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/ventas/sub_menu_control.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/ventas/sub_menu_facturacion.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/ventas/sub_menu_precios.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/ventas/sub_menu_surtidores.js"></script>
+<!-- Menu Almacén -->
+<script src="<% out.print(request.getContextPath());%>/templates/js/almacen/sub_menu_fact_compras.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/almacen/sub_menu_proveedores.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/almacen/sub_menu_stock.js"></script>
+<!-- Menu Ingresos Gastos -->
+<script src="<% out.print(request.getContextPath());%>/templates/js/ingresos_gastos/sub_menu_gastos.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/ingresos_gastos/sub_menu_ingresos.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/ingresos_gastos/sub_menu_compras.js"></script>
+<!-- Menu Contabilidad -->
+<script src="<% out.print(request.getContextPath());%>/templates/js/contabilidad/sub_menu_cont_ingreso.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/contabilidad/sub_menu_cont_gasto.js"></script>
+<!-- Menu Reportes -->
+<script src="<% out.print(request.getContextPath());%>/templates/js/reportes/sub_menu_tablero.js"></script>
+<!-- Menu Tablas Maestras -->
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_categorias.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_servicios.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_productos.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_tipos_emision.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_tipos_venta.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_trabajadores.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_turnos.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_unidades.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_tipos_pago.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_tipos_gasto.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_tipos_ingreso.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_bancos.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/tablas_maestras/sub_menu_cuentas_banco.js"></script>
+<!-- Menu Administrador -->
+<script src="<% out.print(request.getContextPath());%>/templates/js/administrador/sub_menu_perfiles.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/administrador/sub_menu_usuarios.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/administrador/sub_menu_claves.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/administrador/sub_menu_config_factura.js"></script>
+<script src="<% out.print(request.getContextPath());%>/templates/js/administrador/sub_menu_empresa.js"></script>

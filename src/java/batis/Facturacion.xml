@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+ ========================
+ @author carlos santander
+ ========================
+-->
+<mapper namespace="Facturacion">
+    
+    <resultMap id="FacturacionMap" type="Facturacion">        
+       
+        <result property="oseId" column="ose_id" />
+        <result property="oseRuc" column="ose_ruc" />
+        <result property="oseRazonSocial" column="ose_razon_social" />
+        <result property="oseDireccion" column="ose_direccion" />
+        <result property="oseUser" column="ose_user" />
+        <result property="osePassword" column="ose_password" />
+        <result property="oseUrlConsulta" column="ose_url_consulta" />
+        <result property="oseResolucion" column="ose_resolucion" />
+        <result property="oseUrlApi" column="ose_url_api" />
+        <result property="oseToken" column="ose_token" /> 
+        <result property="igvId" column="igv_id" />
+        <result property="igvNombre" column="igv_nombre" />
+        <result property="igvAbreviatura" column="igv_abreviatura" />
+        <result property="igvPorcentaje" column="igv_porcentaje" />
+        <result property="igvEstado" column="igv_estado" />   
+        <result property="tigvId" column="tigv_id" />
+        <result property="tigvNombre" column="tigv_nombre" />          
+        <result property="tigvEstado" column="tigv_estado" />      
+        <result property="moneId" column="mone_id" />   
+        <result property="moneNombrePlural" column="mone_nombre_plural" />
+        <result property="moneNombreSingular" column="mone_nombre_singular" />
+        <result property="moneAbreviatura" column="mone_abreviatura" />          
+        <result property="moneEstado" column="mone_estado" />        
+        <result property="sutrId" column="sutr_id" />   
+        <result property="sutrNombre" column="sutr_nombre" />
+        <result property="sutrEstado" column="sutr_estado" />        
+        <result property="reveId" column="reve_id" />
+        <result property="reveFechaHora" column="reve_fecha_hora" />
+        <result property="ticoNombre" column="tico_nombre" />
+        <result property="reveNroComprobante" column="reve_nro_comprobante" /> 
+        <result property="reveNombres" column="reve_nombres" />
+        <result property="reveDocumento" column="reve_documento" />
+        <result property="reveDireccion" column="reve_direccion" />
+        <result property="revdMonto" column="revd_monto" />
+        <result property="reveEnvioOse" column="reve_envio_ose" />
+        <result property="reveEnvioError" column="reve_envio_error" />
+        <result property="tiemId" column="tiem_id" />
+        <result property="tiemNombre" column="tiem_nombre" />
+        <result property="ticlId" column="ticl_id" />
+        <result property="tidoId" column="tido_id" /> 
+        <result property="faelId" column="fael_id" />
+        <result property="faelSunatEstado" column="fael_sunat_estado" />
+        <result property="faelSunatDescripcion" column="fael_sunat_descripcion" />
+        <result property="faelPdf" column="fael_pdf" />
+        <result property="faelXml" column="fael_xml" />
+        <result property="faelCdr" column="fael_cdr" />
+        <result property="faelEstado" column="fael_estado" />
+           
+    </resultMap> 
+      
+    <select id="getOse" parameterType="HashMap" resultMap="FacturacionMap">
+        SELECT ose_id, ose_ruc, ose_razon_social, ose_direccion, ose_user, ose_password, 
+        ose_url_consulta, ose_resolucion, ose_url_api, ose_token
+        FROM facturacion.ose ${c}
+    </select>
+    
+    <update id="updateOse" parameterType="Facturacion" >
+        UPDATE facturacion.ose(
+        SET ose_ruc=#{oseRuc}, ose_razon_social=#{oseRazonSocial}, ose_direccion=#{oseDireccion}, 
+        ose_user=#{oseUser}, ose_password=#{osePassword}, ose_url_consulta=#{oseUrlConsulta}, 
+        ose_resolucion=#{oseResolucion}, ose_url_api=#{oseUrlApi}, ose_token=#{oseToken}
+        WHERE ose_id=#{oseId};
+    </update> 
+         
+    <select id="getIgv" parameterType="HashMap" resultMap="FacturacionMap">
+        SELECT igv_id, igv_nombre, igv_abreviatura, igv_porcentaje, igv_estado
+        FROM facturacion.igv ${c}
+    </select>
+    
+    <update id="updateIgv" parameterType="Facturacion"> 
+        UPDATE facturacion.igv
+        SET igv_porcentaje=#{igvPorcentaje}, igv_estado=#{igvEstado}
+        WHERE igv_id=#{igvId};
+    </update>
+    
+    <select id="getTipoIgv" parameterType="HashMap" resultMap="FacturacionMap">
+        SELECT tigv_id, tigv_nombre, tigv_estado
+        FROM facturacion.tipo_igv ${c}
+    </select>
+    
+    <update id="updateTipoIgv" parameterType="Facturacion"> 
+        UPDATE facturacion.tipo_igv
+        SET tigv_estado=#{tigvEstado}
+        WHERE tigv_id=#{tigvId};
+    </update>
+    
+    <update id="updateAllTipoIgv" parameterType="Facturacion"> 
+        UPDATE facturacion.tipo_igv
+        SET tigv_estado=#{tigvEstado};
+    </update>
+    
+    <select id="getMoneda" parameterType="HashMap" resultMap="FacturacionMap">
+        SELECT mone_id, mone_nombre_plural, mone_nombre_singular, mone_abreviatura, mone_estado
+        FROM facturacion.moneda ${c}
+    </select>
+    
+    <update id="updateMoneda" parameterType="Facturacion"> 
+        UPDATE facturacion.moneda
+        SET mone_estado=#{moneEstado}
+        WHERE mone_id=#{moneId};
+    </update>
+    
+    <update id="updateAllMoneda" parameterType="Facturacion"> 
+        UPDATE facturacion.moneda
+        SET mone_estado=#{moneEstado};
+    </update>
+    
+    <select id="getSunatTransaccion" parameterType="HashMap" resultMap="FacturacionMap">
+        SELECT sutr_id, sutr_nombre, sutr_estado
+        FROM facturacion.sunat_transaction ${c}
+    </select>
+    
+    <update id="updateSunatTransaccion" parameterType="Facturacion"> 
+        UPDATE facturacion.sunat_transaction
+        SET sutr_estado=#{sutrEstado}
+        WHERE sutr_id=#{sutrId};
+    </update>
+    
+    <update id="updateAllSunatTransaccion" parameterType="Facturacion"> 
+        UPDATE facturacion.sunat_transaction
+        SET sutr_estado=#{sutrEstado};
+    </update>
+    
+    <select id="getFacturacionElectronica" parameterType="HashMap" resultMap="FacturacionMap">
+        SELECT a.reve_id, a.reve_fecha_hora, c.tico_nombre, a.reve_nro_comprobante, 
+        a.reve_nombres, a.reve_documento, d.revd_monto, a.reve_envio_ose, a.reve_envio_error, 
+        e.fael_sunat_estado, e.fael_sunat_descripcion, e.fael_pdf, e.fael_xml, e.fael_cdr, e.fael_estado
+        FROM ventas.registro_ventas as a
+        INNER JOIN ventas.tipos_emision as b ON (a.tiem_id = b.tiem_id)
+        INNER JOIN facturacion.tipo_comprobante as c ON (b.tiem_ose = c.tico_id)
+        INNER JOIN (SELECT reve_id, SUM(revd_monto) as revd_monto
+        FROM ventas.registro_ventas_detalle GROUP BY reve_id) as d ON (a.reve_id = d.reve_id)
+        ${e} JOIN facturacion.facturacion_electronica as e ON (a.reve_id = e.reve_id AND ${c}) ${d}
+    </select> 
+    
+    <select id="getListFacturacionElectronica" parameterType="HashMap" resultMap="FacturacionMap">
+        SELECT fael_id, reve_id, fael_sunat_estado, fael_sunat_descripcion, 
+        fael_pdf, fael_xml, fael_cdr, fael_estado
+        FROM facturacion.facturacion_electronica ${c}
+    </select>   
+    
+    <insert id="insertFacturacionElectronica" parameterType="Facturacion" >
+        <selectKey keyProperty="faelId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('facturacion.facturacion_electronica_id_seq') 
+        </selectKey>
+        INSERT INTO facturacion.facturacion_electronica(
+        fael_id, reve_id, fael_sunat_estado, fael_sunat_descripcion, 
+        fael_pdf, fael_xml, fael_cdr, fael_estado)
+        VALUES (#{faelId}, #{reveId}, #{faelSunatEstado}, #{faelSunatDescripcion}, 
+        #{faelPdf}, #{faelXml}, #{faelCdr}, #{faelEstado});
+    </insert>
+    
+    <update id="updateFacturacionElectronica" parameterType="Facturacion"> 
+        UPDATE facturacion.facturacion_electronica
+        SET fael_sunat_estado=#{faelSunatEstado}, 
+        fael_sunat_descripcion=#{faelSunatDescripcion}, 
+        fael_pdf=#{faelPdf}, fael_xml=#{faelXml}, fael_cdr=#{faelCdr}
+        WHERE reve_id=#{reveId};
+    </update>
+    
+    <update id="updateFacturacionElectronicaEstado" parameterType="Facturacion"> 
+        UPDATE facturacion.facturacion_electronica
+        SET fael_estado=#{faelEstado}
+        WHERE reve_id=#{reveId};
+    </update>
+    
+    <select id="getRegistroVenta" parameterType="HashMap" resultMap="FacturacionMap">
+        SELECT a.reve_id, a.reve_fecha_hora, a.reve_documento, a.reve_nombres, a.reve_direccion, 
+        a.tiem_id, b.tiem_nombre, a.ticl_id, a.reve_nro_comprobante, a.tido_id, a.reve_envio_error
+        FROM ventas.registro_ventas as a
+        INNER JOIN ventas.tipos_emision as b ON (a.tiem_id = b.tiem_id) ${c}
+    </select>   
+    
+    <update id="updateRegistroVenta" parameterType="Facturacion"> 
+        UPDATE ventas.registro_ventas
+        SET reve_fecha_hora=#{reveFechaHora}, reve_documento=#{reveDocumento},
+        reve_nombres=#{reveNombres}, reve_direccion=#{reveDireccion},
+        ticl_id=#{ticlId}, tido_id=#{tidoId}
+        WHERE reve_id=#{reveId};
+    </update>
+         
+</mapper>

@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+ ========================
+ @author carlos santander
+ ========================
+-->
+<mapper namespace="TablasMaestras">
+    
+    <resultMap id="TablasMaestrasMap" type="TablasMaestras">
+        
+        <result property="prodId" column="prod_id" />        
+        <result property="prodNombre" column="prod_nombre" />        
+        <result property="prodDescripcion" column="prod_descripcion" />        
+        <result property="prodEstado" column="prod_estado" />  
+        <result property="prodCodigoSunat" column="prod_codigo_sunat" /> 
+        <result property="prodGrifo" column="prod_grifo" />  
+        <result property="prcaId" column="prca_id" />
+        <result property="prcaNombre" column="prca_nombre" />
+        <result property="prcaEstado" column="prca_estado" />                
+        <result property="unmeId" column="unme_id" />
+        <result property="unmeNombre" column="unme_nombre" />
+        <result property="unmeSimbolo" column="unme_simbolo" />
+        <result property="unmeEstado" column="unme_estado" />        
+        <result property="unmeOse" column="unme_ose" />    
+        <result property="unmeIdSunat" column="unme_id_sunat" />
+        <result property="unmeNombreSunat" column="unme_nombre_sunat" />
+        <result property="trabId" column="trab_id" />         
+        <result property="trabDni" column="trab_dni" />
+        <result property="trabNombres" column="trab_nombres" />
+        <result property="trabApellidoPaterno" column="trab_apellido_paterno" />                
+        <result property="trabApellidoMaterno" column="trab_apellido_materno" />
+        <result property="trabCelular" column="trab_celular" />
+        <result property="trabDireccion" column="trab_direccion" />
+        <result property="trabEstado" column="trab_estado" />        
+        <result property="turnId" column="turn_id" />
+        <result property="turnNombre" column="turn_nombre" />
+        <result property="turnDescripcion" column="turn_descripcion" />
+        <result property="turnInicio" column="turn_inicio" />
+        <result property="turnFin" column="turn_fin" />
+        <result property="turnEstado" column="turn_estado" />        
+        <result property="tiemId" column="tiem_id" />
+        <result property="tiemNombre" column="tiem_nombre" />
+        <result property="tiemEstado" column="tiem_estado" /> 
+        <result property="tiveId" column="tive_id" />
+        <result property="tiveNombre" column="tive_nombre" />
+        <result property="tiveEstado" column="tive_estado" /> 
+        <result property="tipaId" column="tipa_id" />
+        <result property="tipaNombre" column="tipa_nombre" />
+        <result property="tipaEstado" column="tipa_estado" /> 
+        <result property="tigaId" column="tiga_id" />
+        <result property="tigaNombre" column="tiga_nombre" />
+        <result property="tigaEstado" column="tiga_estado" /> 
+        <result property="tigaCombustible" column="tiga_combustible" /> 
+        <result property="tiinId" column="tiin_id" />
+        <result property="tiinNombre" column="tiin_nombre" />
+        <result property="tiinEstado" column="tiin_estado" />         
+        <result property="bancId" column="banc_id" /> 
+        <result property="bancSigla" column="banc_sigla" />
+        <result property="bancNombre" column="banc_nombre" />
+        <result property="bancEstado" column="banc_estado" />         
+        <result property="cubaId" column="cuba_id" />         
+        <result property="cubaCuenta" column="cuba_cuenta" /> 
+        <result property="cubaDescripcion" column="cuba_descripcion" />
+        <result property="cubaEstado" column="cuba_estado" />         
+        <result property="tidoId" column="tido_id" />         
+        <result property="tidoNombre" column="tido_nombre" />         
+        <result property="tidoDescripcion" column="tido_descripcion" /> 
+        <result property="tidoCaracteres" column="tido_caracteres" />
+        <result property="tidoOse" column="tido_ose" />
+        <result property="caprId" column="capr_id" />
+        <result property="caprNombre" column="capr_nombre" />         
+        <result property="servId" column="serv_id" />        
+        <result property="servNombre" column="serv_nombre" />        
+        <result property="servDescripcion" column="serv_descripcion" />        
+        <result property="servEstado" column="serv_estado" />  
+        <result property="servCodigoSunat" column="serv_codigo_sunat" />           
+        
+    </resultMap> 
+  
+    <select id="getProductos" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT a.prod_id, a.prod_nombre, a.prod_descripcion, a.prca_id, a.unme_id, 
+        a.prod_estado, a.prod_codigo_sunat, a.prod_grifo, b.prca_nombre, b.prca_estado, 
+        c.unme_nombre, c.unme_simbolo, c.unme_estado, c.unme_ose, d.capr_id, d.capr_nombre
+        FROM ventas.productos as a
+        INNER JOIN ventas.productos_categorias as b ON (a.prca_id = b.prca_id)
+        INNER JOIN ventas.unidades_medida as c ON (a.unme_id = c.unme_id)
+        INNER JOIN facturacion.catalogo_producto as d ON (a.prod_codigo_sunat = d.capr_id) ${c}       
+    </select> 
+    
+    <select id="getCatalogoProductosSunat" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT capr_id, capr_nombre
+        FROM facturacion.catalogo_producto ${c}       
+    </select> 
+    
+    <insert id="insertProductos" parameterType="TablasMaestras" >
+        <selectKey keyProperty="prodId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.productos_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.productos(
+        prod_id, prod_nombre, prod_descripcion, prca_id, unme_id, prod_estado, 
+        prod_codigo_sunat, prod_grifo)
+        VALUES (#{prodId}, #{prodNombre}, #{prodDescripcion}, #{prcaId}, #{unmeId}, 
+        #{prodEstado}, #{prodCodigoSunat}, #{prodGrifo});
+    </insert>   
+              
+    <update id="updateProductos" parameterType="TablasMaestras"> 
+        UPDATE ventas.productos
+        SET prod_nombre=#{prodNombre}, prod_descripcion=#{prodDescripcion}, prca_id=#{prcaId}, 
+        unme_id=#{unmeId}, prod_codigo_sunat=#{prodCodigoSunat}, prod_grifo=#{prodGrifo}
+        WHERE prod_id=#{prodId};
+    </update>
+    
+    <update id="deleteProductos" parameterType="TablasMaestras"> 
+        UPDATE ventas.productos
+        SET prod_estado=#{prodEstado}
+        WHERE prod_id=#{prodId};
+    </update>
+    
+    <select id="getProductosCategorias" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT prca_id, prca_nombre, prca_estado
+        FROM ventas.productos_categorias ${c}       
+    </select> 
+    
+    <insert id="insertProductosCategorias" parameterType="TablasMaestras" >
+        <selectKey keyProperty="prcaId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.productos_categorias_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.productos_categorias(
+        prca_id, prca_nombre, prca_estado)
+        VALUES (#{prcaId}, #{prcaNombre}, #{prcaEstado});
+    </insert>   
+              
+    <update id="updateProductosCategorias" parameterType="TablasMaestras"> 
+        UPDATE ventas.productos_categorias
+        SET prca_nombre=#{prcaNombre}
+        WHERE prca_id=#{prcaId};
+    </update>
+    
+    <update id="deleteProductosCategorias" parameterType="TablasMaestras"> 
+        UPDATE ventas.productos_categorias
+        SET prca_estado=#{prcaEstado}
+        WHERE prca_id=#{prcaId};
+    </update>    
+    
+    <select id="getUnidadesMedida" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT unme_id, unme_nombre, unme_simbolo, unme_estado, unme_ose
+        FROM ventas.unidades_medida ${c}       
+    </select> 
+    
+    <select id="getUnidadesMedidas" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT a.unme_id, a.unme_nombre, a.unme_simbolo, a.unme_estado, 
+        a.unme_ose as unme_id_sunat, b.unme_nombre as unme_nombre_sunat
+        FROM ventas.unidades_medida as a
+        INNER JOIN facturacion.unidad_medida as b ON (a.unme_ose = b.unme_id) ${c}       
+    </select> 
+    
+    <select id="getUnidadesMedidaSunat" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT unme_id as unme_id_sunat, unme_nombre as unme_nombre_sunat
+        FROM facturacion.unidad_medida ${c}       
+    </select> 
+    
+    <insert id="insertUnidadesMedida" parameterType="TablasMaestras" >
+        <selectKey keyProperty="unmeId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.unidades_medida_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.unidades_medida(
+        unme_id, unme_nombre, unme_simbolo, unme_estado, unme_ose)
+        VALUES (#{unmeId}, #{unmeNombre}, #{unmeSimbolo}, #{unmeEstado}, #{unmeOse});
+    </insert>   
+              
+    <update id="updateUnidadesMedida" parameterType="TablasMaestras"> 
+        UPDATE ventas.unidades_medida
+        SET unme_nombre=#{unmeNombre}, unme_simbolo=#{unmeSimbolo},
+        unme_ose=#{unmeOse}
+        WHERE unme_id=#{unmeId};
+    </update>
+    
+    <update id="deleteUnidadesMedida" parameterType="TablasMaestras"> 
+        UPDATE ventas.unidades_medida
+        SET unme_estado=#{unmeEstado}
+        WHERE unme_id=#{unmeId};
+    </update> 
+    
+    <select id="getTrabajadores" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT trab_id, trab_dni, trab_nombres, trab_apellido_paterno, trab_apellido_materno, 
+        trab_celular, trab_direccion, trab_estado
+        FROM ventas.trabajadores ${c}       
+    </select> 
+    
+    <insert id="insertTrabajadores" parameterType="TablasMaestras" >
+        <selectKey keyProperty="trabId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.trabajadores_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.trabajadores(
+        trab_id, trab_dni, trab_nombres, trab_apellido_paterno, trab_apellido_materno, 
+        trab_celular, trab_direccion, trab_estado)
+        VALUES (#{trabId}, #{trabDni}, #{trabNombres}, #{trabApellidoPaterno}, 
+        #{trabApellidoMaterno}, #{trabCelular}, #{trabDireccion}, #{trabEstado});
+    </insert>   
+              
+    <update id="updateTrabajadores" parameterType="TablasMaestras"> 
+        UPDATE ventas.trabajadores
+        SET trab_dni=#{trabDni}, trab_nombres=#{trabNombres}, trab_apellido_paterno=#{trabApellidoPaterno}, 
+        trab_apellido_materno=#{trabApellidoMaterno}, trab_celular=#{trabCelular}, trab_direccion=#{trabDireccion}
+        WHERE trab_id=#{trabId};
+    </update>
+    
+    <update id="deleteTrabajadores" parameterType="TablasMaestras"> 
+        UPDATE ventas.trabajadores
+        SET trab_estado=#{trabEstado}
+        WHERE trab_id=#{trabId};
+    </update>       
+    
+    <select id="getTurnos" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT turn_id, turn_nombre, turn_descripcion, turn_inicio, turn_fin, turn_estado
+        FROM ventas.turnos ${c}       
+    </select> 
+    
+    <insert id="insertTurnos" parameterType="TablasMaestras" >
+        <selectKey keyProperty="turnId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.turnos_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.turnos(
+        turn_id, turn_nombre, turn_descripcion, turn_inicio, turn_fin, turn_estado)
+        VALUES (#{turnId}, #{turnNombre}, #{turnDescripcion}, #{turnInicio}, #{turnFin}, #{turnEstado});
+    </insert>   
+              
+    <update id="updateTurnos" parameterType="TablasMaestras"> 
+        UPDATE ventas.turnos
+        SET turn_nombre=#{turnNombre}, turn_descripcion=#{turnDescripcion}, 
+        turn_inicio=#{turnInicio}, turn_fin=#{turnFin}
+        WHERE turn_id=#{turnId};
+    </update>
+    
+    <update id="deleteTurnos" parameterType="TablasMaestras"> 
+        UPDATE ventas.turnos
+        SET turn_estado=#{turnEstado}
+        WHERE turn_id=#{turnId};
+    </update> 
+    
+    <select id="getTiposEmision" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT tiem_id, tiem_nombre, tiem_estado
+        FROM ventas.tipos_emision ${c}       
+    </select> 
+    
+    <insert id="insertTiposEmision" parameterType="TablasMaestras" >
+        <selectKey keyProperty="tiemId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.tipos_emision_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.tipos_emision(
+        tiem_id, tiem_nombre, tiem_estado)
+        VALUES (#{tiemId}, #{tiemNombre}, #{tiemEstado});
+    </insert>   
+              
+    <update id="updateTiposEmision" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_emision
+        SET tiem_nombre=#{tiemNombre}
+        WHERE tiem_id=#{tiemId};
+    </update>
+    
+    <update id="deleteTiposEmision" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_emision
+        SET tiem_estado=#{tiemEstado}
+        WHERE tiem_id=#{tiemId};
+    </update>  
+    
+    <select id="getTiposVenta" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT tive_id, tive_nombre, tive_estado
+        FROM ventas.tipos_venta ${c}       
+    </select> 
+    
+    <insert id="insertTiposVenta" parameterType="TablasMaestras" >
+        <selectKey keyProperty="tiveId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.tipos_venta_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.tipos_venta(
+        tive_id, tive_nombre, tive_estado)
+        VALUES (#{tiveId}, #{tiveNombre}, #{tiveEstado});
+    </insert>   
+              
+    <update id="updateTiposVenta" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_venta
+        SET tive_nombre=#{tiveNombre}
+        WHERE tive_id=#{tiveId};
+    </update>
+    
+    <update id="deleteTiposVenta" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_venta
+        SET tive_estado=#{tiveEstado}
+        WHERE tive_id=#{tiveId};
+    </update> 
+    
+    <select id="getTiposPago" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT tipa_id, tipa_nombre, tipa_estado
+        FROM ventas.tipos_pago ${c}       
+    </select> 
+    
+    <insert id="insertTiposPago" parameterType="TablasMaestras" >
+        <selectKey keyProperty="tipaId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.tipos_pago_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.tipos_pago(
+        tipa_id, tipa_nombre, tipa_estado)
+        VALUES (#{tipaId}, #{tipaNombre}, #{tipaEstado});
+    </insert>   
+              
+    <update id="updateTiposPago" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_pago
+        SET tipa_nombre=#{tipaNombre}
+        WHERE tipa_id=#{tipaId};
+    </update>
+    
+    <update id="deleteTiposPago" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_pago
+        SET tipa_estado=#{tipaEstado}
+        WHERE tipa_id=#{tipaId};
+    </update>  
+    
+    <select id="getTiposGasto" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT tiga_id, tiga_nombre, tiga_estado, tiga_combustible
+        FROM ventas.tipos_gasto ${c}       
+    </select> 
+    
+    <insert id="insertTiposGasto" parameterType="TablasMaestras" >
+        <selectKey keyProperty="tigaId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.tipos_gasto_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.tipos_gasto(
+        tiga_id, tiga_nombre, tiga_estado, tiga_combustible)
+        VALUES (#{tigaId}, #{tigaNombre}, #{tigaEstado}, #{tigaCombustible});
+    </insert>   
+              
+    <update id="updateTiposGasto" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_gasto
+        SET tiga_nombre=#{tigaNombre}
+        WHERE tiga_id=#{tigaId};
+    </update>
+    
+    <update id="deleteTiposGasto" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_gasto
+        SET tiga_estado=#{tigaEstado}
+        WHERE tiga_id=#{tigaId};
+    </update>   
+    
+    <select id="getTiposIngreso" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT tiin_id, tiin_nombre, tiin_estado
+        FROM ventas.tipos_ingreso ${c}       
+    </select> 
+    
+    <insert id="insertTiposIngreso" parameterType="TablasMaestras" >
+        <selectKey keyProperty="tiinId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.tipos_ingreso_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.tipos_ingreso(
+        tiin_id, tiin_nombre, tiin_estado)
+        VALUES (#{tiinId}, #{tiinNombre}, #{tiinEstado});
+    </insert>   
+              
+    <update id="updateTiposIngreso" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_ingreso
+        SET tiin_nombre=#{tiinNombre}
+        WHERE tiin_id=#{tiinId};
+    </update>
+    
+    <update id="deleteTiposIngreso" parameterType="TablasMaestras"> 
+        UPDATE ventas.tipos_ingreso
+        SET tiin_estado=#{tiinEstado}
+        WHERE tiin_id=#{tiinId};
+    </update>  
+    
+    <select id="getBancos" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT banc_id, banc_sigla, banc_nombre, banc_estado
+        FROM ventas.bancos ${c}       
+    </select> 
+    
+    <insert id="insertBancos" parameterType="TablasMaestras" >
+        <selectKey keyProperty="bancId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.bancos_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.bancos(
+        banc_id, banc_sigla, banc_nombre, banc_estado)
+        VALUES (#{bancId}, #{bancSigla}, #{bancNombre}, #{bancEstado});
+    </insert>   
+              
+    <update id="updateBancos" parameterType="TablasMaestras"> 
+        UPDATE ventas.bancos
+        SET banc_sigla=#{bancSigla}, banc_nombre=#{bancNombre}
+        WHERE banc_id=#{bancId};
+    </update>
+    
+    <update id="deleteBancos" parameterType="TablasMaestras"> 
+        UPDATE ventas.bancos
+        SET banc_estado=#{bancEstado}
+        WHERE banc_id=#{bancId};
+    </update>
+    
+    <select id="getCuentasBanco" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT a.cuba_id, a.cuba_cuenta, a.cuba_descripcion, a.banc_id, a.cuba_estado,
+        b.banc_sigla, b.banc_nombre, b.banc_estado
+        FROM ventas.cuentas_banco as a 
+        INNER JOIN ventas.bancos as b ON (a.banc_id = b.banc_id) ${c}
+    </select> 
+    
+    <insert id="insertCuentasBanco" parameterType="TablasMaestras" >
+        <selectKey keyProperty="cubaId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.cuentas_banco_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.cuentas_banco(
+        cuba_id, cuba_cuenta, cuba_descripcion, banc_id, cuba_estado)
+        VALUES (#{cubaId}, #{cubaCuenta}, #{cubaDescripcion}, #{bancId}, #{cubaEstado});
+    </insert>   
+              
+    <update id="updateCuentasBanco" parameterType="TablasMaestras"> 
+        UPDATE ventas.cuentas_banco
+        SET cuba_cuenta=#{cubaCuenta}, cuba_descripcion=#{cubaDescripcion}, banc_id=#{bancId}
+        WHERE cuba_id=#{cubaId};
+    </update>
+    
+    <update id="deleteCuentasBanco" parameterType="TablasMaestras"> 
+        UPDATE ventas.cuentas_banco
+        SET cuba_estado=#{cubaEstado}
+        WHERE cuba_id=#{cubaId};
+    </update>  
+    
+    <select id="getTiposDocumento" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT tido_id, tido_nombre, tido_descripcion, tido_caracteres, tido_ose
+        FROM ventas.tipos_documento ${c}
+    </select>     
+    
+    <select id="getServicios" parameterType="HashMap" resultMap="TablasMaestrasMap">
+        SELECT a.serv_id, a.serv_nombre, a.serv_descripcion, a.unme_id, 
+        b.unme_nombre, b.unme_simbolo, b.unme_estado, b.unme_ose, 
+        a.serv_estado, a.serv_codigo_sunat, c.capr_id, c.capr_nombre
+        FROM ventas.servicios as a
+        INNER JOIN ventas.unidades_medida as b ON (a.unme_id = b.unme_id)
+        INNER JOIN facturacion.catalogo_producto as c ON (a.serv_codigo_sunat = c.capr_id) ${c}       
+    </select> 
+    
+    <insert id="insertServicios" parameterType="TablasMaestras" >
+        <selectKey keyProperty="servId" resultType="Integer" order="BEFORE">
+            select NEXTVAL('ventas.servicios_id_seq') 
+        </selectKey>
+        INSERT INTO ventas.servicios(
+        serv_id, serv_nombre, serv_descripcion, unme_id, serv_estado, 
+        serv_codigo_sunat)
+        VALUES (#{servId}, #{servNombre}, #{servDescripcion}, 
+        #{unmeId}, #{servEstado}, #{servCodigoSunat});
+    </insert>   
+              
+    <update id="updateServicios" parameterType="TablasMaestras"> 
+        UPDATE ventas.servicios
+        SET serv_nombre=#{servNombre}, serv_descripcion=#{servDescripcion}, 
+        unme_id=#{unmeId}, serv_codigo_sunat=#{servCodigoSunat}
+        WHERE serv_id=#{servId};
+    </update>
+    
+    <update id="deleteServicios" parameterType="TablasMaestras"> 
+        UPDATE ventas.servicios
+        SET serv_estado=#{servEstado}
+        WHERE serv_id=#{servId};
+    </update>          
+   
+</mapper>
