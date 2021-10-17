@@ -4,8 +4,10 @@ import beans.Facturacion;
 import beans.TablasMaestras;
 import beans.Usuario;
 import beans.Ventas;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import daos.FacturacionDao;
 import daos.TablasMaestrasDao;
 import daos.UsuarioDao;
@@ -25,9 +27,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Date;
-
 import java.util.HashMap;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -1110,7 +1112,7 @@ public class FacturacionServlet extends HttpServlet {
             );
 
             objetoCabecera.put("items", listaDetJSON);
-            
+
             System.out.println(listaDetJSON);
 
             StringEntity parametros = new StringEntity(objetoCabecera.toString(), StandardCharsets.UTF_8);

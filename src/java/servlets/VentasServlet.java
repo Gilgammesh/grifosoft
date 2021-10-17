@@ -5,18 +5,25 @@ import beans.Facturacion;
 import beans.TablasMaestras;
 import beans.Usuario;
 import beans.Utilitarios;
-import com.google.gson.Gson;
 import beans.Ventas;
+
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import daos.AlmacenDao;
 import daos.FacturacionDao;
 import daos.TablasMaestrasDao;
 import daos.UsuarioDao;
 import daos.UtilitariosDao;
 import daos.VentasDao;
+import java.io.BufferedReader;
+
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,11 +37,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -1964,93 +1981,131 @@ public class VentasServlet extends HttpServlet {
                     hm.put("success", false);
                     hm.put("msg", "El " + tido_nombre + " debe tener " + tido_caracteres + " digitos");
                 } else {
-                    String query = " WHERE a.paru_ruc = '" + clie_documento + "' ";
-                    List<Utilitarios> list = new UtilitariosDao().getPadronRuc(query);
-                    if (list.isEmpty()) {
-                        hm.put("success", false);
-                        hm.put("msg", "El " + tido_nombre + " no se encuentra registrado");
-                    } else {
 
-                        if (list.get(0).getParuEstado().toLowerCase().equals("activo")) {
-                            hm.put("success", true);
-                            hm.put("clie_nombres", list.get(0).getParuNombres());
+                    try {
+                        String RUTA = "https://api.apis.net.pe/v1/ruc?numero=" + clie_documento;
+                        HttpClient client = new DefaultHttpClient();
+                        HttpGet get = new HttpGet(RUTA);
+                        get.addHeader("Authorization", "Bearer $TOKEN"); // Cabecera del token
+                        get.addHeader("Accept", "application/json"); // Cabecera del Content-Type
 
-                            String direccion = "";
+                        HttpResponse result = client.execute(get);
+                        BufferedReader rd = new BufferedReader(new InputStreamReader(result.getEntity().getContent(), StandardCharsets.UTF_8));
+                        String linea = "";
+                        if ((linea = rd.readLine()) != null) {
+                            JSONParser parsearRsptaJson = new JSONParser();
+                            JSONObject json_rspta = (JSONObject) parsearRsptaJson.parse(linea);
 
-                            if (list.get(0).getParuTipoVia().equals("----") || list.get(0).getParuTipoVia().equals("-")) {
-                                direccion += "";
+                            System.out.println(json_rspta);
+
+                            if (json_rspta == null) {
+                                hm.put("success", false);
+                                hm.put("msg", "El " + tido_nombre + " no se encuentra registrado");
                             } else {
-                                direccion += list.get(0).getParuTipoVia() + " ";
+                                if (json_rspta.get("estado").equals("ACTIVO")) {
+                                    hm.put("success", true);
+                                    hm.put("clie_nombres", json_rspta.get("nombre"));
+                                    hm.put("clie_direccion", json_rspta.get("direccion"));
+                                } else {
+                                    hm.put("success", false);
+                                    hm.put("msg", json_rspta.get("estado"));
+                                }
                             }
 
-                            if (list.get(0).getParuNombreVia().equals("----") || list.get(0).getParuNombreVia().equals("-")) {
-                                direccion += "";
-                            } else {
-                                direccion += list.get(0).getParuNombreVia() + " ";
-                            }
-
-                            if (list.get(0).getParuNumero().equals("----") || list.get(0).getParuNumero().equals("-")) {
-                                direccion += "";
-                            } else {
-                                direccion += "NRO. " + list.get(0).getParuNumero() + " ";
-                            }
-
-                            if (list.get(0).getParuInterior().equals("----") || list.get(0).getParuInterior().equals("-")) {
-                                direccion += "";
-                            } else {
-                                direccion += "INT. " + list.get(0).getParuInterior() + " ";
-                            }
-
-                            if (list.get(0).getParuLote().equals("----") || list.get(0).getParuLote().equals("-")) {
-                                direccion += "";
-                            } else {
-                                direccion += "LOTE. " + list.get(0).getParuLote() + " ";
-                            }
-
-                            if (list.get(0).getParuDepartamento().equals("----") || list.get(0).getParuDepartamento().equals("-")) {
-                                direccion += "";
-                            } else {
-                                direccion += "DPTO. " + list.get(0).getParuDepartamento() + " ";
-                            }
-
-                            if (list.get(0).getParuManzana().equals("----") || list.get(0).getParuManzana().equals("-")) {
-                                direccion += "";
-                            } else {
-                                direccion += "MZA. " + list.get(0).getParuManzana() + " ";
-                            }
-
-                            if (list.get(0).getParuKilometro().equals("----") || list.get(0).getParuKilometro().equals("-")) {
-                                direccion += "";
-                            } else {
-                                direccion += "KM. " + list.get(0).getParuKilometro() + " ";
-                            }
-
-                            if (list.get(0).getParuCodigoZona().equals("----") || list.get(0).getParuCodigoZona().equals("-")) {
-                                direccion += "";
-                            } else {
-                                direccion += list.get(0).getParuCodigoZona() + " ";
-                            }
-
-                            if (list.get(0).getParuTipoZona().equals("----") || list.get(0).getParuTipoZona().equals("-")) {
-                                direccion += "";
-                            } else {
-                                direccion += list.get(0).getParuTipoZona() + " ";
-                            }
-
-                            if (list.get(0).getParuUbigeo().length() < 6) {
-                                direccion += "";
-                            } else {
-                                direccion += " - " + list.get(0).getDistrito() + " - " + list.get(0).getProvincia() + " - " + list.get(0).getDepartamento();
-                            }
-
-                            hm.put("clie_direccion", direccion);
-
-                        } else {
-                            hm.put("success", false);
-                            hm.put("msg", list.get(0).getParuEstado());
                         }
-
+                    } catch (IOException | UnsupportedOperationException | UnsupportedCharsetException | org.json.simple.parser.ParseException e) {
+                        System.out.println(e.getMessage());
+                        hm.put("success", false);
+                        hm.put("msg", "No hay conexión a internet");
                     }
+
+                    // String query = " WHERE a.paru_ruc = '" + clie_documento + "' ";
+                    // List<Utilitarios> list = new UtilitariosDao().getPadronRuc(query);
+                    // if (list.isEmpty()) {
+                    //    hm.put("success", false);
+                    //    hm.put("msg", "El " + tido_nombre + " no se encuentra registrado");
+                    //} else {
+                    //
+                    //    if (list.get(0).getParuEstado().toLowerCase().equals("activo")) {
+                    //        hm.put("success", true);
+                    //        hm.put("clie_nombres", list.get(0).getParuNombres());
+                    //
+                    //        String direccion = "";
+                    //
+                    //        if (list.get(0).getParuTipoVia().equals("----") || list.get(0).getParuTipoVia().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += list.get(0).getParuTipoVia() + " ";
+                    //        }
+                    //
+                    //        if (list.get(0).getParuNombreVia().equals("----") || list.get(0).getParuNombreVia().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += list.get(0).getParuNombreVia() + " ";
+                    //        }
+                    //
+                    //        if (list.get(0).getParuNumero().equals("----") || list.get(0).getParuNumero().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += "NRO. " + list.get(0).getParuNumero() + " ";
+                    //        }
+                    //
+                    //        if (list.get(0).getParuInterior().equals("----") || list.get(0).getParuInterior().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += "INT. " + list.get(0).getParuInterior() + " ";
+                    //        }
+                    //
+                    //        if (list.get(0).getParuLote().equals("----") || list.get(0).getParuLote().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += "LOTE. " + list.get(0).getParuLote() + " ";
+                    //        }
+                    //
+                    //        if (list.get(0).getParuDepartamento().equals("----") || list.get(0).getParuDepartamento().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += "DPTO. " + list.get(0).getParuDepartamento() + " ";
+                    //        } 
+                    //
+                    //        if (list.get(0).getParuManzana().equals("----") || list.get(0).getParuManzana().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += "MZA. " + list.get(0).getParuManzana() + " ";
+                    //        }
+                    //
+                    //        if (list.get(0).getParuKilometro().equals("----") || list.get(0).getParuKilometro().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += "KM. " + list.get(0).getParuKilometro() + " ";
+                    //        }
+                    //
+                    //        if (list.get(0).getParuCodigoZona().equals("----") || list.get(0).getParuCodigoZona().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += list.get(0).getParuCodigoZona() + " ";
+                    //        } 
+                    //
+                    //        if (list.get(0).getParuTipoZona().equals("----") || list.get(0).getParuTipoZona().equals("-")) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += list.get(0).getParuTipoZona() + " ";
+                    //        }
+                    //
+                    //        if (list.get(0).getParuUbigeo().length() < 6) {
+                    //            direccion += "";
+                    //        } else {
+                    //            direccion += " - " + list.get(0).getDistrito() + " - " + list.get(0).getProvincia() + " - " + list.get(0).getDepartamento();
+                    //        }
+                    //
+                    //        hm.put("clie_direccion", direccion);
+                    //
+                    //    } else {
+                    //        hm.put("success", false);
+                    //        hm.put("msg", list.get(0).getParuEstado());
+                    //    }
+                    //
+                    //}
                 }
             }
         }
@@ -2132,7 +2187,7 @@ public class VentasServlet extends HttpServlet {
         String[] ledi_Precios = request.getParameterValues("ledi_precio_unitario");
 
         HashMap hm = new HashMap();
-        
+
         Ventas beanA = new Ventas();
         beanA.setTudiId(tudi_id);
         new VentasDao().updateLecturaDiariaAll(beanA);
