@@ -1399,6 +1399,87 @@ function imprimirFacturacionEmisionComprobante(response) {
         empr_direccion = response.empr_direccion;
     }
 
+    var segmentCredit = {};
+    if (response.tive_id === 2) {
+        const periodo = parseInt(response.period_credito);
+        const cuotas = parseInt(response.cuotas_credito);
+        const arrayDC = response.fecha_credito.split("/");
+        const yearDC = parseInt(arrayDC[2]);
+        const monthDC = parseInt(arrayDC[1]) - 1;
+        const dayDC = parseInt(arrayDC[0]);
+        if (response.cuotas_credito === 1) {
+            segmentCredit = {
+                table: {
+                    widths: [90, '*'],
+                    body: [
+                        [
+                            {text: 'Condición de Pago :', alignment: 'right', style: 'subtitulo'},
+                            {text: 'CRÉDITO a ' + periodo + ' días', alignment: 'left', style: 'subtitulo'}
+                        ],
+                        [
+                            {text: 'Número de Cuotas :', alignment: 'right', style: 'subtitulo'},
+                            {text: cuotas + " cuota", alignment: 'left', style: 'subtitulo'}
+                        ],
+                        [
+                            {text: 'Monto de la Cuota :', alignment: 'right', style: 'subtitulo'},
+                            {text: "S/ " + formatNumeroDecimal(response.monto_credito), alignment: 'left', style: 'subtitulo'}
+                        ],
+                        [
+                            {text: 'Fecha de Vencimiento :', alignment: 'right', style: 'subtitulo'},
+                            {text: response.fecha_credito, alignment: 'left', style: 'subtitulo'}
+                        ]
+                    ]
+                },
+                layout: {
+                    hLineColor: 'white',
+                    vLineColor: 'white'
+                }
+            };
+        } else {
+            let bodyCredit = [];
+            bodyCredit.push([
+                {text: 'Condiciones de Pago :', alignment: 'right', style: 'subtitulo'},
+                {text: 'CRÉDITO - Cuotas a ' + periodo + ' días', alignment: 'left', style: 'subtitulo'}
+            ]);
+            bodyCredit.push([
+                {text: 'Número de Cuotas :', alignment: 'right', style: 'subtitulo'},
+                {text: cuotas + " cuotas", alignment: 'left', style: 'subtitulo'}
+            ]);
+            bodyCredit.push([
+                {text: 'Monto de la Cuota :', alignment: 'right', style: 'subtitulo'},
+                {text: "S/ " + formatNumeroDecimal(response.monto_credito), alignment: 'left', style: 'subtitulo'}
+            ]);
+            for (let i = 0; i < cuotas; i++) {
+                let dateCredit = new Date(yearDC, monthDC, dayDC);
+                let dateCC = dateCredit.setDate(dateCredit.getDate() + (i * periodo));
+                let dateCC_ = new Date(dateCC);
+                let year = dateCC_.getFullYear() + "";
+                let month = (dateCC_.getMonth() + 1) + "";
+                if (month.length === 1) {
+                    month = "0" + month;
+                }
+                let day = dateCC_.getDate() + "";
+                if (day.length === 1) {
+                    day = "0" + day;
+                }
+                bodyCredit.push([
+                    {text: 'Fecha de Vencimiento ' + (i + 1) + ' :', alignment: 'right', style: 'subtitulo'},
+                    {text: day + "/" + month + "/" + year, alignment: 'left', style: 'subtitulo'}
+                ]);
+            }
+            segmentCredit = {
+                table: {
+                    widths: [90, '*'],
+                    body: bodyCredit
+                },
+                layout: {
+                    hLineColor: 'white',
+                    vLineColor: 'white'
+                }
+            };
+        }
+    }
+
     if (!$.trim(response.empr_url_logo)) {
         var docDefinition = {
             pageMargins: [10, 40, 10, 10],
@@ -1506,6 +1587,7 @@ function imprimirFacturacionEmisionComprobante(response) {
                         vLineColor: 'white'
                     }
                 },
+                segmentCredit,
                 {
                     text: '\n'
                 },
@@ -1742,6 +1824,7 @@ function imprimirFacturacionEmisionComprobante(response) {
                             vLineColor: 'white'
                         }
                     },
+                    segmentCredit,
                     {
                         text: '\n'
                     },

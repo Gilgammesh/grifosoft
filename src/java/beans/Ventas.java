@@ -98,6 +98,10 @@ public class Ventas {
     private String reveNroComprobante;
     private String reveEnvioOse;
     private String reveEnvioError;
+    private Integer reveCuotasCredito;
+    private BigDecimal reveMontoCredito;
+    private String reveFechaVencimientoCredito;
+    private Integer revePeriodoCredito;
     private Integer tiemId;
     private String tiemNombre;
     private String tiemEstado;
@@ -881,6 +885,38 @@ public class Ventas {
 
     public void setReveEnvioError(String reveEnvioError) {
         this.reveEnvioError = reveEnvioError;
+    }
+
+    public Integer getReveCuotasCredito() {
+        return reveCuotasCredito;
+    }
+
+    public void setReveCuotasCredito(Integer reveCuotasCredito) {
+        this.reveCuotasCredito = reveCuotasCredito;
+    }
+
+    public BigDecimal getReveMontoCredito() {
+        return reveMontoCredito;
+    }
+
+    public void setReveMontoCredito(BigDecimal reveMontoCredito) {
+        this.reveMontoCredito = reveMontoCredito;
+    }
+
+    public String getReveFechaVencimientoCredito() {
+        return reveFechaVencimientoCredito;
+    }
+
+    public void setReveFechaVencimientoCredito(String reveFechaVencimientoCredito) {
+        this.reveFechaVencimientoCredito = reveFechaVencimientoCredito;
+    }
+
+    public Integer getRevePeriodoCredito() {
+        return revePeriodoCredito;
+    }
+
+    public void setRevePeriodoCredito(Integer revePeriodoCredito) {
+        this.revePeriodoCredito = revePeriodoCredito;
     }
 
     public Integer getTiemId() {

@@ -29,6 +29,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.time.LocalDate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -1019,6 +1020,8 @@ public class FacturacionServlet extends HttpServlet {
                 placa_vehiculo = "";
             }
 
+            Integer tipo_venta = list.get(0).getTiveId();
+
             JSONObject objetoCabecera = new JSONObject();
             objetoCabecera.put("operacion", "generar_comprobante"); // Tipo de operacion con el operador OSE  ====> (Obligatorio)
             objetoCabecera.put("tipo_de_comprobante", list.get(0).getTiemOse().toString()); // Tipo de Comprobante: 1=FACTURA, 2=BOLETA  ====> (Obligatorio)           
@@ -1060,13 +1063,34 @@ public class FacturacionServlet extends HttpServlet {
             objetoCabecera.put("tipo_de_nota_de_debito", ""); // Tipo de Nota de Débito: 1=INTERESES POR MORA, 2=AUMENTO DE VALOR, 3=PENALIDADES  ====> (Condicional)
             objetoCabecera.put("enviar_automaticamente_a_la_sunat", "true"); // Se quiere enviar automáticamente a la SUNAT: false=FALSO, true=VERDADERO  ====> (Condicional)
             objetoCabecera.put("enviar_automaticamente_al_cliente", "false"); // Se quiere enviar automáticamente al Cliente: false=FALSO, true=VERDADERO  ====> (Condicional)
-            objetoCabecera.put("codigo_unico", ""); // Código único generado por el emisor si se desea que NUBEFACT controle la generación de documentos  ====> (Opcional)
-            objetoCabecera.put("condiciones_de_pago", ""); // Condiciones de Pago. Ejemplo: "Crédito a 15 días"  ====> (Opcional)
-            objetoCabecera.put("medio_de_pago", ""); // Medio de Pago. Ejemplo: "Tarjeta VISA Op. 15687"  ====> (Opcional)
+            objetoCabecera.put("codigo_unico", ""); // Código único generado por el emisor si se desea que NUBEFACT controle la generación de documentos  ====> (Opcional)            
             objetoCabecera.put("placa_vehiculo", placa_vehiculo); // Placa de Vehículo. Ejemplo: "ALF-321"  ====> (Opcional)
             objetoCabecera.put("orden_compra_servicio", ""); // Orden de Compra de Servicio. Ejemplo: "56897"  ====> (Opcional)
             objetoCabecera.put("tabla_personalizada_codigo", ""); // Código de tabla configurada en NUBEFACT  ====> (Opcional)
             objetoCabecera.put("formato_de_pdf", "A4"); // Formato de PDF que se desea generar en la página web de NUBEFACT: A4, A5, TICKET  ====> (Opcional)
+            if (tipo_venta == 1) {
+                objetoCabecera.put("medio_de_pago", "Efectivo"); // Medio de Pago. Ejemplo: "Tarjeta VISA Op. 15687"  ====> (Opcional)
+            }
+            if (tipo_venta == 2) {
+                Integer periodo_credito = list.get(0).getRevePeriodoCredito();
+                Integer cuotas_credito = list.get(0).getReveCuotasCredito();
+                BigDecimal monto_credito = list.get(0).getReveMontoCredito();
+                String fecha_credito = list.get(0).getReveFechaVencimientoCredito();
+                String[] arrayFecha = fecha_credito.split("/");
+                objetoCabecera.put("condiciones_de_pago", "CRÉDITO a " + periodo_credito + " días"); // Condiciones de Pago   
+                JSONArray credito = new JSONArray();
+                for (int i = 0; i < cuotas_credito; i++) {
+                    String fechaParse = arrayFecha[2] + "-" + arrayFecha[1] + "-" + arrayFecha[0];
+                    String fechaNew = LocalDate.parse(fechaParse).plusDays(i * periodo_credito).toString();
+                    String[] arrayFNew = fechaNew.split("-");
+                    JSONObject creditoItem = new JSONObject();
+                    creditoItem.put("cuota", i + 1);
+                    creditoItem.put("fecha_de_pago", arrayFNew[2] + "-" + arrayFNew[1] + "-" + arrayFNew[0]);
+                    creditoItem.put("importe", monto_credito);
+                    credito.add(creditoItem);
+                }
+                objetoCabecera.put("venta_al_credito", credito);
+            }
 
             String queryDet = " WHERE reve_id = " + id + " ORDER BY revd_id ASC ";
             List<Ventas> listDet = new VentasDao().getRegistroVentaDetalle(queryDet);
@@ -1110,9 +1134,8 @@ public class FacturacionServlet extends HttpServlet {
                         listaDetJSON.add(detalle_linea);
                     }
             );
-
-            objetoCabecera.put("items", listaDetJSON);
-
+            objetoCabecera.put("items", listaDetJSON);     
+            System.out.println(objetoCabecera);
             System.out.println(listaDetJSON);
 
             StringEntity parametros = new StringEntity(objetoCabecera.toString(), StandardCharsets.UTF_8);

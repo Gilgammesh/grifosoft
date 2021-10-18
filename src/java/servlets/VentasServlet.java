@@ -1380,6 +1380,26 @@ public class VentasServlet extends HttpServlet {
             bean.setTrabId(trab_id);
             bean.setTiemId(tiem_id);
             bean.setTiveId(tive_id);
+            hm.put("tive_id", tive_id);
+            if (tive_id == 1) {
+                bean.setReveCuotasCredito(null);
+                bean.setReveMontoCredito(null);
+                bean.setReveFechaVencimientoCredito(null);
+            }
+            if (tive_id == 2) {
+                Integer period_credito = Integer.parseInt(request.getParameter("period_credito"));
+                Integer cuotas_credito = Integer.parseInt(request.getParameter("cuotas_credito"));
+                String monto_credito = request.getParameter("monto_credito") == null ? "" : request.getParameter("monto_credito");
+                String fecha_credito = request.getParameter("fecha_credito") == null ? "" : request.getParameter("fecha_credito");
+                bean.setRevePeriodoCredito(period_credito);
+                bean.setReveCuotasCredito(cuotas_credito);
+                bean.setReveMontoCredito(new BigDecimal(monto_credito));
+                bean.setReveFechaVencimientoCredito(fecha_credito);
+                hm.put("period_credito", period_credito);
+                hm.put("cuotas_credito", cuotas_credito);
+                hm.put("monto_credito", monto_credito);
+                hm.put("fecha_credito", fecha_credito);
+            }
             bean.setTiclId(ticl_id);
             bean.setTidoId(tido_id);
 
@@ -1607,6 +1627,7 @@ public class VentasServlet extends HttpServlet {
 
             }
         } catch (NumberFormatException e) {
+            System.out.println(e);
             hm.put("success", false);
             hm.put("msg", "No se pudo emitir el registro de venta. Intente Nuevamente!!");
         }
@@ -1959,16 +1980,51 @@ public class VentasServlet extends HttpServlet {
                     hm.put("success", false);
                     hm.put("msg", "El " + tido_nombre + " debe tener " + tido_caracteres + " digitos");
                 } else {
-                    String query = " WHERE a.ticl_id = " + ticl_id + " AND a.clie_documento = '" + clie_documento + "' AND a.tido_id = " + tido_id;
-                    List<Ventas> list = new VentasDao().getClientes(query);
-                    if (list.isEmpty()) {
-                        hm.put("success", false);
-                        hm.put("msg", "El cliente no se encuentra registrado");
+
+                    // Si el tipo de documento es DNI (Hacemos la consulta por la API)
+                    if (tido_id == 2) {
+                        try {
+                            String RUTA = "https://api.apis.net.pe/v1/dni?numero=" + clie_documento;
+                            HttpClient client = new DefaultHttpClient();
+                            HttpGet get = new HttpGet(RUTA);
+                            get.addHeader("Authorization", "Bearer $TOKEN"); // Cabecera del token
+                            get.addHeader("Accept", "application/json"); // Cabecera del Content-Type
+
+                            HttpResponse result = client.execute(get);
+                            BufferedReader rd = new BufferedReader(new InputStreamReader(result.getEntity().getContent(), StandardCharsets.UTF_8));
+                            String linea = "";
+                            if ((linea = rd.readLine()) != null) {
+                                JSONParser parsearRsptaJson = new JSONParser();
+                                JSONObject json_rspta = (JSONObject) parsearRsptaJson.parse(linea);
+                                System.out.println("DNI consultado -> " + json_rspta);
+                                if (json_rspta == null) {
+                                    hm.put("success", false);
+                                    hm.put("msg", "El " + tido_nombre + " no se encuentra registrado");
+                                } else {
+                                    hm.put("success", true);
+                                    hm.put("clie_nombres", json_rspta.get("nombre"));
+                                    hm.put("clie_direccion", json_rspta.get("direccion"));
+                                }
+
+                            }
+                        } catch (IOException | UnsupportedOperationException | UnsupportedCharsetException | org.json.simple.parser.ParseException e) {
+                            System.out.println(e.getMessage());
+                            hm.put("success", false);
+                            hm.put("msg", "No hay conexión a internet");
+                        }
                     } else {
-                        hm.put("success", true);
-                        hm.put("clie_nombres", list.get(0).getClieNombres());
-                        hm.put("clie_direccion", list.get(0).getClieDireccion());
+                        String query = " WHERE a.ticl_id = " + ticl_id + " AND a.clie_documento = '" + clie_documento + "' AND a.tido_id = " + tido_id;
+                        List<Ventas> list = new VentasDao().getClientes(query);
+                        if (list.isEmpty()) {
+                            hm.put("success", false);
+                            hm.put("msg", "El cliente no se encuentra registrado");
+                        } else {
+                            hm.put("success", true);
+                            hm.put("clie_nombres", list.get(0).getClieNombres());
+                            hm.put("clie_direccion", list.get(0).getClieDireccion());
+                        }
                     }
+
                 }
             }
         }
@@ -1981,7 +2037,7 @@ public class VentasServlet extends HttpServlet {
                     hm.put("success", false);
                     hm.put("msg", "El " + tido_nombre + " debe tener " + tido_caracteres + " digitos");
                 } else {
-
+                    // Hacemos la consulta del RUC por la API
                     try {
                         String RUTA = "https://api.apis.net.pe/v1/ruc?numero=" + clie_documento;
                         HttpClient client = new DefaultHttpClient();
@@ -1995,9 +2051,7 @@ public class VentasServlet extends HttpServlet {
                         if ((linea = rd.readLine()) != null) {
                             JSONParser parsearRsptaJson = new JSONParser();
                             JSONObject json_rspta = (JSONObject) parsearRsptaJson.parse(linea);
-
-                            System.out.println(json_rspta);
-
+                            System.out.println("RUC consultado -> " + json_rspta);
                             if (json_rspta == null) {
                                 hm.put("success", false);
                                 hm.put("msg", "El " + tido_nombre + " no se encuentra registrado");
@@ -2019,93 +2073,93 @@ public class VentasServlet extends HttpServlet {
                         hm.put("msg", "No hay conexión a internet");
                     }
 
-                    // String query = " WHERE a.paru_ruc = '" + clie_documento + "' ";
-                    // List<Utilitarios> list = new UtilitariosDao().getPadronRuc(query);
-                    // if (list.isEmpty()) {
-                    //    hm.put("success", false);
-                    //    hm.put("msg", "El " + tido_nombre + " no se encuentra registrado");
-                    //} else {
-                    //
-                    //    if (list.get(0).getParuEstado().toLowerCase().equals("activo")) {
-                    //        hm.put("success", true);
-                    //        hm.put("clie_nombres", list.get(0).getParuNombres());
-                    //
-                    //        String direccion = "";
-                    //
-                    //        if (list.get(0).getParuTipoVia().equals("----") || list.get(0).getParuTipoVia().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += list.get(0).getParuTipoVia() + " ";
-                    //        }
-                    //
-                    //        if (list.get(0).getParuNombreVia().equals("----") || list.get(0).getParuNombreVia().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += list.get(0).getParuNombreVia() + " ";
-                    //        }
-                    //
-                    //        if (list.get(0).getParuNumero().equals("----") || list.get(0).getParuNumero().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += "NRO. " + list.get(0).getParuNumero() + " ";
-                    //        }
-                    //
-                    //        if (list.get(0).getParuInterior().equals("----") || list.get(0).getParuInterior().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += "INT. " + list.get(0).getParuInterior() + " ";
-                    //        }
-                    //
-                    //        if (list.get(0).getParuLote().equals("----") || list.get(0).getParuLote().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += "LOTE. " + list.get(0).getParuLote() + " ";
-                    //        }
-                    //
-                    //        if (list.get(0).getParuDepartamento().equals("----") || list.get(0).getParuDepartamento().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += "DPTO. " + list.get(0).getParuDepartamento() + " ";
-                    //        } 
-                    //
-                    //        if (list.get(0).getParuManzana().equals("----") || list.get(0).getParuManzana().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += "MZA. " + list.get(0).getParuManzana() + " ";
-                    //        }
-                    //
-                    //        if (list.get(0).getParuKilometro().equals("----") || list.get(0).getParuKilometro().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += "KM. " + list.get(0).getParuKilometro() + " ";
-                    //        }
-                    //
-                    //        if (list.get(0).getParuCodigoZona().equals("----") || list.get(0).getParuCodigoZona().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += list.get(0).getParuCodigoZona() + " ";
-                    //        } 
-                    //
-                    //        if (list.get(0).getParuTipoZona().equals("----") || list.get(0).getParuTipoZona().equals("-")) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += list.get(0).getParuTipoZona() + " ";
-                    //        }
-                    //
-                    //        if (list.get(0).getParuUbigeo().length() < 6) {
-                    //            direccion += "";
-                    //        } else {
-                    //            direccion += " - " + list.get(0).getDistrito() + " - " + list.get(0).getProvincia() + " - " + list.get(0).getDepartamento();
-                    //        }
-                    //
-                    //        hm.put("clie_direccion", direccion);
-                    //
-                    //    } else {
-                    //        hm.put("success", false);
-                    //        hm.put("msg", list.get(0).getParuEstado());
-                    //    }
-                    //
-                    //}
+//                     String query = " WHERE a.paru_ruc = '" + clie_documento + "' ";
+//                     List<Utilitarios> list = new UtilitariosDao().getPadronRuc(query);
+//                     if (list.isEmpty()) {
+//                        hm.put("success", false);
+//                        hm.put("msg", "El " + tido_nombre + " no se encuentra registrado");
+//                    } else {
+//                    
+//                        if (list.get(0).getParuEstado().toLowerCase().equals("activo")) {
+//                            hm.put("success", true);
+//                            hm.put("clie_nombres", list.get(0).getParuNombres());
+//                    
+//                            String direccion = "";
+//                    
+//                            if (list.get(0).getParuTipoVia().equals("----") || list.get(0).getParuTipoVia().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += list.get(0).getParuTipoVia() + " ";
+//                            }
+//                    
+//                            if (list.get(0).getParuNombreVia().equals("----") || list.get(0).getParuNombreVia().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += list.get(0).getParuNombreVia() + " ";
+//                            }
+//                    
+//                            if (list.get(0).getParuNumero().equals("----") || list.get(0).getParuNumero().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += "NRO. " + list.get(0).getParuNumero() + " ";
+//                            }
+//                    
+//                            if (list.get(0).getParuInterior().equals("----") || list.get(0).getParuInterior().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += "INT. " + list.get(0).getParuInterior() + " ";
+//                            }
+//                    
+//                            if (list.get(0).getParuLote().equals("----") || list.get(0).getParuLote().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += "LOTE. " + list.get(0).getParuLote() + " ";
+//                            }
+//                    
+//                            if (list.get(0).getParuDepartamento().equals("----") || list.get(0).getParuDepartamento().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += "DPTO. " + list.get(0).getParuDepartamento() + " ";
+//                            } 
+//                    
+//                            if (list.get(0).getParuManzana().equals("----") || list.get(0).getParuManzana().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += "MZA. " + list.get(0).getParuManzana() + " ";
+//                            }
+//                    
+//                            if (list.get(0).getParuKilometro().equals("----") || list.get(0).getParuKilometro().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += "KM. " + list.get(0).getParuKilometro() + " ";
+//                            }
+//                    
+//                            if (list.get(0).getParuCodigoZona().equals("----") || list.get(0).getParuCodigoZona().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += list.get(0).getParuCodigoZona() + " ";
+//                            } 
+//                    
+//                            if (list.get(0).getParuTipoZona().equals("----") || list.get(0).getParuTipoZona().equals("-")) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += list.get(0).getParuTipoZona() + " ";
+//                            }
+//                    
+//                            if (list.get(0).getParuUbigeo().length() < 6) {
+//                                direccion += "";
+//                            } else {
+//                                direccion += " - " + list.get(0).getDistrito() + " - " + list.get(0).getProvincia() + " - " + list.get(0).getDepartamento();
+//                            }
+//                    
+//                            hm.put("clie_direccion", direccion);
+//                    
+//                        } else {
+//                            hm.put("success", false);
+//                            hm.put("msg", list.get(0).getParuEstado());
+//                        }
+//                    
+//                    }
                 }
             }
         }
@@ -2537,6 +2591,19 @@ public class VentasServlet extends HttpServlet {
         hm.put("igv_porcentaje", igv_porcentaje);
         hm.put("igv_estado", igv_estado);
         hm.put("tasaIgv", tasaIgv);
+
+        Integer tive_id = listReg.get(0).getTiveId();
+        hm.put("tive_id", tive_id);
+        if (tive_id == 2) {
+            Integer period_credito = listReg.get(0).getRevePeriodoCredito();
+            Integer cuotas_credito = listReg.get(0).getReveCuotasCredito();
+            BigDecimal monto_credito = listReg.get(0).getReveMontoCredito();
+            String fecha_credito = listReg.get(0).getReveFechaVencimientoCredito();
+            hm.put("period_credito", period_credito);
+            hm.put("cuotas_credito", cuotas_credito);
+            hm.put("monto_credito", monto_credito);
+            hm.put("fecha_credito", fecha_credito);
+        }
 
         String formatoXML = empr_ruc + "-" + tipo_comp + "-" + emision_serie + "-" + correl + ".XML";
         byte[] encodedBytes = Base64.getEncoder().encode(formatoXML.getBytes());

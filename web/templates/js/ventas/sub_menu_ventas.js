@@ -251,7 +251,7 @@ function ventasValidarRegistroInicio() {
                 llenarTablaVentasRegistroVentasLecturaInicio();
                 eventFormVentasRegistroVentasNuevoTurno();
 
-            } else {                
+            } else {
                 llenarVentasRegistroVentas(response);
             }
         }
@@ -331,11 +331,11 @@ function llenarVentasRegistroVentas(response) {
                                       <label for="listVentasRegistroVentasTipoEmision" class="col-form-label">Tipo de Emisión :</label>\
                                       <select id="listVentasRegistroVentasTipoEmision" class="form-select" name="tiem_id"></select>\
                                     </div>\
-                                    <div class="form-group col-md-4">\
+                                    <div class="form-group col-md-5">\
                                       <label for="listVentasRegistroVentasTipoVenta" class="col-form-label">Tipo de Venta :</label>\
                                       <select id="listVentasRegistroVentasTipoVenta" class="form-select" name="tive_id"></select>\
                                     </div>\
-                                    <div class="form-group col-md-4">\
+                                    <div class="form-group col-md-3">\
                                       <label for="listVentasRegistroVentasTipoCliente" class="col-form-label">Tipo de Cliente :</label>\
                                       <select id="listVentasRegistroVentasTipoCliente" class="form-select" name="ticl_id"></select>\
                                     </div>\
@@ -344,6 +344,26 @@ function llenarVentasRegistroVentas(response) {
                                     <div class="form-group col-md-4">\
                                       <label for="listVentasRegistroVentasTipoDocumento" class="col-form-label">Tipo de Documento :</label>\
                                       <select id="listVentasRegistroVentasTipoDocumento" class="form-select" name="tido_id"></select>\
+                                    </div>\
+                                    <div id="divListVentasRegistroVentasPeriodCredito" class="form-group col-md-1">\
+                                      <label for="listVentasRegistroVentasPeriodCredito" class="col-form-label">Periodo (dias):</label>\
+                                      <select id="listVentasRegistroVentasPeriodCredito" class="form-select" name="period_credito"></select>\
+                                    </div>\
+                                    <div id="divListVentasRegistroVentasCuotasCredito" class="form-group col-md-1">\
+                                      <label for="listVentasRegistroVentasCuotasCredito" class="col-form-label">Cuotas :</label>\
+                                      <select id="listVentasRegistroVentasCuotasCredito" class="form-select" name="cuotas_credito">\
+                                        <option value="1">1</option>\
+                                        <option value="2">2</option>\
+                                        <option value="3">3</option>\
+                                      </select>\
+                                    </div>\
+                                    <div id="divIptVentasRegistroVentasMontoCredito" class="form-group col-md-1">\
+                                      <label for="iptVentasRegistroVentasMontoCredito" class="col-form-label">Monto (S/):</label>\
+                                      <input id="iptVentasRegistroVentasMontoCredito" type="text" class="form-control" name="monto_credito" readonly>\
+                                    </div>\
+                                    <div id="divDateVentasRegistroVentasFechaVencCredito" class="form-group col-md-2">\
+                                      <label for="dateVentasRegistroVentasFechaVencCredito" class="col-form-label">Fecha Vencimiento:</label>\
+                                      <input id="dateVentasRegistroVentasFechaVencCredito" type="text" class="form-control" name="fecha_credito" readonly/>\
                                     </div>\
                                   </div>\
                                   <div class="form-row">\
@@ -576,13 +596,14 @@ function llenarVentasRegistroVentas(response) {
                                     </div>\
 				 </form>\
                                </div>\
-                              </div>';                
+                              </div>';
 
                 $('#divVentasRegistroInicio').append(cont + modal_1);
 
                 llenarListaVentasRegistroVentasTrabajadoresTurno(response.tudi_id);
                 llenarListaVentasRegistroVentasTiposEmision();
                 llenarListaVentasRegistroVentasTiposVenta();
+                llenarListaVentasRegistroVentasPeriodosCredito();
                 llenarListaVentasRegistroVentasTiposCliente();
                 controlVentasRegistroVentasClienteBuscar();
                 llenarListaVentasRegistroVentasProductos();
@@ -882,6 +903,87 @@ function llenarVentasRegistroVentasImpresion(response) {
         empr_direccion = response.empr_direccion;
     }
 
+    var segmentCredit = {};
+    if (response.tive_id === 2) {
+        const periodo = parseInt(response.period_credito);
+        const cuotas = parseInt(response.cuotas_credito);
+        const arrayDC = response.fecha_credito.split("/");
+        const yearDC = parseInt(arrayDC[2]);
+        const monthDC = parseInt(arrayDC[1]) - 1;
+        const dayDC = parseInt(arrayDC[0]);
+        if (response.cuotas_credito === 1) {
+            segmentCredit = {
+                table: {
+                    widths: [90, '*'],
+                    body: [
+                        [
+                            {text: 'Condición de Pago :', alignment: 'right', style: 'subtitulo'},
+                            {text: 'CRÉDITO a ' + periodo + ' días', alignment: 'left', style: 'subtitulo'}
+                        ],
+                        [
+                            {text: 'Número de Cuotas :', alignment: 'right', style: 'subtitulo'},
+                            {text: cuotas + " cuota", alignment: 'left', style: 'subtitulo'}
+                        ],
+                        [
+                            {text: 'Monto de la Cuota :', alignment: 'right', style: 'subtitulo'},
+                            {text: "S/ " + formatNumeroDecimal(response.monto_credito), alignment: 'left', style: 'subtitulo'}
+                        ],
+                        [
+                            {text: 'Fecha de Vencimiento :', alignment: 'right', style: 'subtitulo'},
+                            {text: response.fecha_credito, alignment: 'left', style: 'subtitulo'}
+                        ]
+                    ]
+                },
+                layout: {
+                    hLineColor: 'white',
+                    vLineColor: 'white'
+                }
+            };
+        } else {
+            let bodyCredit = [];
+            bodyCredit.push([
+                {text: 'Condiciones de Pago :', alignment: 'right', style: 'subtitulo'},
+                {text: 'CRÉDITO - Cuotas a ' + periodo + ' días', alignment: 'left', style: 'subtitulo'}
+            ]);
+            bodyCredit.push([
+                {text: 'Número de Cuotas :', alignment: 'right', style: 'subtitulo'},
+                {text: cuotas + " cuotas", alignment: 'left', style: 'subtitulo'}
+            ]);
+            bodyCredit.push([
+                {text: 'Monto de la Cuota :', alignment: 'right', style: 'subtitulo'},
+                {text: "S/ " + formatNumeroDecimal(response.monto_credito), alignment: 'left', style: 'subtitulo'}
+            ]);
+            for (let i = 0; i < cuotas; i++) {
+                let dateCredit = new Date(yearDC, monthDC, dayDC);
+                let dateCC = dateCredit.setDate(dateCredit.getDate() + (i * periodo));
+                let dateCC_ = new Date(dateCC);
+                let year = dateCC_.getFullYear() + "";
+                let month = (dateCC_.getMonth() + 1) + "";
+                if (month.length === 1) {
+                    month = "0" + month;
+                }
+                let day = dateCC_.getDate() + "";
+                if (day.length === 1) {
+                    day = "0" + day;
+                }
+                bodyCredit.push([
+                    {text: 'Fecha de Vencimiento ' + (i + 1) + ' :', alignment: 'right', style: 'subtitulo'},
+                    {text: day + "/" + month + "/" + year, alignment: 'left', style: 'subtitulo'}
+                ]);
+            }
+            segmentCredit = {
+                table: {
+                    widths: [90, '*'],
+                    body: bodyCredit
+                },
+                layout: {
+                    hLineColor: 'white',
+                    vLineColor: 'white'
+                }
+            };
+        }
+    }
+
     if (!$.trim(response.empr_url_logo)) {
         var docDefinition = {
             pageSize: {
@@ -998,7 +1100,7 @@ function llenarVentasRegistroVentasImpresion(response) {
                         widths: ['*'],
                         body: [
                             [
-                                {text: 'SON: ' + NumeroALetras(totalT, mone_nombreP, mone_nombreS), alignment: 'justified', style: 'subtitulo'}
+                                {text: 'SON: ' + NumeroALetras(totalT, mone_nombreP, mone_nombreS), alignment: 'justified', style: 'subtituloBold'}
                             ]
                         ]
                     },
@@ -1007,6 +1109,7 @@ function llenarVentasRegistroVentasImpresion(response) {
                         vLineColor: 'white'
                     }
                 },
+                segmentCredit,
                 {
                     text: '\n'
                 },
@@ -1110,6 +1213,10 @@ function llenarVentasRegistroVentasImpresion(response) {
                 },
                 subtitulo: {
                     fontSize: 7
+                },
+                subtituloBold: {
+                    fontSize: 7,
+                    bold: true
                 },
                 tablaHead: {
                     fillColor: '#E7E6E6',
@@ -1255,7 +1362,7 @@ function llenarVentasRegistroVentasImpresion(response) {
                             widths: ['*'],
                             body: [
                                 [
-                                    {text: 'SON: ' + NumeroALetras(totalT, mone_nombreP, mone_nombreS), alignment: 'justified', style: 'subtitulo'}
+                                    {text: 'SON: ' + NumeroALetras(totalT, mone_nombreP, mone_nombreS), alignment: 'justified', style: 'subtituloBold'}
                                 ]
                             ]
                         },
@@ -1264,6 +1371,7 @@ function llenarVentasRegistroVentasImpresion(response) {
                             vLineColor: 'white'
                         }
                     },
+                    segmentCredit,
                     {
                         text: '\n'
                     },
@@ -1368,6 +1476,10 @@ function llenarVentasRegistroVentasImpresion(response) {
                     subtitulo: {
                         fontSize: 7
                     },
+                    subtituloBold: {
+                        fontSize: 7,
+                        bold: true
+                    },
                     tablaHead: {
                         fillColor: '#E7E6E6',
                         fontSize: 7,
@@ -1445,6 +1557,11 @@ function blockInputVentasRegistroVentas(estado) {
     $('#iptVentasRegistroVentasClienteDocumento').prop('disabled', estado);
     $('#iptVentasRegistroVentasClienteNombres').prop('disabled', estado);
     $('#iptVentasRegistroVentasClienteDireccion').prop('disabled', estado);
+
+    $('#listVentasRegistroVentasPeriodCredito').prop('disabled', estado);
+    $('#listVentasRegistroVentasCuotasCredito').prop('disabled', estado);
+    $('#iptVentasRegistroVentasMontoCredito').prop('disabled', estado);
+    $('#dateVentasRegistroVentasFechaVencCredito').prop('disabled', estado);
 
     $('#btnVentasRegistroVentasClienteBuscarDocu').prop('disabled', estado);
     $('#btnVentasRegistroVentasClienteBuscarClean').prop('disabled', estado);
@@ -1533,6 +1650,10 @@ function llenarListaVentasRegistroVentasTiposEmision() {
 
 function llenarListaVentasRegistroVentasTiposVenta() {
     $("#listVentasRegistroVentasTipoVenta").empty();
+    $("#divListVentasRegistroVentasPeriodCredito").hide();
+    $("#divListVentasRegistroVentasCuotasCredito").hide();
+    $("#divIptVentasRegistroVentasMontoCredito").hide();
+    $("#divDateVentasRegistroVentasFechaVencCredito").hide();
     $.ajax({
         dataType: 'json',
         url: "./TablasMaestras?url=lista_tipos_venta",
@@ -1546,6 +1667,28 @@ function llenarListaVentasRegistroVentasTiposVenta() {
                 }
                 var vent = "<option value=" + value.tiveId + ">" + nombre + "</option>";
                 $("#listVentasRegistroVentasTipoVenta").append(vent);
+            });
+            $("#listVentasRegistroVentasTipoVenta").bind("change", function () {
+                if ($("#listVentasRegistroVentasTipoVenta").val() === "1") {
+                    $("#divListVentasRegistroVentasPeriodCredito").hide();
+                    $("#divListVentasRegistroVentasCuotasCredito").hide();
+                    $("#divIptVentasRegistroVentasMontoCredito").hide();
+                    $("#divDateVentasRegistroVentasFechaVencCredito").hide();
+                }
+                if ($("#listVentasRegistroVentasTipoVenta").val() === "2") {
+                    $("#divListVentasRegistroVentasPeriodCredito").show();
+                    $("#divListVentasRegistroVentasCuotasCredito").show();
+                    $("#divIptVentasRegistroVentasMontoCredito").show();
+                    $("#divDateVentasRegistroVentasFechaVencCredito").show();
+
+                    $("#listVentasRegistroVentasCuotasCredito").bind("change", function () {
+                        if ($("#thVentasRegistroVentasConsumoFootTotalMonto").html()) {
+                            const monto_total = Number($("#thVentasRegistroVentasConsumoFootTotalMonto").html());
+                            const nro_cuotas = parseInt($("#listVentasRegistroVentasCuotasCredito").val(), 10);
+                            $("#iptVentasRegistroVentasMontoCredito").val(formatNumeroDecimal(monto_total / nro_cuotas));
+                        }
+                    });
+                }
             });
         }
     });
@@ -1622,6 +1765,48 @@ function llenarListaVentasRegistroVentasTiposDocumento(ticl_id) {
                 });
             });
         }
+    });
+}
+
+function llenarListaVentasRegistroVentasPeriodosCredito() {
+    const period = 15; // Periodicidad por defecto
+
+    $("#listVentasRegistroVentasPeriodCredito").empty();
+    for (let i = 0; i < 30; i++) {
+        var opt = "<option value=" + (i + 1) + ">" + (i + 1) + "</option>";
+        $("#listVentasRegistroVentasPeriodCredito").append(opt);
+    }
+    $('#listVentasRegistroVentasPeriodCredito').prop('selectedIndex', period - 1);
+
+    const dateToday = new Date();
+    const datePeriod = dateToday.setDate(dateToday.getDate() + parseInt(period));
+    const dateAdded = new Date(datePeriod);
+    let year = dateAdded.getFullYear() + "";
+    let month = (dateAdded.getMonth() + 1) + "";
+    if (month.length === 1) {
+        month = "0" + month;
+    }
+    let day = dateAdded.getDate() + "";
+    if (day.length === 1) {
+        day = "0" + day;
+    }
+    $('#dateVentasRegistroVentasFechaVencCredito').val(day + "/" + month + "/" + year);
+
+    $("#listVentasRegistroVentasPeriodCredito").bind("change", function () {
+        const period_ = $("#listVentasRegistroVentasPeriodCredito").val();
+        const dateToday_ = new Date();
+        const datePeriod_ = dateToday_.setDate(dateToday_.getDate() + parseInt(period_));
+        const dateAdded_ = new Date(datePeriod_);
+        let year_ = dateAdded_.getFullYear() + "";
+        let month_ = (dateAdded_.getMonth() + 1) + "";
+        if (month_.length === 1) {
+            month_ = "0" + month_;
+        }
+        let day_ = dateAdded_.getDate() + "";
+        if (day_.length === 1) {
+            day_ = "0" + day_;
+        }
+        $('#dateVentasRegistroVentasFechaVencCredito').val(day_ + "/" + month_ + "/" + year_);
     });
 }
 
@@ -1756,7 +1941,7 @@ function llenarListaVentasRegistroVentasPrecioProducto(prod_id, tive_id) {
             $("#listVentasRegistroVentasPrecios").append(list_precios);
             $("#iptVentasRegistroVentasDescuento").val(descuento);
             $("#lblVentasRegistroVentasUnidad").empty();
-            $("#lblVentasRegistroVentasUnidad").append("Cantidad ("+unidad + "):");
+            $("#lblVentasRegistroVentasUnidad").append("Cantidad (" + unidad + "):");
             $("#listVentasRegistroVentasPrecios").bind("change", function () {
                 $("#iptVentasRegistroVentasUnidad").val('');
                 $("#iptVentasRegistroVentasMonto").val('');
@@ -1924,6 +2109,7 @@ function llenarTablaVentasRegistroVentasConsumoBodyVacio() {
                 $("#thVentasRegistroVentasConsumoFootSubTotalMonto").empty();
                 $("#thVentasRegistroVentasConsumoFootIGVMonto").empty();
                 $("#thVentasRegistroVentasConsumoFootTotalMonto").empty();
+                $("#iptVentasRegistroVentasMontoCredito").val("");
             }
         }
     });
@@ -2007,15 +2193,17 @@ function llenarTablaVentasRegistroVentasConsumoBody(response, reve_id) {
         $("#thVentasRegistroVentasConsumoFootSubTotalMonto").empty();
         $("#thVentasRegistroVentasConsumoFootIGVMonto").empty();
         $("#thVentasRegistroVentasConsumoFootTotalMonto").empty();
+        $("#iptVentasRegistroVentasMontoCredito").val("");
         if (igvEstado) {
             $("#thVentasRegistroVentasConsumoFootSubTotalMonto").append(formatNumeroDecimal(montoT / tasaIgv));
             $("#thVentasRegistroVentasConsumoFootIGVMonto").append(formatNumeroDecimal((montoT) - (montoT / tasaIgv)));
-            $("#thVentasRegistroVentasConsumoFootTotalMonto").append(formatNumeroDecimal(montoT));
         } else {
             $("#thVentasRegistroVentasConsumoFootSubTotalMonto").append(formatNumeroDecimal(montoT));
             $("#thVentasRegistroVentasConsumoFootIGVMonto").append(formatNumeroDecimal(montoT - montoT));
-            $("#thVentasRegistroVentasConsumoFootTotalMonto").append(formatNumeroDecimal(montoT));
         }
+        $("#thVentasRegistroVentasConsumoFootTotalMonto").append(formatNumeroDecimal(montoT));
+        var nro_cuotas = parseInt($("#listVentasRegistroVentasCuotasCredito").val(), 10);
+        $("#iptVentasRegistroVentasMontoCredito").val(formatNumeroDecimal(montoT / nro_cuotas));
 
     }
 }

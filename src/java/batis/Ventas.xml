@@ -100,6 +100,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="reveNroComprobante" column="reve_nro_comprobante" />
         <result property="reveEnvioOse" column="reve_envio_ose" />
         <result property="reveEnvioError" column="reve_envio_error" />        
+        <result property="reveCuotasCredito" column="reve_cuotas_credito" />        
+        <result property="reveMontoCredito" column="reve_monto_credito" />        
+        <result property="reveFechaVencimientoCredito" column="reve_fecha_vencimiento_credito" />        
+        <result property="revePeriodoCredito" column="reve_periodo_credito" />        
         <result property="tiemId" column="tiem_id" />
         <result property="tiemNombre" column="tiem_nombre" />
         <result property="tiemEstado" column="tiem_estado" /> 
@@ -459,7 +463,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         a.reve_chofer, a.reve_placa, a.reve_kilometraje, a.reve_igv, a.reve_estado, a.tudi_id, 
         a.trab_id, a.tiem_id, b.tiem_nombre, b.tiem_ose, e.tico_sunat, a.tive_id, a.ticl_id, c.ticl_nombre, 
         a.tido_id, d.tido_nombre, d.tido_descripcion, d.tido_ose, d.tido_caracteres, a.reve_nro_comprobante,
-        a.coem_longitud, a.reve_envio_ose, a.reve_envio_error
+        a.coem_longitud, a.reve_envio_ose, a.reve_envio_error, a.reve_cuotas_credito, 
+        a.reve_monto_credito, a.reve_fecha_vencimiento_credito, a.reve_periodo_credito
         FROM ventas.registro_ventas as a 
         LEFT JOIN ventas.tipos_emision as b ON (a.tiem_id = b.tiem_id)
         LEFT JOIN ventas.tipos_cliente as c ON (a.ticl_id = c.ticl_id)
@@ -475,12 +480,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         reve_id, reve_fecha_hora, reve_documento, reve_nombres, reve_direccion, 
         reve_chofer, reve_placa, reve_kilometraje, reve_igv, reve_estado, 
         tudi_id, trab_id, tiem_id, tive_id, ticl_id, reve_nro_comprobante, 
-        tido_id, coem_longitud, reve_envio_ose, reve_envio_error)
+        tido_id, coem_longitud, reve_envio_ose, reve_envio_error, reve_cuotas_credito, 
+        reve_monto_credito, reve_fecha_vencimiento_credito, reve_periodo_credito)
         VALUES (#{reveId}, #{reveFechaHora}, #{reveDocumento}, #{reveNombres}, 
         #{reveDireccion}, #{reveChofer}, #{revePlaca}, #{reveKilometraje}, 
         #{reveIgv}, #{reveEstado}, #{tudiId}, #{trabId}, #{tiemId}, #{tiveId}, 
         #{ticlId}, #{reveNroComprobante}, #{tidoId}, #{coemLongitud}, 
-        #{reveEnvioOse}, #{reveEnvioError});
+        #{reveEnvioOse}, #{reveEnvioError}, #{reveCuotasCredito}, #{reveMontoCredito}, 
+        #{reveFechaVencimientoCredito}, #{revePeriodoCredito});
     </insert>
     
     <update id="updateRegistroVenta" parameterType="Ventas"> 
@@ -490,7 +497,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         reve_placa=#{revePlaca}, reve_kilometraje=#{reveKilometraje}, reve_igv=#{reveIgv}, 
         reve_estado=#{reveEstado}, tudi_id=#{tudiId}, trab_id=#{trabId}, tiem_id=#{tiemId}, 
         tive_id=#{tiveId}, ticl_id=#{ticlId}, reve_nro_comprobante=#{reveNroComprobante}, 
-        tido_id=#{tidoId}, coem_longitud=#{coemLongitud}
+        tido_id=#{tidoId}, coem_longitud=#{coemLongitud}, reve_cuotas_credito=#{reveCuotasCredito}, 
+        reve_monto_credito=#{reveMontoCredito}, reve_periodo_credito=#{revePeriodoCredito},
+        reve_fecha_vencimiento_credito=#{reveFechaVencimientoCredito}
         WHERE reve_id=#{reveId};
     </update>
     
