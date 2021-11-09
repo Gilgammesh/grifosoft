@@ -419,16 +419,16 @@ function llenarTablaFacturacionComprobantesEmitidos(estado) {
                     check = "";
                     estadoEnvioHide = "Enviado";
                     estadoEnvio = "<span class='label label-success'>Enviado</span>";
-                    acciones = "<button type='button' id='btnEFacturacionAnularComprobante_" + reveId + "' class='btn btn-social-icon btn-danger' title='Anular'>\
-                                  <span class='fa fa-ban'></span>\
-                                </button>";
+                    acciones = "";
                 }
                 if (value.reveEnvioOse === "pendiente") {
                     check = '<input id=' + reveId + ' type="checkbox" value=' + reveId + ' name="reve_id" class="filled-in chk-col-danger" checked>\
                              <label for=' + reveId + '></label>';
                     estadoEnvioHide = "Pendiente";
                     estadoEnvio = "<span class='label label-warning'>Pendiente</span>";
-                    acciones = "";
+                    acciones = "<button type='button' id='btnEFacturacionAnularComprobante_" + reveId + "' class='btn btn-social-icon btn-danger' title='Anular'>\
+                                  <span class='fa fa-ban'></span>\
+                                </button>";
                     countReg++;
                 }
                 if (value.reveEnvioOse === "error") {
@@ -558,8 +558,29 @@ function llenarTablaFacturacionComprobantesEmitidos(estado) {
                     });
                 });
 
-                $("#btnEFacturacionCorregirComprobante_" + reveId).click(function (evt) {
+                $("#btnEFacturacionAnularComprobante_" + reveId).click(function (evt) {
+                    evt.preventDefault();
+                    alertify.confirm("¿Está seguro que desea anular este registro de venta?", function (e) {
+                        if (e) {
+                            $.ajax({
+                                dataType: 'json',
+                                url: "./Ventas?url=anular_registro_venta&reve_id=" + reveId,
+                                success: function (response) {
+                                    if (response.success) {
+                                        alertify.success(response.msg);
+                                        llenarTablaFacturacionComprobantesEmitidos($('#listEFacturacionEstadoEnvioOse').val());
+                                    } else {
+                                        alertify.error(response.msg);
+                                    }
+                                }
+                            });
+                        } else {
+                            alertify.error("Cancelado");
+                        }
+                    });
+                });
 
+                $("#btnEFacturacionCorregirComprobante_" + reveId).click(function (evt) {
                     evt.preventDefault();
                     var action = "./Facturacion?url=corregir_comprobante&reve_id=" + reveId + "";
                     $("#formFacturacionCorregirComprobante").attr("action", action);

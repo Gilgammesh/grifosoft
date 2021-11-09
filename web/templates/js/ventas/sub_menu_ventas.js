@@ -360,6 +360,7 @@ function llenarVentasRegistroVentas(response) {
                                     <div id="divIptVentasRegistroVentasMontoCredito" class="form-group col-md-1">\
                                       <label for="iptVentasRegistroVentasMontoCredito" class="col-form-label">Monto (S/):</label>\
                                       <input id="iptVentasRegistroVentasMontoCredito" type="text" class="form-control" name="monto_credito" readonly>\
+                                      <input id="iptVentasRegistroVentasMontoCredito_" type="text" class="hide" name="monto_credito_" readonly>\
                                     </div>\
                                     <div id="divDateVentasRegistroVentasFechaVencCredito" class="form-group col-md-2">\
                                       <label for="dateVentasRegistroVentasFechaVencCredito" class="col-form-label">Fecha Vencimiento:</label>\
@@ -491,7 +492,7 @@ function llenarVentasRegistroVentas(response) {
                                           <th colSpan="4"></th>\
                                           <th class="foot-bordered foot-background" style="text-align: center;">TOTAL</th>\
                                           <th id="thVentasRegistroVentasConsumoFootTotalMonto" class="foot-bordered foot-background" style="text-align: right;"></th>\
-                                          <th></th>\
+                                          <th id="thVentasRegistroVentasConsumoFootTotalMonto_" class="hide"></th>\
                                         </tr>\
                                       </tfoot>\
                                     </table>\
@@ -1561,6 +1562,7 @@ function blockInputVentasRegistroVentas(estado) {
     $('#listVentasRegistroVentasPeriodCredito').prop('disabled', estado);
     $('#listVentasRegistroVentasCuotasCredito').prop('disabled', estado);
     $('#iptVentasRegistroVentasMontoCredito').prop('disabled', estado);
+    $('#iptVentasRegistroVentasMontoCredito_').prop('disabled', estado);
     $('#dateVentasRegistroVentasFechaVencCredito').prop('disabled', estado);
 
     $('#btnVentasRegistroVentasClienteBuscarDocu').prop('disabled', estado);
@@ -1683,9 +1685,12 @@ function llenarListaVentasRegistroVentasTiposVenta() {
 
                     $("#listVentasRegistroVentasCuotasCredito").bind("change", function () {
                         if ($("#thVentasRegistroVentasConsumoFootTotalMonto").html()) {
-                            const monto_total = Number($("#thVentasRegistroVentasConsumoFootTotalMonto").html());
+//                            console.log("value -> " + $("#thVentasRegistroVentasConsumoFootTotalMonto").html());
+//                            console.log("value_ -> " + $("#thVentasRegistroVentasConsumoFootTotalMonto_").html());
+                            const monto_total = Number($("#thVentasRegistroVentasConsumoFootTotalMonto_").html());
                             const nro_cuotas = parseInt($("#listVentasRegistroVentasCuotasCredito").val(), 10);
                             $("#iptVentasRegistroVentasMontoCredito").val(formatNumeroDecimal(monto_total / nro_cuotas));
+                            $("#iptVentasRegistroVentasMontoCredito_").val(monto_total / nro_cuotas);
                         }
                     });
                 }
@@ -2109,7 +2114,9 @@ function llenarTablaVentasRegistroVentasConsumoBodyVacio() {
                 $("#thVentasRegistroVentasConsumoFootSubTotalMonto").empty();
                 $("#thVentasRegistroVentasConsumoFootIGVMonto").empty();
                 $("#thVentasRegistroVentasConsumoFootTotalMonto").empty();
+                $("#thVentasRegistroVentasConsumoFootTotalMonto_").empty();
                 $("#iptVentasRegistroVentasMontoCredito").val("");
+                $("#iptVentasRegistroVentasMontoCredito_").val("");
             }
         }
     });
@@ -2193,7 +2200,9 @@ function llenarTablaVentasRegistroVentasConsumoBody(response, reve_id) {
         $("#thVentasRegistroVentasConsumoFootSubTotalMonto").empty();
         $("#thVentasRegistroVentasConsumoFootIGVMonto").empty();
         $("#thVentasRegistroVentasConsumoFootTotalMonto").empty();
+        $("#thVentasRegistroVentasConsumoFootTotalMonto_").empty();
         $("#iptVentasRegistroVentasMontoCredito").val("");
+        $("#iptVentasRegistroVentasMontoCredito_").val("");
         if (igvEstado) {
             $("#thVentasRegistroVentasConsumoFootSubTotalMonto").append(formatNumeroDecimal(montoT / tasaIgv));
             $("#thVentasRegistroVentasConsumoFootIGVMonto").append(formatNumeroDecimal((montoT) - (montoT / tasaIgv)));
@@ -2202,8 +2211,10 @@ function llenarTablaVentasRegistroVentasConsumoBody(response, reve_id) {
             $("#thVentasRegistroVentasConsumoFootIGVMonto").append(formatNumeroDecimal(montoT - montoT));
         }
         $("#thVentasRegistroVentasConsumoFootTotalMonto").append(formatNumeroDecimal(montoT));
+        $("#thVentasRegistroVentasConsumoFootTotalMonto_").append(montoT);
         var nro_cuotas = parseInt($("#listVentasRegistroVentasCuotasCredito").val(), 10);
         $("#iptVentasRegistroVentasMontoCredito").val(formatNumeroDecimal(montoT / nro_cuotas));
+        $("#iptVentasRegistroVentasMontoCredito_").val(montoT / nro_cuotas);
 
     }
 }

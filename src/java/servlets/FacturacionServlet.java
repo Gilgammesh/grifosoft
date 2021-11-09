@@ -14,22 +14,29 @@ import daos.UsuarioDao;
 import daos.VentasDao;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+
 import java.sql.Timestamp;
+
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -1068,10 +1075,13 @@ public class FacturacionServlet extends HttpServlet {
             objetoCabecera.put("orden_compra_servicio", ""); // Orden de Compra de Servicio. Ejemplo: "56897"  ====> (Opcional)
             objetoCabecera.put("tabla_personalizada_codigo", ""); // Código de tabla configurada en NUBEFACT  ====> (Opcional)
             objetoCabecera.put("formato_de_pdf", "A4"); // Formato de PDF que se desea generar en la página web de NUBEFACT: A4, A5, TICKET  ====> (Opcional)
+            // Si el tipo de venta es al contado
             if (tipo_venta == 1) {
-                objetoCabecera.put("medio_de_pago", "Efectivo"); // Medio de Pago. Ejemplo: "Tarjeta VISA Op. 15687"  ====> (Opcional)
+                objetoCabecera.put("medio_de_pago", "efectivo"); // Medio de Pago. Ejemplo: "Tarjeta VISA Op. 15687"  ====> (Opcional)
             }
+            // Si el tipo de venta es a crédito
             if (tipo_venta == 2) {
+                objetoCabecera.put("medio_de_pago", "credito"); // Medio de Pago.
                 Integer periodo_credito = list.get(0).getRevePeriodoCredito();
                 Integer cuotas_credito = list.get(0).getReveCuotasCredito();
                 BigDecimal monto_credito = list.get(0).getReveMontoCredito();
@@ -1134,9 +1144,9 @@ public class FacturacionServlet extends HttpServlet {
                         listaDetJSON.add(detalle_linea);
                     }
             );
-            objetoCabecera.put("items", listaDetJSON);     
-            System.out.println(objetoCabecera);
-            System.out.println(listaDetJSON);
+            objetoCabecera.put("items", listaDetJSON);
+
+            System.out.println("json -> " + objetoCabecera);
 
             StringEntity parametros = new StringEntity(objetoCabecera.toString(), StandardCharsets.UTF_8);
             post.setEntity(parametros);
@@ -1200,6 +1210,24 @@ public class FacturacionServlet extends HttpServlet {
                     System.out.println(json_rspta);
 
                     new FacturacionDao().insertFacturacionElectronica(beanF);
+
+//                    FileWriter file = null;
+//                    try {
+//                        List<Usuario> listSoft = new UsuarioDao().getDatosSoftware();
+//                        String rutaBase = listSoft.get(0).getSoftRuta();
+//                        file = new FileWriter(rutaBase + "\\Json\\" + comprobanteArray[0] + "-" + comprobanteArray[1] + ".txt");
+//                        file.write(objetoCabecera.toJSONString());
+//                    } catch (IOException e) {
+//                        System.out.println(e);
+//                    } finally {
+//                        try {
+//                            file.flush();
+//                            file.close();
+//                        } catch (IOException e) {
+//                            System.out.println(e);
+//                        }
+//                    }
+
                 }
             }
         } catch (UnsupportedEncodingException ex1) {

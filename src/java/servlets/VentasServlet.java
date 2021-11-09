@@ -4,7 +4,6 @@ import beans.Almacen;
 import beans.Facturacion;
 import beans.TablasMaestras;
 import beans.Usuario;
-import beans.Utilitarios;
 import beans.Ventas;
 
 import com.google.gson.Gson;
@@ -14,7 +13,6 @@ import daos.AlmacenDao;
 import daos.FacturacionDao;
 import daos.TablasMaestrasDao;
 import daos.UsuarioDao;
-import daos.UtilitariosDao;
 import daos.VentasDao;
 import java.io.BufferedReader;
 
@@ -47,9 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -1381,19 +1377,22 @@ public class VentasServlet extends HttpServlet {
             bean.setTiemId(tiem_id);
             bean.setTiveId(tive_id);
             hm.put("tive_id", tive_id);
+            // Si la venta fue al contado
             if (tive_id == 1) {
                 bean.setReveCuotasCredito(null);
                 bean.setReveMontoCredito(null);
                 bean.setReveFechaVencimientoCredito(null);
             }
+            // Si la venta fue al crédito
             if (tive_id == 2) {
                 Integer period_credito = Integer.parseInt(request.getParameter("period_credito"));
                 Integer cuotas_credito = Integer.parseInt(request.getParameter("cuotas_credito"));
                 String monto_credito = request.getParameter("monto_credito") == null ? "" : request.getParameter("monto_credito");
+                String monto_credito_ = request.getParameter("monto_credito_") == null ? "" : request.getParameter("monto_credito_");
                 String fecha_credito = request.getParameter("fecha_credito") == null ? "" : request.getParameter("fecha_credito");
                 bean.setRevePeriodoCredito(period_credito);
                 bean.setReveCuotasCredito(cuotas_credito);
-                bean.setReveMontoCredito(new BigDecimal(monto_credito));
+                bean.setReveMontoCredito(new BigDecimal(monto_credito_));
                 bean.setReveFechaVencimientoCredito(fecha_credito);
                 hm.put("period_credito", period_credito);
                 hm.put("cuotas_credito", cuotas_credito);
@@ -1417,8 +1416,8 @@ public class VentasServlet extends HttpServlet {
             List<Ventas> listCorrelativo = new VentasDao().getCorrelativoEmision(queryCorr);
             String comprobante;
             int correl = 0;
-            String correlFormat = "";
-            String serie = "";
+            String correlFormat;
+            String serie;
             String emision = listCorrelativo.get(0).getTiemNombre();
 
             int longitud = listCorrelativo.get(0).getCoemLongitud();

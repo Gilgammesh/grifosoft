@@ -33,7 +33,7 @@ import javax.servlet.http.Part;
 @WebServlet(name = "UsuarioServlet", urlPatterns = {"/Usuario"})
 @MultipartConfig
 public class UsuarioServlet extends HttpServlet {
-    
+
     private static final long serialVersionUID = 1816755134720281712L;
 
     /**
@@ -47,11 +47,11 @@ public class UsuarioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String url = request.getParameter("url") == null ? "" : request.getParameter("url");
-        
+
         switch (url) {
             case "ingresar":
                 ingresar(request, response);
@@ -158,19 +158,19 @@ public class UsuarioServlet extends HttpServlet {
     private void index(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getRequestDispatcher("./error.jsp").forward(request, response);
     }
-    
+
     private void ingresar(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String usuario = request.getParameter("usuario") == null ? "" : request.getParameter("usuario");
         String password = request.getParameter("password") == null ? "" : request.getParameter("password");
-        
+
         HashMap hm = new HashMap();
-        
+
         String query = " WHERE usua_usuario = '" + usuario + "' ";
         Usuario dataU = new UsuarioDao().getDatos(query);
         Integer reg = new UsuarioDao().getNroReg(query);
-        
+
         if (reg == 0) {
             hm.put("success", false);
             hm.put("msg", "El usuario no existe");
@@ -206,73 +206,73 @@ public class UsuarioServlet extends HttpServlet {
             hm.put("success", false);
             hm.put("msg", "Existe más de una persona registrada con este usuario");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
     }
-    
+
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         request.getSession().removeAttribute("id_usuario");
         request.getSession().removeAttribute("perfil");
         request.getSession().invalidate();
-        
+
         HashMap hm = new HashMap();
         hm.put("window", "./login");
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
-        
+
     }
-    
+
     private void password(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         Integer id_usuario = Integer.parseInt(request.getSession().getAttribute("id_usuario").toString());
         String passwordA = request.getParameter("actualPass");
         String passwordN = request.getParameter("nuevoPass");
         String passwordR = request.getParameter("confirmPass");
-        
+
         String query = " WHERE usua_id = " + id_usuario + " ";
         Usuario dataU = new UsuarioDao().getDatos(query);
-        
+
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             String passEncryptedA = Encriptar.md5(Encriptar.md5(Encriptar.md5(passwordA.trim())));
             String passEncryptedN = Encriptar.md5(Encriptar.md5(Encriptar.md5(passwordN.trim())));
-            
+
             if (dataU.getUsuaClave().equals(passEncryptedA)) {
-                
+
                 if (passwordN.equals(passwordR)) {
-                    
+
                     if (passwordN.length() >= 6) {
-                        
+
                         Usuario bean = new Usuario();
                         bean.setUsuaId(id_usuario);
                         bean.setUsuaClave(passEncryptedN);
                         new UsuarioDao().updatePass(bean);
-                        
+
                         request.getSession().removeAttribute("id_usuario");
                         request.getSession().removeAttribute("perfil");
                         request.getSession().invalidate();
-                        
+
                         hm.put("success", true);
                         hm.put("window", "./login");
-                        
+
                     } else {
                         hm.put("success", false);
                         hm.put("msg", "La contraseña debe tener como mínimo 06 caracteres");
                     }
-                    
+
                 } else {
                     hm.put("success", false);
                     hm.put("msg", "La confirmación de contraseña no coincide con la contraseña nueva");
                 }
-                
+
             } else {
                 hm.put("success", false);
                 hm.put("msg", "La contraseña actual es incorrecta");
@@ -281,36 +281,36 @@ public class UsuarioServlet extends HttpServlet {
             hm.put("success", false);
             hm.put("msg", "Excepción");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
-        
+
     }
-    
+
     private void list_usuarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         List<Usuario> listUsuarios = new UsuarioDao().getListaUsuarios("WHERE a.usua_id > 0");
         HashMap outHash = new HashMap();
         outHash.put("listUsuarios", listUsuarios);
-        
+
         Integer perfil = Integer.parseInt(request.getSession().getAttribute("perfil").toString());
         outHash.put("perfil", perfil);
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(outHash);
         response.getWriter().print(arg);
     }
-    
+
     private void informacion_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String usua_id = request.getParameter("usua_id");
-        
+
         String query = " WHERE usua_id = " + usua_id;
         Usuario dataU = new UsuarioDao().getDatos(query);
-        
+
         HashMap outHash = new HashMap();
         outHash.put("nombres", dataU.getUsuaNombres());
         outHash.put("paterno", dataU.getUsuaApellidoPaterno());
@@ -321,15 +321,15 @@ public class UsuarioServlet extends HttpServlet {
         outHash.put("perfil", dataU.getPerfId());
         outHash.put("estado", dataU.getUsuaEstado());
         outHash.put("usua_id", usua_id);
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(outHash);
         response.getWriter().print(arg);
     }
-    
+
     private void nuevo(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String nombres = request.getParameter("nombres") == null ? "" : request.getParameter("nombres").trim();
         String paterno = request.getParameter("paterno") == null ? "" : request.getParameter("paterno").trim();
         String materno = request.getParameter("materno") == null ? "" : request.getParameter("materno").trim();
@@ -339,12 +339,12 @@ public class UsuarioServlet extends HttpServlet {
         String genero = request.getParameter("genero");
         Integer perf_id = Integer.parseInt(request.getParameter("perf_id"));
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             if (password.length() >= 6) {
                 String passEncrypted = Encriptar.md5(Encriptar.md5(Encriptar.md5(password)));
-                
+
                 Usuario bean = new Usuario();
                 bean.setUsuaUsuario(usuario);
                 bean.setUsuaClave(passEncrypted);
@@ -355,28 +355,28 @@ public class UsuarioServlet extends HttpServlet {
                 bean.setUsuaEstado(estado);
                 bean.setPerfId(perf_id);
                 new UsuarioDao().insert(bean);
-                
+
                 hm.put("success", true);
                 hm.put("msg", "Se añadió nuevo usuario correctamente");
             } else {
                 hm.put("success", false);
                 hm.put("msg", "La contraseña debe tener como mínimo 06 caracteres");
             }
-            
+
         } catch (Exception e) {
             hm.put("success", false);
             //hm.put("msg", "No se pudo añadir al usuario, intente nuevamente");
             hm.put("msg", e.toString());
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
     }
-    
+
     private void editar(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String usua_id = request.getParameter("usua_id");
         String nombres = request.getParameter("nombres") == null ? "" : request.getParameter("nombres").trim();
         String paterno = request.getParameter("paterno") == null ? "" : request.getParameter("paterno").trim();
@@ -387,12 +387,12 @@ public class UsuarioServlet extends HttpServlet {
         String genero = request.getParameter("genero");
         String perf_id = request.getParameter("perf_id");
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             if (password.length() >= 6) {
                 String passEncrypted = Encriptar.md5(Encriptar.md5(Encriptar.md5(password)));
-                
+
                 Usuario bean = new Usuario();
                 bean.setUsuaId(Integer.parseInt(usua_id));
                 bean.setUsuaUsuario(usuario);
@@ -404,139 +404,139 @@ public class UsuarioServlet extends HttpServlet {
                 bean.setUsuaEstado(Boolean.valueOf(estado));
                 bean.setPerfId(Integer.parseInt(perf_id));
                 new UsuarioDao().update(bean);
-                
+
                 hm.put("success", true);
                 hm.put("msg", "Se actualizaron los datos correctamente");
             } else {
                 hm.put("success", false);
                 hm.put("msg", "La contraseña debe tener como mínimo 06 caracteres");
             }
-            
+
         } catch (Exception ex) {
             hm.put("success", false);
             hm.put("msg", "No se pudo actualizar los datos del Usuario");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
     }
-    
+
     private void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         Integer usua_id = Integer.parseInt(request.getParameter("usua_id"));
-        
+
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             Sesion beanS = new Sesion();
             beanS.setUsuaId(usua_id);
             new SesionDao().deleteUsuarioSesion(beanS);
-            
+
             Usuario beanU = new Usuario();
             beanU.setUsuaId(usua_id);
             new UsuarioDao().deleteUsuario(beanU);
-            
+
             hm.put("msg", "Se elimino el usuario correctamente");
-            
+
         } catch (NumberFormatException e) {
             hm.put("msg", "No se pudo eliminar el Usuario");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
     }
-    
+
     private void list_perfiles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         HashMap outHash = new HashMap();
-        
+
         String queryP = " WHERE menu_id > 0 ORDER BY menu_id ASC";
         List<Usuario> listMenu = new UsuarioDao().getListMenu(queryP);
         outHash.put("listMenu", listMenu);
-        
+
         String query = " WHERE perf_id > 0 ORDER BY perf_id ASC ";
         List<Usuario> listPerfiles = new UsuarioDao().getListaPerfiles(query);
-        
+
         outHash.put("listPerfiles", listPerfiles);
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(outHash);
         response.getWriter().print(arg);
     }
-    
+
     private void list_permisos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String perf_id = request.getParameter("perf_id");
         String menu_id = request.getParameter("menu_id") == null ? "" : request.getParameter("menu_id");
-        
+
         HashMap outHash = new HashMap();
-        
+
         if (menu_id.equals("")) {
             String query = " WHERE a.perf_id =" + perf_id + " AND a.sub_menu_id = 0 ORDER BY a.menu_id ASC ";
             List<Usuario> list = new UsuarioDao().getListaPermisos(query);
-            
+
             outHash.put("listPermisos", list);
             outHash.put("id", perf_id);
-            
+
         } else {
             String query = " WHERE a.perf_id =" + perf_id + " AND a.menu_id = " + menu_id + " AND a.sub_menu_id = 0 ORDER BY a.menu_id ASC ";
             List<Usuario> list = new UsuarioDao().getListaPermisos(query);
-            
+
             outHash.put("perf_id", perf_id);
             outHash.put("menu_id", menu_id);
             outHash.put("activo", list.get(0).getPermActivo());
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(outHash);
         response.getWriter().print(arg);
     }
-    
+
     private void informacion_perfil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String perf_id = request.getParameter("perf_id");
-        
+
         String query = " WHERE perf_id = " + perf_id;
         List<Usuario> list = new UsuarioDao().getListaPerfiles(query);
-        
+
         HashMap outHash = new HashMap();
         outHash.put("perf_id", perf_id);
         outHash.put("perfil", list.get(0).getPerfNombre());
         outHash.put("descripcion", list.get(0).getPerfDescripcion());
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(outHash);
         response.getWriter().print(arg);
     }
-    
+
     private void nuevo_perfil(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String perfil = request.getParameter("perfil") == null ? "" : request.getParameter("perfil").trim();
         String descripcion = request.getParameter("descripcion") == null ? "" : request.getParameter("descripcion").trim();
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             Usuario bean = new Usuario();
             bean.setPerfNombre(perfil);
             bean.setPerfDescripcion(descripcion);
             new UsuarioDao().insertPerfil(bean);
-            
+
             String queryP1 = "ORDER BY perf_id DESC LIMIT 1";
             List<Usuario> listPerfiles = new UsuarioDao().getListaPerfiles(queryP1);
             Integer perf_id = listPerfiles.get(0).getPerfId();
-            
+
             String queryP2 = "ORDER BY menu_id ASC";
             List<Usuario> listMenu = new UsuarioDao().getListMenu(queryP2);
-            
+
             listMenu.stream().map((list) -> {
                 Usuario data = new Usuario();
                 data.setPerfId(perf_id);
@@ -567,60 +567,60 @@ public class UsuarioServlet extends HttpServlet {
                     new UsuarioDao().upsertPermisos(dataSub);
                 });
             });
-            
+
             hm.put("success", true);
             hm.put("msg", "Se añadió nuevo perfil de usuario");
-            
+
         } catch (Exception e) {
             hm.put("success", false);
             hm.put("msg", "No se pudo añadir el perfil de usuario. Intente nuevamente!!");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
     }
-    
+
     private void editar_perfil(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String perf_id = request.getParameter("perf_id");
         String perfil = request.getParameter("perfil") == null ? "" : request.getParameter("perfil").trim();
         String descripcion = request.getParameter("descripcion") == null ? "" : request.getParameter("descripcion").trim();
         HashMap hm = new HashMap();
-        
+
         try {
             Usuario bean = new Usuario();
             bean.setPerfId(Integer.parseInt(perf_id));
             bean.setPerfNombre(perfil);
             bean.setPerfDescripcion(descripcion);
             new UsuarioDao().updatePerfil(bean);
-            
+
             hm.put("success", true);
             hm.put("msg", "Se actualizó el perfil de usuario");
-            
+
         } catch (NumberFormatException e) {
             hm.put("success", false);
             hm.put("msg", "No se pudo actualizar el perfil de usuario. Intente nuevamente!!");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
     }
-    
+
     private void delete_perfil(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         Integer perf_id = Integer.parseInt(request.getParameter("perf_id"));
-        
+
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             String query = " WHERE a.perf_id = " + perf_id;
             List<Usuario> listUsuario = new UsuarioDao().getListaUsuarios(query);
-            
+
             if (listUsuario.isEmpty()) {
                 Usuario bean = new Usuario();
                 bean.setPerfId(perf_id);
@@ -630,32 +630,32 @@ public class UsuarioServlet extends HttpServlet {
             } else {
                 hm.put("msg", "Hay usuarios que están utilizando este perfil!!");
             }
-            
+
         } catch (NumberFormatException ex) {
             hm.put("msg", "No se pudo eliminar el Perfil de Usuario. Intente nuevamente!!");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
     }
-    
+
     private void update_permisos(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         Integer perf_id = Integer.parseInt(request.getParameter("perf_id"));
-        
+
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             String query = "ORDER BY menu_id ASC";
             List<Usuario> listMenu = new UsuarioDao().getListMenu(query);
-            
+
             Usuario bean = new Usuario();
             bean.setPerfId(perf_id);
             new UsuarioDao().deletePermisos(bean);
-            
+
             listMenu.stream().map((list) -> {
                 int i = list.getMenuId();
                 Usuario data = new Usuario();
@@ -691,70 +691,70 @@ public class UsuarioServlet extends HttpServlet {
                     new UsuarioDao().upsertPermisos(dataSub);
                 });
             });
-            
+
             hm.put("success", true);
             hm.put("msg", "Se actualizaron los permisos correctamente");
-            
+
         } catch (NumberFormatException e) {
             hm.put("success", false);
             hm.put("msg", "No se pudieron actualizar los permisos. Intente nuevamente!!");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
     }
-    
+
     private void list_claves(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String query = " ORDER BY cltu_fecha_hora DESC ";
         List<Usuario> listClaves = new UsuarioDao().getClaveTurnos(query);
-        
+
         HashMap hm = new HashMap();
         hm.put("listClaves", listClaves);
-        
+
         Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy hh:mm:ss a").create();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
-        
+
     }
-    
+
     private void nueva_clave(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String cltu_clave = request.getParameter("cltu_clave") == null ? "" : request.getParameter("cltu_clave").trim();
-        
+
         HashMap hm = new HashMap();
-        
+
         try {
-            
+
             String query = " WHERE cltu_clave = '" + cltu_clave + "' ";
             List<Usuario> listClaves = new UsuarioDao().getClaveTurnos(query);
-            
+
             if (listClaves.isEmpty()) {
-                
+
                 if (cltu_clave.length() >= 6) {
-                    
+
                     Usuario beanU = new Usuario();
                     beanU.setCltuActivo(false);
                     new UsuarioDao().updateClaveTurnos(beanU);
-                    
+
                     LocalDateTime ldt = LocalDateTime.now();
-                    
+
                     Usuario beanI = new Usuario();
                     beanI.setCltuClave(cltu_clave);
                     beanI.setCltuFechaHora(Timestamp.valueOf(ldt));
                     beanI.setCltuActivo(true);
                     new UsuarioDao().insertClaveTurnos(beanI);
-                    
+
                     hm.put("success", true);
                     hm.put("msg", "Se generó la clave correctamente");
                 } else {
                     hm.put("success", false);
                     hm.put("msg", "La clave debe tener como mínimo 06 caracteres");
                 }
-                
+
             } else {
                 if (listClaves.get(0).getCltuActivo() == true) {
                     hm.put("success", false);
@@ -765,22 +765,22 @@ public class UsuarioServlet extends HttpServlet {
                     hm.put("msg", "La clave ya ha sido usada anteriormente, use una nueva");
                 }
             }
-            
+
         } catch (Exception e) {
             hm.put("success", false);
             hm.put("msg", "No se pudo generar la clave, intente nuevamente");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
     }
-    
+
     private void datos_empresa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         List<Usuario> listEmpresa = new UsuarioDao().getDatosEmpresa();
-        
+
         HashMap hm = new HashMap();
         hm.put("ruc", listEmpresa.get(0).getEmprRuc());
         hm.put("razon", listEmpresa.get(0).getEmprRazonSocial());
@@ -794,20 +794,20 @@ public class UsuarioServlet extends HttpServlet {
         hm.put("urlLogo", listEmpresa.get(0).getEmprUrlLogo());
         hm.put("logoTipo", listEmpresa.get(0).getEmprLogoTipo());
         hm.put("sede", listEmpresa.get(0).getEmprSede());
-        
+
         if (listEmpresa.get(0).getEmprUrlLogo() == null) {
-            
+
         } else {
             Path path = Paths.get(listEmpresa.get(0).getEmprUrlLogo());
             hm.put("fileName", path.getFileName().toString());
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
-        
+
     }
-    
+
     String[] typesImgs = {
         "bmp",
         "dib",
@@ -820,10 +820,10 @@ public class UsuarioServlet extends HttpServlet {
         "gif",
         "png"
     };
-    
+
     private void update_empresa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         String ruc = request.getParameter("ruc") == null ? "" : request.getParameter("ruc").trim();
         String razon = request.getParameter("razon") == null ? "" : request.getParameter("razon").trim();
         String direccion = request.getParameter("direccion") == null ? "" : request.getParameter("direccion").trim();
@@ -835,15 +835,15 @@ public class UsuarioServlet extends HttpServlet {
         String cargo = request.getParameter("cargo") == null ? "" : request.getParameter("cargo").trim();
         String sede = request.getParameter("sede") == null ? "" : request.getParameter("sede").trim();
         Part filePart = request.getPart("logo");
-        
-        HashMap hm = new HashMap();
-        
+
+               HashMap hm = new HashMap();
+
         try {
-            
+
             if (ruc.length() >= 11) {
-                
+
                 if (dni.equals("") || dni.length() >= 8) {
-                    
+
                     Usuario bean = new Usuario();
                     bean.setEmprId(1);
                     bean.setEmprRuc(ruc);
@@ -857,9 +857,9 @@ public class UsuarioServlet extends HttpServlet {
                     bean.setEmprRepreCargo(cargo);
                     bean.setEmprSede(sede);
                     if (filePart.getSubmittedFileName().equals("") && filePart.getContentType().equals("application/octet-stream")) {
-                        
+
                         List<Usuario> listEmpresa = new UsuarioDao().getDatosEmpresa();
-                        
+
                         if (listEmpresa.get(0).getEmprUrlLogo() == null) {
                             bean.setEmprUrlLogo(null);
                             bean.setEmprLogoTipo(null);
@@ -874,7 +874,7 @@ public class UsuarioServlet extends HttpServlet {
                                 new UsuarioDao().updateDatosEmpresa(bean);
                             }
                         }
-                        
+
                     } else {
                         List<Usuario> listSoft = new UsuarioDao().getDatosSoftware();
                         String rutaSoft = listSoft.get(0).getSoftRuta();
@@ -896,32 +896,33 @@ public class UsuarioServlet extends HttpServlet {
                         bean.setEmprUrlLogo(rutaSoft + "\\Logos\\" + fileNameDestino);
                         bean.setEmprLogoTipo(fileType);
                         new UsuarioDao().updateDatosEmpresa(bean);
-                        
+
                         Path rutaDestino = Paths.get(rutaSoft + "\\Logos\\" + fileNameDestino);
                         Files.copy(fileContenido, rutaDestino, StandardCopyOption.REPLACE_EXISTING);
                     }
-                    
+
                     hm.put("success", true);
                     hm.put("msg", "Se actualizaron los datos correctamente!!!");
-                    
+
                 } else {
                     hm.put("success", false);
                     hm.put("msg", "El DNI debe tener 08 dígitos");
                 }
-                
+
             } else {
                 hm.put("success", false);
                 hm.put("msg", "El RUC debe tener 11 dígitos");
             }
         } catch (IOException ex) {
+            System.out.println(ex);
             hm.put("success", false);
             hm.put("msg", "No se pudo actualizar. Intente nuevamente!!!");
         }
-        
+
         Gson gson = new Gson();
         String arg = gson.toJson(hm);
         response.getWriter().print(arg);
-        
+
     }
-    
+
 }
