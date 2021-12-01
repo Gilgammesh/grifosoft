@@ -1077,7 +1077,7 @@ public class FacturacionServlet extends HttpServlet {
             objetoCabecera.put("formato_de_pdf", "A4"); // Formato de PDF que se desea generar en la página web de NUBEFACT: A4, A5, TICKET  ====> (Opcional)
             // Si el tipo de venta es al contado
             if (tipo_venta == 1) {
-                objetoCabecera.put("medio_de_pago", "efectivo"); // Medio de Pago. Ejemplo: "Tarjeta VISA Op. 15687"  ====> (Opcional)
+                objetoCabecera.put("medio_de_pago", ""); // Medio de Pago. Ejemplo: "Tarjeta VISA Op. 15687"  ====> (Opcional)
             }
             // Si el tipo de venta es a crédito
             if (tipo_venta == 2) {
